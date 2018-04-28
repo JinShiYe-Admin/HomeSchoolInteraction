@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body style="background: white;">
+		<header class="mui-bar mui-bar-nav" style="background-color:#63BBFF;">
+			<a href="javascript:mine.isMineShow=true;" class="mui-icon  mui-pull-left"><img style="width: 26px;height: 26px;border-radius: 50%;" src="../../img/login/headImg.png" /></a>
+			<h1 class="mui-title common-color-white common-font-family-Bold" style="color: white;">家校互动</h1>
+		</header>
+		<div class="mui-content" style="background: white;">
+			<div id="slider" class="mui-slider">
+			<div class="mui-slider-group mui-slider-loop">
+				<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<a href="#">
+						<img src="../../img/homeSchool/u298.png">
+					</a>
+				</div>
+				<!-- 第一张 -->
+				<div class="mui-slider-item">
+					<a href="#">
+						<img src="../../img/homeSchool/u292.png">
+					</a>
+				</div>
+				<!-- 第二张 -->
+				<div class="mui-slider-item">
+					<a href="#">
+						<img src="../../img/homeSchool/u296.png">
+					</a>
+				</div>
+				<!-- 第三张 -->
+				<div class="mui-slider-item">
+					<a href="#">
+						<img src="../../img/homeSchool/u298.png">
+					</a>
+				</div>
+				<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<a href="#">
+						<img src="../../img/homeSchool/u292.png">
+					</a>
+				</div>
+			</div>
+			<div class="mui-slider-indicator">
+				<div class="mui-indicator mui-active"></div>
+				<div class="mui-indicator"></div>
+				<div class="mui-indicator"></div>
+			</div>
+		</div>
+		<div id="contentData">
+			<ul class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;">
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
+					<a href="#" @click="clickFunction(0)">
+						<span class="mui-icon mui-icon-home"></span>
+						<div class="mui-media-body">学校通知</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
+					<a href="#" @click="clickFunction(1)">
+						<span class="mui-icon mui-icon-home"></span>
+						<div class="mui-media-body">学生表现</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
+					<a href="#" @click="clickFunction(2)">
+						<span class="mui-icon mui-icon-home"></span>
+						<div class="mui-media-body">班级信息</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
+					<a href="#" @click="clickFunction(3)">
+						<span class="mui-icon mui-icon-home"></span>
+						<div class="mui-media-body">荣誉展示</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
+					<a href="#" @click="clickFunction(4)">
+						<span class="mui-icon mui-icon-home"></span>
+						<div class="mui-media-body">活动展示</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
+					<a href="#" @click="clickFunction(5)">
+						<span class="mui-icon mui-icon-home"></span>
+						<div class="mui-media-body">作业管理</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
+					<a href="#" @click="clickFunction(6)">
+						<span class="mui-icon mui-icon-home"></span>
+						<div class="mui-media-body">考试成绩</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
+					<a href="#" @click="clickFunction(7)">
+						<span class="mui-icon mui-icon-home"></span>
+						<div class="mui-media-body">留言</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+		</div>
+		
+		<!--<div id="contentData">
+			<ul class="mui-table-view mui-grid-view mui-grid-9" v-for="(picModel,index) in singleFunctionArray">
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="#">
+						<span class="mui-icon mui-icon-home"></span>
+						<div class="mui-media-body">{{picModel.picName}}</div>
+					</a>
+				</li>
+			</ul>
+		</div>-->
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/utils/vconsole.min.js"></script>
+		<script type="text/javascript" src="../../js/utils/vue.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				statusBarBackground: '#63BBFF'
+			});
+			mui.plusReady(function() {
+				//安卓的连续点击两次退出程序
+				var backButtonPress = 0;
+				//重写返回键
+				mui.back = function(event) {
+					backButtonPress++;
+					if(backButtonPress > 1) {
+						plus.runtime.quit();
+					} else {
+						plus.nativeUI.toast('再按一次退出应用');
+					}
+					setTimeout(function() {
+						backButtonPress = 0;
+					}, 1000);
+					return false;
+				};
+			});
+			//vue数据
+			var contentData = new Vue({
+				el: "#contentData",
+				data: {
+					//圆形单个功能
+					singleFunctionArray: [{
+						picName: '学校通知',
+						picUrl: '',
+						picFlag: 0,
+						picCount: ''
+					}, {
+						picName: '学生表现',
+						picUrl: '',
+						picFlag: 0,
+						picCount: ''
+					}, {
+						picName: '班级信息',
+						picUrl: '',
+						picFlag: 0,
+						picCount: ''
+					}, {
+						picName: '荣誉展示',
+						picUrl: '',
+						picFlag: 0,
+						picCount: ''
+					}, {
+						picName: '活动展示',
+						picUrl: '',
+						picFlag: 0,
+						picCount: ''
+					}, {
+						picName: '作业管理',
+						picUrl: '',
+						picFlag: 0,
+						picCount: ''
+					}, {
+						picName: '考试成绩',
+						picUrl: '',
+						picFlag: 0,
+						picCount: ''
+					}, {
+						picName: '留言',
+						picUrl: '',
+						picFlag: 0,
+						picCount: ''
+					}]
+				},
+				methods: {
+					clickFunction:function(index){
+						console.log('index:',index);
+					}
+				}
+			});
+
+			var slider = mui("#slider");
+			//轮播开始
+			slider.slider({
+				interval: 5000
+			});
+		</script>
+	</body>
+
+</html>
