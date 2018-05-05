@@ -25,8 +25,64 @@
 		</div>
 		
 		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/utils/vue.min.jse"></script>
+		<script src="../../../js/utils/utils.js"></script>
+		<script src="../../../js/utils/events.js"></script>
+		<script src="../../../js/libs/jquery.js"></script>
+		<script src="../../../js/publicProtocolNew.js"></script>
+		<!--加密-->
+		<script src="../../../js/lib/RSA/Barrett.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/RSA/BigInt.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/RSA/RSA.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/utils/RSAEncrypt.js" type="text/javascript" charset="utf-8"></script>
+		<!---->
+		<script src='../../../js/libs/crypto-js/require.js'></script>
+		<script src='../../../js/utils/signHmacSHA1.js'></script>
+		<script src='../../../js/utils/sortSign.js'></script>
+		<script src="../../../js/storageKeyName.js"></script>
+		<script src="../../../js/utils/store.js"></script>
 		<script type="text/javascript">
-			mui.init()
+			//获取个人信息
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('personal:' + JSON.stringify(personal));
+			mui.init();
+			mui.plusReady(function() {
+				curPage = utils.getDataFromUrl(window.location.href);
+				console.log('2222:' + JSON.stringify(curPage));
+				//4.获取学校通知列表
+				getNoticesList();
+			});
+			
+			var noticelistData = new Vue({
+				el: "#noticelistData",
+				data: {
+					flag: 0,//0刷新，1加载更多
+					noticeArray: [],//通知列表数组
+					pageIndex: 1//第几页
+				},
+				methods: {}
+			});
+			
+			//4.获取学校通知列表
+			var getNoticesList = function() {
+				var tempData = {
+					schoolId: personal.schid, //学校ID,统一部署的时候，学校ID传000000
+					manId:personal.utid,//登录人ID
+					status:0,//状态,0 全部,1 有效,2 无效
+					pageIndex:noticelistData.pageIndex,//当前页数
+					pageSize:10//每页记录数,0为全部
+				}
+				events.showWaiting();
+				getNoticesPro(tempData, function function_name(data) {
+					events.closeWaiting();
+					console.log('data:' + JSON.stringify(data));
+					if(data.RspCode == 0) {
+						
+					} else {
+						$.toast(data.RspTxt);
+					}
+				});
+			}
 		</script>
 	</body>
 

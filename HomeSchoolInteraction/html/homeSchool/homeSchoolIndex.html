@@ -6,11 +6,18 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.circular-square {
+				border-radius: 50%;
+				width: 56px;
+				height: 56px;
+			}
+		</style>
 	</head>
 
 	<body style="background: white;">
-		<header class="mui-bar mui-bar-nav" style="background-color:#63BBFF;">
-			<a href="javascript:mine.isMineShow=true;" class="mui-icon  mui-pull-left"><img style="width: 26px;height: 26px;border-radius: 50%;" src="../../img/login/headImg.png" /></a>
+		<header class="mui-bar mui-bar-nav" style="background-color:#63BBFF;" id="tempHead">
+			<a @click="clickLeftImg" class="mui-icon mui-pull-left"><img style="width: 26px;height: 26px;border-radius: 50%;" src="../../img/login/headImg.png" /></a>
 			<h1 class="mui-title common-color-white common-font-family-Bold" style="color: white;">家校互动</h1>
 		</header>
 		<div class="mui-content" style="background: white;">
@@ -57,49 +64,57 @@
 			<ul class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;">
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(0)">
-						<span class="mui-icon mui-icon-home"></span>
+						<img class="circular-square" src="../../img/homeSchool/schoolPage0.png"/>
+						<span class="mui-icon"></span>
 						<div class="mui-media-body">学校通知</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(1)">
-						<span class="mui-icon mui-icon-home"></span>
+						<img class="circular-square" src="../../img/homeSchool/schoolPage1.png"/>
+						<span class="mui-icon"></span>
 						<div class="mui-media-body">学生表现</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(2)">
-						<span class="mui-icon mui-icon-home"></span>
+						<img class="circular-square" src="../../img/homeSchool/schoolPage2.png"/>
+						<span class="mui-icon"></span>
 						<div class="mui-media-body">班级信息</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(3)">
-						<span class="mui-icon mui-icon-home"></span>
+						<img class="circular-square" src="../../img/homeSchool/schoolPage3.png"/>
+						<span class="mui-icon"></span>
 						<div class="mui-media-body">荣誉展示</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(4)">
-						<span class="mui-icon mui-icon-home"></span>
+						<img class="circular-square" src="../../img/homeSchool/schoolPage4.png"/>
+						<span class="mui-icon"></span>
 						<div class="mui-media-body">活动展示</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(5)">
-						<span class="mui-icon mui-icon-home"></span>
+						<img class="circular-square" src="../../img/homeSchool/schoolPage5.png"/>
+						<span class="mui-icon"></span>
 						<div class="mui-media-body">作业管理</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(6)">
-						<span class="mui-icon mui-icon-home"></span>
+						<img class="circular-square" src="../../img/homeSchool/schoolPage6.png"/>
+						<span class="mui-icon"></span>
 						<div class="mui-media-body">考试成绩</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(7)">
-						<span class="mui-icon mui-icon-home"></span>
+						<img class="circular-square" src="../../img/homeSchool/schoolPage7.png"/>
+						<span class="mui-icon"></span>
 						<div class="mui-media-body">留言</div>
 					</a>
 				</li>
@@ -120,6 +135,7 @@
 		<script src="../../js/mui.min.js"></script>
 		<script type="text/javascript" src="../../js/utils/vconsole.min.js"></script>
 		<script type="text/javascript" src="../../js/utils/vue.js"></script>
+		<script src="../../js/utils/utils.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init({
 				statusBarBackground: '#63BBFF'
@@ -140,6 +156,15 @@
 					}, 1000);
 					return false;
 				};
+			});
+			var tempHead = new Vue({
+				el: "#tempHead",
+				data: {},
+				methods: {
+					clickLeftImg:function(){
+						console.log('indexweeeeeeeeee:');
+					}
+				}
 			});
 			//vue数据
 			var contentData = new Vue({
@@ -191,6 +216,11 @@
 				methods: {
 					clickFunction:function(index){
 						console.log('index:',index);
+						if (index == 0) {//学校通知
+							utils.mOpenWithData("notice/noticeList.html", {index:1});
+						} else{
+							
+						}
 					}
 				}
 			});
