@@ -92,6 +92,7 @@
 		<script type="text/javascript" src="../../js/utils/events.js"></script>
 		<script type="text/javascript" src="../../js/sciedu/SciEduHomeItem.js"></script>
 		<script type="text/javascript" src="../../js/utils/vconsole.min.js"></script>
+		<script src="../../js/utils/store.js"></script>
 		<script type="text/javascript">
 			var cities = []; //存储当前定制的城市
 			var show = true; //是否显示科教的内容
@@ -124,6 +125,7 @@
 				//游客身份
 				if(!myStorage.getItem(storageKeyName.PERSONALINFO)) {
 //				if(!parseInt(myStorage.getItem(storageKeyName.PERSONALINFO).utid)) {
+				if(!parseInt(store.get(window.storageKeyName.PERSONALINFO).utid)) {
 					initBody();
 					changeIndexHeader();
 				}
@@ -456,7 +458,8 @@
 				var eduArray = [];
 				//44.获取个人的订制城市
 				//游客身份
-				if(!parseInt(myStorage.getItem(storageKeyName.PERSONALINFO).utid)) {
+//				if(!parseInt(myStorage.getItem(storageKeyName.PERSONALINFO).utid)) {
+				if(!parseInt(store.get(window.storageKeyName.PERSONALINFO).utid)) {
 					var localCity = window.myStorage.getItem(window.storageKeyName.SECITY);
 					if(localCity && localCity.length != 0) {
 						eduArray = localCity;
