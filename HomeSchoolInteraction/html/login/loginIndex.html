@@ -66,7 +66,7 @@
 				uuid: plus.device.uuid,
 				appid: plus.runtime.appid
 			}
-//			setUUID();
+			setUUID();
 		});
 		document.addEventListener("plusready", function() {
 			message = document.getElementById("message");
@@ -197,12 +197,12 @@
 //				$.showLoading();
 				//令牌续订
 				postDataEncry('TokenReset', {}, comData, 0, function(data) {
-					$.hideLoading();
+//					$.hideLoading();
 					if(data.RspCode == 0) {
 						var tempInfo00 = store.get(window.storageKeyName.PERSONALINFO);
 						tempInfo00.utoken = data.RspData;
 						store.set(window.storageKeyName.PERSONALINFO, tempInfo00);
-						utils.mOpenWithData("notice/noticeList.html", {});
+						utils.mOpenWithData("../../index.html", {});
 					} else {
 						mui.toast(data.RspTxt);
 					}

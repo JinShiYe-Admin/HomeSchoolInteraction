@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background-color:#63BBFF;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>
+			<h1 class="mui-title" style="color: white;">通知详情</h1>
+		</header>
+		<nav class="mui-bar mui-bar-tab" id="noticeReplyContent">
+			<div style="padding-top: 5px;">
+				<input v-model="content" type="text" style="border: 0px;margin-bottom: 0px;margin-left: 5px;width: 75%;font-size: 12px;" placeholder="请输入要回复的内容" />
+				<button v-on:click.stop="replyContent()" type="button" class="mui-btn-primary down-btn" style="width: 20%;margin-top: 5px;">确定</button>
+			</div>
+		</nav>
+		<div class="mui-content" id="noticeDetailData" v-if="flag>0">
+			<p style="color: black;padding: 10px;">{{noticesDetail.NoticeContent}}</p>
+			<p style="margin:0px auto;padding-top:5px;padding-right: 10px;font-size:12px;overflow:hidden;text-align:right;">{{noticesDetail.SendManName}} | {{noticesDetail.SendTime}}</p>
+			<p class="" style="height: 10px;background-color: #f2f2f2;"></p>
+			<div id="sliderSegmentedControl" class=" mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary">
+				<a id="item1" class="mui-control-item mui-active readPeople" href="#ReplyArray">
+					回复({{noticesDetail.ReplyArray.length}})
+				</a>
+				<a id="item2" class="mui-control-item readPeople" href="#ReadArray">
+					已浏览({{noticesDetail.ReadArray.length}})
+				</a>
+				<a id="item2" class="mui-control-item readPeople" href="#NoReadArray">
+					未浏览({{noticesDetail.NoReadArray.length}})
+				</a>
+			</div>
+			<!--滑动内容-->
+			<div class="mui-slider-group" style="min-height: 200px;">
+				<div id="ReplyArray" class="mui-slider-item mui-control-content mui-active">
+					<ul class="mui-table-view" v-for="(model,index) in noticesDetail.ReplyArray">
+						<li class="mui-table-view-cell">
+								<div class="mui-media-body">
+									<img class="mui-media-object mui-pull-left" style="border-radius: 50%;" :src=model.ReplyManImg>
+									{{model.ReplyManName}}
+									<p class="mui-ellipsis">{{model.ReplyTime}}</p>
+									<p style="padding-left: 52px;">{{model.ReplyContent}}</p>
+								</div>
+						</li>
+					</ul>
+				</div>
+				<div id="ReadArray" class="mui-slider-item mui-control-content">
+					<ul class="mui-table-view" v-for="(model,index) in noticesDetail.ReadArray">
+						<li class="mui-table-view-cell">
+							<a href="javascript:;">
+								<img class="mui-media-object mui-pull-left" style="border-radius: 50%;" :src=model.ReceiveManImg>
+								<div class="mui-media-body">
+									{{model.ReceiveManName}}
+									<p class="mui-ellipsis">{{model.ReadTime}}</p>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div id="NoReadArray" class="mui-slider-item mui-control-content">
+					<ul class="mui-table-view" v-for="(model,index) in noticesDetail.NoReadArray">
+						<li class="mui-table-view-cell">
+							<a href="javascript:;">
+								<img class="mui-media-object mui-pull-left" style="border-radius: 50%;" :src=model.ReceiveManImg>
+								<div class="mui-media-body" style="padding-top: 10px;">
+									{{model.ReceiveManName}}
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/utils/vue.min.js"></script>
+		<script src="../../../js/utils/utils.js"></script>
+		<script src="../../../js/utils/events.js"></script>
+		<script src="../../../js/libs/jquery.js"></script>
+		<script src="../../../js/publicProtocolNew.js"></script>
+		<script src="../../../js/publicProtocol.js"></script>
+		<script type="text/javascript" src="../../../js/utils/vconsole.min.js"></script>
+
+		<script src='../../../js/libs/crypto-js/require.js'></script>
+		<script src='../../../js/utils/signHmacSHA1.js'></script>
+		<script src='../../../js/utils/sortSign.js'></script>
+		<script src="../../../js/storageKeyName.js"></script>
+		<script src="../../../js/utils/store.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			//获取个人信息
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('personal:' + JSON.stringify(personal));
+			var curPage = {};
+			mui.plusReady(function() {
+				curPage = utils.getDataFromUrl(window.location.href);
+				console.log('2222:' + JSON.stringify(curPage));
+				//5.通过ID获取学校通知（同时阅读通知和通知回复）
+				getNoticesDetail(curPage);
+			});
+
+			var noticeDetailData = new Vue({
+				el: "#noticeDetailData",
+				data: {
+					flag: 0, //
+					noticesDetail: {} //获取到的详情
+				},
+				methods: {
+
+				}
+			});
+
+			//5.通过ID获取学校通知（同时阅读通知和通知回复）
+			var getNoticesDetail = function(model) {
+				var tempData = {
+					noticeId: model.NoticeId, //通知ID
+					receiveManId: personal.utid //阅读人ID
+				}
+				events.showWaiting();
+				getNoticeByIdPro(tempData, function function_name(data) {
+					events.closeWaiting();
+					console.log('data:' + JSON.stringify(data));
+					if(data.RspCode == 0) {
+						noticeDetailData.flag = 1;
+						data.RspData.SendTime = modifyTimeFormat(data.RspData.SendTime);
+						noticeDetailData.noticesDetail = data.RspData;
+					} else {
+						mui.toast(data.RspTxt);
+					}
+				});
+			}
+			
+			//3.回复学校通知(同时增加回复未读)
+			var noticeReplyContent = new Vue({
+				el: "#noticeReplyContent",
+				data: {
+					content: ''
+				},
+				methods: {
+					replyContent: function() {
+						if(noticeReplyContent.content.trim().length == 0) {
+							mui.toast("请输入回复内容", "cancel");
+							return;
+						}
+						if(noticeReplyContent.content.length >= 200) {
+							mui.toast("回复内容不能超过50字", "cancel");
+							return;
+						}
+						//3.回复学校通知(同时增加回复未读)
+						var tempData1 = {
+							noticeId: curPage.NoticeId, //通知ID
+							replyManId: personal.utid, //回复人ID
+							replyManCode: personal.uid, //回复人账号
+							replyManName: personal.utname, //回复人姓名
+							replyManImg: personal.imgurl, //回复人头像
+							replyContent: noticeReplyContent.content //回复内容
+						}
+						events.showWaiting();
+						//3.回复学校通知(同时增加回复未读)
+						addNoticeReplyPro(tempData1, function function_name(data) {
+							events.closeWaiting();
+							if(data.RspCode == 0) {
+								noticeReplyContent.content = '';
+								mui.toast('成功');
+								//5.通过ID获取学校通知（同时阅读通知和通知回复）
+								getNoticesDetail(curPage);
+							} else {
+								mui.toast(data.RspTxt);
+							}
+						});
+					}
+				}
+			});
+		</script>
+	</body>
+
+</html>

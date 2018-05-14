@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background-color:#63BBFF;" id="tempVue">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>
+			<h1 class="mui-title" style="color: white;">新建通知</h1>
+			<a @click="addNotice()" class="mui-pull-right" style="color: white;font-size: 15px;margin-top: 10px;">发布</a>
+		</header>
+		<div class="mui-content" id="addNoticeContent">
+			<!--<textarea v-model="content" class="weui-textarea" style="padding: 0;margin-bottom: 0;" placeholder="请输入内容" rows="4"></textarea>-->
+			<textarea name="" rows="4" cols="" style="padding: 5;margin-bottom: 0;border: 0px;" placeholder="请输入内容(最多2000字)"></textarea>
+			<ul class="mui-table-view">
+			        <li class="mui-table-view-cell">
+			            <a>
+			                接收人
+			            </a>
+			        </li>
+			        <li class="mui-table-view-cell">
+			            <a class="mui-navigate-right">
+			                 年级:
+			            </a>
+			        </li>
+			        <li class="mui-table-view-cell">
+			            <a class="mui-navigate-right">
+			                 班级:
+			            </a>
+			        </li>
+			        <li class="mui-table-view-cell">
+			            <a class="mui-navigate-right">
+			                 家长:
+			            </a>
+			        </li>
+			    </ul>
+		</div>
+		
+		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/utils/vue.min.js"></script>
+		<script src="../../../js/utils/utils.js"></script>
+		<script src="../../../js/utils/events.js"></script>
+		<script src="../../../js/libs/jquery.js"></script>
+		<script src="../../../js/publicProtocolNew.js"></script>
+		<script src="../../../js/publicProtocol.js"></script>
+		<script type="text/javascript" src="../../../js/utils/vconsole.min.js"></script>
+
+		<script src='../../../js/libs/crypto-js/require.js'></script>
+		<script src='../../../js/utils/signHmacSHA1.js'></script>
+		<script src='../../../js/utils/sortSign.js'></script>
+		<script src="../../../js/storageKeyName.js"></script>
+		<script src="../../../js/utils/store.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			//获取个人信息
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('personal:' + JSON.stringify(personal));
+			
+			var addNoticeContent = new Vue({
+				el: "#addNoticeContent",
+				data: {
+					flag: 0, //0刷新，1加载更多
+					noticeArray: [], //通知列表数组
+					content:'',//内容
+					msgFlag:0,//是否发生短信
+					gradeArray:[],//年级列表
+					classArray:[],//班级列表
+					parentArray:[]//家长列表
+				},
+				methods: {
+					
+				}
+			});
+			
+			var tempVue = new Vue({
+				el: "#tempVue",
+				data: {
+					
+				},
+				methods: {
+					addNotice:function(){
+						console.log('add通知');
+					}
+				}
+			});
+		</script>
+	</body>
+
+</html>
