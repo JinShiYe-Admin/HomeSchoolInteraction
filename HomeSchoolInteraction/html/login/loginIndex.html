@@ -56,6 +56,7 @@
 	<script src="../../js/utils/store.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../../js/utils/utils.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../../js/utils/storageutil.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/utils/events.js"></script>
 	<script type="text/javascript">
 		//		$(function() {
 		//			
@@ -112,7 +113,7 @@
 						shaketype: 'login', //注册(reg),登录(login),修改密码(repw)
 						appid: tempModel.appid //系统所分配的应用ID
 					};
-//					$.showLoading();
+					events.showWaiting();
 					//发送网络请求，data为网络返回值
 					postDataEncry('ShakeHand', enData0, comData0, 0, function(data) {
 						console.log('2121212');
@@ -133,7 +134,7 @@
 							};
 							//登录
 							postDataEncry('Login', enData1, comData1, 0, function(data1) {
-//								$.hideLoading();
+								events.closeWaiting();
 								if(data1.RspCode == 0) {
 									if(data1.RspData.dpts == null) {
 										data1.RspData.dpts = [];
@@ -160,7 +161,6 @@
 								}
 							});
 						} else {
-//							$.hideLoading();
 							mui.toast(data.RspTxt);
 						}
 					});
@@ -194,10 +194,10 @@
 					schid: personal.schid,
 					utname: personal.utname
 				};
-//				$.showLoading();
+				events.showWaiting();
 				//令牌续订
 				postDataEncry('TokenReset', {}, comData, 0, function(data) {
-//					$.hideLoading();
+					events.closeWaiting();
 					if(data.RspCode == 0) {
 						var tempInfo00 = store.get(window.storageKeyName.PERSONALINFO);
 						tempInfo00.utoken = data.RspData;

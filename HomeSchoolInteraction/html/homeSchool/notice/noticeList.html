@@ -34,7 +34,7 @@
 				<li class="mui-table-view-cell" @click="clickNoticeList(noticeModel)">
 					<a class="mui-navigate-right">
 						<div id="">
-							<image v-if="noticeModel.IsRead==0" src="../../../img/login/username.png" style="width: 10px;height: 10px;border-radius: 50%;" /> 											{{noticeModel.NoticeContent}}
+							<image v-if="noticeModel.IsRead==0" src="../../../img/homeSchool/redColor.png" style="width: 10px;height: 10px;border-radius: 50%;" /> 											{{noticeModel.NoticeContent}}
 						</div>
 						<div class="">
 							<image src="../../../img/login/username.png" style="width: 10px;height: 10px;border-radius: 50%;vertical-align: middle;" />
@@ -133,7 +133,7 @@
 				methods: {
 					revoke:function(){
 						console.log('add通知');
-						utils.mOpenWithData("../../../html/homeSchool/notice/addNotice.html", {});
+						utils.mOpenWithData("../../../html/homeSchool/notice/addNotice1.html", {});
 					}
 				}
 			});
@@ -167,7 +167,7 @@
 							
 						}
 					} else {
-						$.toast(data.RspTxt);
+						mui.toast(data.RspTxt);
 					}
 				});
 			}
