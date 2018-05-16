@@ -8,7 +8,7 @@
 //document.write('<script src="../js/lib/jquery.js"><\/script>');
 //document.write('<script src="../js/utils/sortSign.js"><\/script>');
 //document.write('<script src="../js/utils/myStorage.js"><\/script>');
-document.write('<script src="../../js/storageKeyName.js"><\/script>');
+//document.write('<script src="../../js/storageKeyName.js"><\/script>');
 
 function generateUUID() {
 	var d = new Date().getTime();
@@ -19,6 +19,20 @@ function generateUUID() {
 	});
 	return uuid;
 };
+
+//将时间转换为显示的格式
+var modifyTimeFormat = function(str) {
+	var tempStr = '';
+	var dt_now = new Date();
+	var int_year = dt_now.getYear();
+	var dt_item = new Date(str.replace(/-/g, '/'));
+	if(int_year == dt_item.getYear()) {
+		tempStr = events.format(dt_item, "MM-dd hh:mm")
+	} else {
+		tempStr = events.format(dt_item, "yyyy-MM-dd hh:mm")
+	}
+	return tempStr;
+}
 
 //url,
 //encryData,需要加密的字段
@@ -167,7 +181,7 @@ var xhrPost = function(url, commonData, callback,flag) {
 			});
 		};
 		xhr.send(JSON.stringify(tempData));
-	},flag);
+	});
 }
 
 var jQAjaxPost = function(url, data, callback) {
@@ -227,7 +241,20 @@ var jQAjaxPost = function(url, data, callback) {
 	});
 }
 
-//智慧校园协议
+//1.学校年级
+var SchGradeProGu = function(data0, callback) {
+	var tempAttendUrl = window.storageKeyName.INTERFACEGU;
+	data0 = extendParameter(data0);
+	xhrPost(tempAttendUrl + 'SchGrade', data0, callback,1);
+}
+
+//3.学校年级下班级
+var GradeClassProGu = function(data0, callback) {
+	var tempAttendUrl = window.storageKeyName.INTERFACEGU;
+	data0 = extendParameter(data0);
+	xhrPost(tempAttendUrl + 'GradeClass', data0, callback,1);
+}
+
 
 //合并参数
 var extendParameter = function(data0) {
@@ -245,33 +272,33 @@ var extendParameter = function(data0) {
 var addNoticePro = function(data0, callback) {
 	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
 	data0 = extendParameter(data0);
-	xhrPost(tempAttendUrl + 'addNotice', data0, callback,1);
+	xhrPost(tempAttendUrl + 'addNotice', data0, callback);
 }
 
 //2.删除学校通知（假删）
 var setNoticesDelPro = function(data0, callback) {
 	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
 	data0 = extendParameter(data0);
-	xhrPost(tempAttendUrl + 'setNoticesDel', data0, callback,1);
+	xhrPost(tempAttendUrl + 'setNoticesDel', data0, callback);
 }
 
 //3.回复学校通知(同时增加回复未读)
 var addNoticeReplyPro = function(data0, callback) {
 	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
 	data0 = extendParameter(data0);
-	xhrPost(tempAttendUrl + 'addNoticeReply', data0, callback,1);
+	xhrPost(tempAttendUrl + 'addNoticeReply', data0, callback);
 }
 
 //4.获取学校通知列表
 var getNoticesPro = function(data0, callback) {
 	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
 	data0 = extendParameter(data0);
-	xhrPost(tempAttendUrl + 'getNotices', data0, callback,1);
+	xhrPost(tempAttendUrl + 'getNotices', data0, callback);
 }
 
 //5.通过ID获取学校通知（同时阅读通知和通知回复）
 var getNoticeByIdPro = function(data0, callback) {
 	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
 	data0 = extendParameter(data0);
-	xhrPost(tempAttendUrl + 'getNoticeById', data0, callback,1);
+	xhrPost(tempAttendUrl + 'getNoticeById', data0, callback);
 }

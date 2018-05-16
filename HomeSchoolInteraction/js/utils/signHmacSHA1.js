@@ -2,11 +2,8 @@
 
 
 var signHmacSHA1=(function(mod){
-	mod.sign=function(message,value,callback,flag){
+	mod.sign=function(message,value,callback){
 		var tempStr = '../../js/libs/crypto-js/crypto-js';
-		if (flag == 1) {
-			tempStr = '../../../js/libs/crypto-js/crypto-js';
-		}
 			require.config({
 				baseUrl:"",
 				waitSeconds:5,

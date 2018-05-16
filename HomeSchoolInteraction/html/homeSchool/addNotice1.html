@@ -5,20 +5,18 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<meta name="author" content="莫尚霖,email:444811716@qq.com" />
-		<meta name="description" content="创建笔记" />
-		<link href="../../../css/mui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="../../../css/utils/common.css" />
-		<link rel="stylesheet" href="../../../css/iconfont/iconfont1.css" />
-		<link rel="stylesheet" href="../../../css/utils/MultiMedia.css" />
-		<link rel="stylesheet" href="../../../css/utils/preview.css" />
-		<link rel="stylesheet" href="../../../css/utils/audiopopover.css" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/utils/common.css" />
+		<link rel="stylesheet" href="../../fonts/iconfont1.css" />
+		<link rel="stylesheet" href="../../css/utils/MultiMedia.css" />
+		<link rel="stylesheet" href="../../css/utils/preview.css" />
+		<link rel="stylesheet" href="../../css/utils/audiopopover.css" />
 
 		<style type="text/css">
 			body,
 			.mui-content {
 				background: #f2f3f5;
-				line-height: 0px;
+				/*line-height: 0px;*/
 			}
 
 			#notes {
@@ -45,14 +43,44 @@
 	</head>
 
 	<body>
-		<header class="mui-bar mui-bar-nav">
+		<!--<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">笔记</h1>
 			<div id="finish" class="title-text-pull-right">完成</div>
+		</header>-->
+		<header class="mui-bar mui-bar-nav" style="background-color:#63BBFF;" id="tempVue">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>
+			<h1 class="mui-title" style="color: white;">新建通知</h1>
+			<!--<a @click="addNotice()" class="mui-pull-right" style="color: white;font-size: 15px;margin-top: 10px;">发布</a>-->
+			<div id="finish" class="title-text-pull-right">完成</div>
 		</header>
-		<div class="mui-content mui-fullscreen">
-			<textarea id="notes" maxlength="2000" placeholder="✎ 分享你的学习与生活...,最多2000字"></textarea>
+		<div class="mui-content mui-fullscreen" style="background: white;" id="addNoticeContent">
+			<textarea id="notes" maxlength="2000" placeholder="请输入发布内容（最多2000字）"></textarea>
 			<div id="MultiMedia">
+			</div>
+			<div class="" style="margin-top: 10px;">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a>
+							接收人
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right" @click="clickSelect(0)">
+							年级:
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right" @click="clickSelect(1)">
+							班级:
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right" @click="clickSelect(2)">
+							家长:
+						</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 		<div id="videoPopover" class="mui-popover">
@@ -78,26 +106,34 @@
 				<audio id="audio_audio" autoplay="autoplay" preload="auto"></audio>
 			</div>
 		</div>
-		<script src="../../../js/mui.min.js"></script>
-		<script type="text/javascript" src="../../../js/publicProtocol.js"></script>
-		<script type="text/javascript" src="../../../js/utils/events.js"></script>
-		<script type="text/javascript" src="../../../js/utils/MultiMedia.js"></script>
-		<script type="text/javascript" src="../../../js/cloud/AndroidFileSystem.js"></script>
-		<script type="text/javascript" src="../../../js/qiniu/qiniu.js"></script>
-		<script type="text/javascript" src="../../../js/utils/cryption.js"></script>
-		<script type="text/javascript" src="../../../js/utils/CloudFileUtil.js"></script>
-		<script type="text/javascript" src="../../../js/storageKeyName.js"></script>
-		<script type="text/javascript" src="../../../js/mui.zoom.js"></script>
-		<script type="text/javascript" src="../../../js/mui.previewimage.js"></script>
-		<script type="text/javascript" src="../../../js/utils/compress.js"></script>
-		<script type="text/javascript" src="../../../js/utils/recordvideoutil.js"></script>
-		<script type="text/javascript" src="../../../js/utils/playutil.js"></script>
-		<script type="text/javascript" src="../../../js/utils/showvideoutil.js"></script>
-		<script type="text/javascript" src="../../../js/utils/showaudio.js"></script>
-		<script type="text/javascript" src="../../../js/utils/gallerypick.js"></script>
-		<script src="../../../js/utils/store.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<!--<script type="text/javascript" src="../../js/publicProtocol.js"></script>-->
+		<script type="text/javascript" src="../../js/utils/events.js"></script>
+		<script type="text/javascript" src="../../js/utils/MultiMedia.js"></script>
+		<script type="text/javascript" src="../../js/cloud/AndroidFileSystem.js"></script>
+		<script type="text/javascript" src="../../js/qiniu/qiniu.js"></script>
+		<script type="text/javascript" src="../../js/utils/cryption.js"></script>
+		<script type="text/javascript" src="../../js/utils/CloudFileUtil.js"></script>
+		<script type="text/javascript" src="../../js/storageKeyName.js"></script>
+		<script type="text/javascript" src="../../js/mui.zoom.js"></script>
+		<script type="text/javascript" src="../../js/mui.previewimage.js"></script>
+		<script type="text/javascript" src="../../js/utils/compress.js"></script>
+		<script type="text/javascript" src="../../js/utils/recordvideoutil.js"></script>
+		<script type="text/javascript" src="../../js/utils/playutil.js"></script>
+		<script type="text/javascript" src="../../js/utils/showvideoutil.js"></script>
+		<script type="text/javascript" src="../../js/utils/showaudio.js"></script>
+		<script type="text/javascript" src="../../js/utils/gallerypick.js"></script>
+		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/utils/vue.min.js"></script>
+		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/publicProtocolNew.js"></script>
 		<script type="text/javascript">
 			mui.init();
+			//获取个人信息
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('personal:' + JSON.stringify(personal));
 			var pathList = []; //记录需要删掉的图片和缩略图
 			var QNUptoken; //token数据
 			var uploadNum = 0; //记录上传的次数
@@ -109,6 +145,31 @@
 			mui.plusReady(function() {
 				init(); //初始化控件
 				initListener(); //初始化监听
+			});
+			
+			var addNoticeContent = new Vue({
+				el: "#addNoticeContent",
+				data: {
+					flag: 0, //0刷新，1加载更多
+					noticeArray: [], //通知列表数组
+					content: '', //内容
+					msgFlag: 1, //是否发生短信
+					gradeArray: [], //年级列表
+					classArray: [], //班级列表
+					parentArray: [] //家长列表
+				},
+				methods: {
+					clickSelect: function(flag) {
+						console.log('flag:' + flag);
+						if(flag == 0) {//年级
+							utils.mOpenWithData("../../html/homeSchool/gradeList.html", {});
+						} else if(flag == 1) {//班级
+//							utils.mOpenWithData("../../html/homeSchool/notice/noticeDetail.html", {});
+						} else if(flag == 2) {//家长
+							
+						}
+					}
+				}
 			});
 
 			/*
