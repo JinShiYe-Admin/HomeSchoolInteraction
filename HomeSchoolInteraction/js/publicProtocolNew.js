@@ -216,13 +216,12 @@ var jQAjaxPost = function(url, data, callback) {
 						var tempInfo00 = store.get(window.storageKeyName.PERSONALINFO);
 						tempInfo00.utoken = data1.RspData;
 						store.set(window.storageKeyName.PERSONALINFO,tempInfo00);
-//						jQAjaxPost(url, data, callback);
 						var urlArr = url.split('/');
 						console.log('传递的参数' + urlArr[urlArr.length - 1] + ':', JSON.stringify(tempData));
 						data.utoken = data1.RspData;
 						delete data.sign;
 						postDataEncry(urlArr[urlArr.length - 1], {}, data, 0, function(data2) {
-							
+							jQAjaxPost(url, data, callback);
 						});
 					} 
 				});
@@ -240,21 +239,6 @@ var jQAjaxPost = function(url, data, callback) {
 		}
 	});
 }
-
-//1.学校年级
-var SchGradeProGu = function(data0, callback) {
-	var tempAttendUrl = window.storageKeyName.INTERFACEGU;
-	data0 = extendParameter(data0);
-	xhrPost(tempAttendUrl + 'SchGrade', data0, callback,1);
-}
-
-//3.学校年级下班级
-var GradeClassProGu = function(data0, callback) {
-	var tempAttendUrl = window.storageKeyName.INTERFACEGU;
-	data0 = extendParameter(data0);
-	xhrPost(tempAttendUrl + 'GradeClass', data0, callback,1);
-}
-
 
 //合并参数
 var extendParameter = function(data0) {

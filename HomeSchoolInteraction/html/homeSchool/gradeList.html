@@ -41,12 +41,12 @@
 		<header class="mui-bar mui-bar-nav" style="background-color:#63BBFF;" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>
 			<h1 class="mui-title" style="color: white;">选择年级班级</h1>
-			<a @click="addNotice()" class="mui-pull-right" style="color: white;font-size: 15px;margin-top: 10px;">发布</a>
+			<a @click="addNotice()" class="mui-pull-right" style="color: white;font-size: 15px;margin-top: 10px;">确定</a>
 		</header>
 		<div class="mui-content" style="background: white;" id="gradeListData">
 			<div class="mui-input-row mui-checkbox mui-left">
 				<label>全选</label>
-				<input name="checkbox1" type="checkbox">
+				<input v-model="selectFlag" name="checkbox1" type="checkbox" @click="clickAll">
 			</div>
 
 			<ul class="mui-table-view" v-for="(gradeModel,index) in gradeListArray">
@@ -54,29 +54,13 @@
 					<div style="width: 50%;height: 40px;" class="flex-item">
 						<div class="mui-input-row mui-checkbox mui-left" style="margin-top: -10px;height: 30px;">
 							<label>{{gradeModel.grdname}}</label>
-							<input v-model="gradeModel.flag" name="checkbox1" type="checkbox">
+							<input v-model="gradeModel.flag" name="checkbox1" type="checkbox" @click="clickGrade(gradeModel)">
 						</div>
 					</div>
-					<div class="flex-container" v-for="(classModel,index) in gradeModel.classArray">
-						<!--<div class="mui-input-row mui-checkbox mui-left">
-							<label>全选</label>
-							<input name="checkbox1" type="checkbox">
-						</div>
-						<div class="mui-input-row mui-checkbox mui-left">
-							<label>全选</label>
-							<input name="checkbox1" type="checkbox">
-						</div>
-						<div class="mui-input-row mui-checkbox mui-left">
-							<label>全选</label>
-							<input name="checkbox1" type="checkbox">
-						</div>
-						<div class="mui-input-row mui-checkbox mui-left">
-							<label>全选</label>
-							<input name="checkbox1" type="checkbox">
-						</div>-->
-						<div class="mui-input-row mui-checkbox mui-left">
+					<div class="flex-container" style="padding-left: 20px;">
+						<div class="mui-input-row mui-checkbox mui-left" v-for="(classModel,index) in gradeModel.classArray">
 							<label>{{classModel.clsname}}</label>
-							<input name="checkbox1" type="checkbox">
+							<input v-model="classModel.flag" name="checkbox1" type="checkbox" @click="clickClass(gradeModel,classModel)">
 						</div>
 						<!--<div style="width: 33.3%;height: 40px;position: relative;" class="flex-item">
 							<div class="mui-input-row mui-checkbox mui-left" style="margin-top: -20px;height: 30px;">
@@ -125,15 +109,82 @@
 				el: "#gradeListData",
 				data: {
 					flag: 0, //是否获取到数据
+					selectFlag: 0, //是否全选
 					gradeListArray: [], //获取到的总数据
 					selectArray: [] //选择的数据
 				},
 				methods: {
-					addNotice: function() {
-
+					clickAll: function() { //全选
+						//点击全选按钮
+						clickSelectAll(gradeListData.selectFlag);
+					},
+					clickGrade: function(gradeModel) {
+						//点击年级
+						clickGradeLi(gradeModel);
+					},
+					clickClass: function(gradeModel, classModel) {
+						//点击班级
+						clickClassLi(gradeModel, classModel);
 					}
 				}
 			});
+
+			//点击全选按钮,flag--0取消全选，1全选
+			var clickSelectAll = function(flag) {
+				for(var i = 0; i < gradeListData.gradeListArray.length; i++) {
+					var gradeModel = gradeListData.gradeListArray[i];
+					gradeModel.flag = flag;
+					for(var a = 0; a < gradeModel.classArray.length; a++) {
+						var classModel = gradeModel.classArray[a];
+						classModel.flag = flag;
+					}
+				}
+			}
+
+			//点击年级
+			var clickGradeLi = function(gradeModel) {
+				for(var a = 0; a < gradeModel.classArray.length; a++) {
+					var classModel = gradeModel.classArray[a];
+					classModel.flag = gradeModel.flag;
+				}
+				//判断是否全选、取消全选
+				selectAllOrNo();
+			}
+
+			//点击班级
+			var clickClassLi = function(gradeModel, classModel) {
+				var tempFlag = 0;
+				for(var a = 0; a < gradeModel.classArray.length; a++) {
+					var classModel1 = gradeModel.classArray[a];
+					if(classModel1.flag == 1) {
+						tempFlag++;
+					}
+				}
+				if(tempFlag == gradeModel.classArray.length) {
+					gradeModel.flag = 1;
+				} else {
+					gradeModel.flag = 0;
+				}
+				//判断是否全选、取消全选
+				selectAllOrNo();
+			}
+
+			//判断是否全选、取消全选
+			var selectAllOrNo = function() {
+				var tempFlag = 0;
+				for(var i = 0; i < gradeListData.gradeListArray.length; i++) {
+					var gradeModel = gradeListData.gradeListArray[i];
+					if(gradeModel.flag == 1) {
+						tempFlag++;
+					}
+				}
+				if(tempFlag == gradeListData.gradeListArray.length) {
+					gradeListData.selectFlag = 1
+				} else {
+					gradeListData.selectFlag = 0;
+				}
+			}
+
 			//head
 			var tempVue = new Vue({
 				el: "#tempVue",
@@ -142,7 +193,48 @@
 				},
 				methods: {
 					addNotice: function() {
-
+						var tempGrade = ''; //显示用的年级
+						var tempClass = ''; //显示用的班级
+						var tempClassIDs = ''; //选择的班级id
+						//循环所有数据
+						for(var i = 0; i < gradeListData.gradeListArray.length; i++) {
+							var gradeModel = gradeListData.gradeListArray[i];
+							var gradeFlag = 0; //判断当前年级，是否有选择
+							if(gradeModel.flag == 1) {
+								tempClass = tempClass + ';' + gradeModel.grdname + '全部班级';
+							}
+							for(var a = 0; a < gradeModel.classArray.length; a++) {
+								var classModel = gradeModel.classArray[a];
+								if(classModel.flag == 1) {
+									gradeFlag++;
+									tempClassIDs = tempClassIDs + ',' + classModel.clsid;
+								}
+								if(gradeModel.flag == 0 && classModel.flag == 1) {
+									tempClass = tempClass + ';' + classModel.clsname;
+								}
+							}
+							if(gradeFlag > 0) {
+								tempGrade = tempGrade + ';' + gradeModel.grdname;
+							}
+						}
+						if (tempGrade.length>0) {
+							tempGrade=tempGrade.substr(1);
+							tempClass=tempClass.substr(1);
+							tempClassIDs=tempClassIDs.substr(1);
+							if (gradeListData.selectFlag==1) {
+								tempGrade = '全部年级';
+							}
+						}else{
+							mui.toast('请选择年级、班级');
+							return;
+						}
+						
+						mui.fire(plus.webview.currentWebview().opener(), 'selectGradeClass', {
+							gradeShow:tempGrade,
+							classShow:tempClass,
+							classIDs: tempClassIDs
+						});
+						mui.back();
 					}
 				}
 			});
