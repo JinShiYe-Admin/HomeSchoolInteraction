@@ -25,6 +25,7 @@
 				height: 20rem;
 				border-bottom: 1px solid lightgray;
 				margin-bottom: 0px;
+				font-size: 14px;
 			}
 			
 			.mui-popover {
@@ -40,10 +41,17 @@
 				background-color: transparent;
 			}
 			.aCss{
+				font-size: 15px;
+				color: #999999;
 				width: 70px;
 			}
 			.pCss{
+				font-size: 14px;
+				color: #666666;
 				margin-left: 50px;margin-top: -32px;margin-right: 10px;
+			}
+			.mui-table-view-cell{
+				min-height: 44px;
 			}
 		</style>
 	</head>
@@ -61,13 +69,13 @@
 			</div>
 			<div class="" id="addNoticeContent">
 				<div class="mui-input-row mui-checkbox mui-left" style="float: right;margin-top: -50px;">
-				<label>发送短信</label>
+				<label style="font-size: 14px;color: #333333;">发送短信</label>
 				<input v-model="msgFlag" name="checkbox1" type="checkbox">
 			</div>
 			<div class="" style="margin-top: 10px;">
 				<ul class="mui-table-view">
 					<li class="mui-table-view-cell">
-						<a>
+						<a class="aCss" style="width: 100px;">
 							接收人
 						</a>
 					</li>
@@ -227,6 +235,7 @@
 			var addNoticeContent = new Vue({
 				el: "#addNoticeContent",
 				data: {
+					pageFlag:0,//页面是否加载完成
 					flag: 0, //0不是班主任，1是
 					gradeArray: [], //班主任身份时，执教年级列表
 					noticeArray: [], //通知列表数组
@@ -382,18 +391,16 @@
 				//完成
 				document.getElementById('finish').addEventListener('tap', function() {
 					events.hideKeyBoard(hideOption);
-					if(notes.value.replace(/(^\s*)|(\s*$)/g, "") == "" && multiMedia.data.PictureArray.length == 0 && multiMedia.data.VideoArray.length == 0 && multiMedia.data.AudioArray.length == 0) { //为空不允许发送
-						mui.toast('通知不能为空');
+					if(notes.value.replace(/(^\s*)|(\s*$)/g, "") == "") { //为空不允许发送
+						mui.toast('通知内容不能为空');
 					} else if(notes.value.length > 2000) {
 						mui.toast('内容最多2000字');
 					} else {
 						var wd = events.showWaiting();
 						document.getElementById("finish").disabled = true;
 						if(multiMedia.data.PictureArray.length == 0 && multiMedia.data.VideoArray.length == 0 && multiMedia.data.AudioArray.length == 0) { //没有传附件
-							console.log('11111111111');
 							addNote(wd, '3', '', '', 0);
 						} else {
-							console.log('2222222222');
 							uploadFile(wd); //上传文件
 						}
 					}
@@ -442,53 +449,11 @@
 					if(data.RspCode == 0) {
 						notes.value = '';
 						mui.toast('成功');
+						mui.back();
 					} else {
 						mui.toast(data.RspTxt);
 					}
 				});
-
-				//				encLen = Math.ceil(encLen) || 0;
-				//				//38.（用户空间）新增某用户空间信息 （云笔记）
-				//				//所需参数
-				//				var comData = {
-				//					userId: store.get(window.storageKeyName.PERSONALINFO).utid, //用户ID
-				//					msgContent: notes.value, //记事内容
-				//					encType: encType, //附件类型，1图片2视频3仅文字4音频
-				//					encAddr: encAddr, //附件地址
-				//					encImg: encImg, //附件缩略图地址0
-				//					encIntro: '', //附件简介
-				//					noteType: '1', //信息类型,1云笔记2个人空间
-				//					userIds: '[]', //推送用户ID
-				//					pubScopes: '[1]', //1 家校圈 必选,2 展现 可选例如[1,2]
-				//					pubArea: '', //具体到市级代码
-				//					encLen: encLen, //音视频时长
-				//					msgTitle: '' //记事标题
-				//				};
-				//				postDataPro_addUserSpace(comData, wd, function(data) {
-				//					//console.log('38postDataPro_addUserSpace（用户空间）新增某用户空间信息 （云笔记）.90909090success:RspCode:' + data.RspCode + ',RspData:' + JSON.stringify(data.RspData) + ',RspTxt:' + data.RspTxt);
-				//					if(data.RspCode == 0) {
-				//						var time = 0;
-				//						if(encType != '3') {
-				//							time = 2000;
-				//						}
-				//						setTimeout(function() {
-				//							mui.toast('发布成功');
-				//							pathList = [];
-				//							events.fireToPageNone('app_notes_main.html', 'refreshView');
-				//							wd.close();
-				//							mui.back();
-				//						}, 2000);
-				//
-				//					} else {
-				//						document.getElementById("finish").disabled = false;
-				//						if(pathList.length != 0) {
-				//							BatchDelete(pathList, wd);
-				//						} else {
-				//							wd.close();
-				//						}
-				//						mui.toast(data.RspTxt);
-				//					}
-				//				});
 			}
 
 			/**

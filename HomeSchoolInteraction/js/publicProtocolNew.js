@@ -217,7 +217,7 @@ var jQAjaxPost = function(url, data, callback) {
 						tempInfo00.utoken = data1.RspData;
 						store.set(window.storageKeyName.PERSONALINFO,tempInfo00);
 						var urlArr = url.split('/');
-						console.log('传递的参数' + urlArr[urlArr.length - 1] + ':', JSON.stringify(tempData));
+//						console.log('传递的参数' + urlArr[urlArr.length - 1] + ':', JSON.stringify(tempData));
 						data.utoken = data1.RspData;
 						delete data.sign;
 						postDataEncry(urlArr[urlArr.length - 1], {}, data, 0, function(data2) {
@@ -285,4 +285,25 @@ var getNoticeByIdPro = function(data0, callback) {
 	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
 	data0 = extendParameter(data0);
 	xhrPost(tempAttendUrl + 'getNoticeById', data0, callback);
+}
+
+//9.新增定制城市（先进行删除，再新增，不进行是否有重复定制的判断）
+var addPersonCityPro = function(data0, callback) {
+	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
+	data0 = extendParameter(data0);
+	xhrPost(tempAttendUrl + 'addPersonCity', data0, callback);
+}
+
+//10.获取某用户的定制城市
+var getPersonCitysByUserPro = function(data0, callback) {
+	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
+	data0 = extendParameter(data0);
+	xhrPost(tempAttendUrl + 'getPersonCitysByUser', data0, callback);
+}
+
+//12.获取某人未读学校通知个数
+var getNoReadNoticeCntByManPro = function(data0, callback) {
+	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
+	data0 = extendParameter(data0);
+	xhrPost(tempAttendUrl + 'getNoReadNoticeCntByMan', data0, callback);
 }

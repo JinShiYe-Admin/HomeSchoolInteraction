@@ -12,6 +12,21 @@
 				width: 56px;
 				height: 56px;
 			}
+			.divNameCss{
+				font-size: 16px;
+				color: #333333;
+			}
+			.mui-badge {
+				font-size: 12px;
+				line-height: 1;
+				display: inline-block;
+				padding: 3px 6px;
+				color: white;
+				border-radius: 100px;
+				background-color: red;
+				margin-top: -40px;
+				margin-right: -10px;
+			}
 		</style>
 	</head>
 
@@ -65,57 +80,57 @@
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(0)">
 						<img class="circular-square" src="../../img/homeSchool/schoolPage0.png"/>
-						<span class="mui-icon"></span>
-						<div class="mui-media-body">学校通知</div>
+						<span v-if="NoReadCnt>0" class="mui-badge mui-btn-red">{{NoReadCnt}}</span>
+						<div class="mui-media-body divNameCss" style="">学校通知</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(1)">
 						<img class="circular-square" src="../../img/homeSchool/schoolPage1.png"/>
 						<span class="mui-icon"></span>
-						<div class="mui-media-body">学生表现</div>
+						<div class="mui-media-body divNameCss">学生表现</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(2)">
 						<img class="circular-square" src="../../img/homeSchool/schoolPage2.png"/>
 						<span class="mui-icon"></span>
-						<div class="mui-media-body">班级信息</div>
+						<div class="mui-media-body divNameCss">班级信息</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(3)">
 						<img class="circular-square" src="../../img/homeSchool/schoolPage3.png"/>
 						<span class="mui-icon"></span>
-						<div class="mui-media-body">荣誉展示</div>
+						<div class="mui-media-body divNameCss">荣誉展示</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(4)">
 						<img class="circular-square" src="../../img/homeSchool/schoolPage4.png"/>
 						<span class="mui-icon"></span>
-						<div class="mui-media-body">活动展示</div>
+						<div class="mui-media-body divNameCss">活动展示</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(5)">
 						<img class="circular-square" src="../../img/homeSchool/schoolPage5.png"/>
 						<span class="mui-icon"></span>
-						<div class="mui-media-body">作业管理</div>
+						<div class="mui-media-body divNameCss">作业管理</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(6)">
 						<img class="circular-square" src="../../img/homeSchool/schoolPage6.png"/>
 						<span class="mui-icon"></span>
-						<div class="mui-media-body">考试成绩</div>
+						<div class="mui-media-body divNameCss">考试成绩</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(7)">
 						<img class="circular-square" src="../../img/homeSchool/schoolPage7.png"/>
 						<span class="mui-icon"></span>
-						<div class="mui-media-body">留言</div>
+						<div class="mui-media-body divNameCss">留言</div>
 					</a>
 				</li>
 			</ul>
@@ -136,10 +151,48 @@
 		<script type="text/javascript" src="../../js/utils/vconsole.min.js"></script>
 		<script type="text/javascript" src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/utils.js" type="text/javascript" charset="utf-8"></script>
+		<!--加密-->
+		<script src="../../js/libs/RSA/Barrett.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/libs/RSA/BigInt.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/libs/RSA/RSA.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/utils/RSAEncrypt.js" type="text/javascript" charset="utf-8"></script>
+		<!---->
+		<script src='../../js/libs/crypto-js/require.js'></script>
+		<script src='../../js/utils/signHmacSHA1.js'></script>
+		<script src='../../js/utils/sortSign.js'></script>
+		<script src="../../js/storageKeyName.js"></script>
+		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/publicProtocolNew.js"></script>
+		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
 		<script type="text/javascript">
 			mui.init({
-				statusBarBackground: '#63BBFF'
+				statusBarBackground: '#63BBFF',
+				swipeBack: false,
+				beforeback: back
 			});
+			function back() {
+			if (showMenu) {
+				//菜单处于显示状态，返回键应该先关闭菜单,阻止主窗口执行mui.back逻辑；
+				closeMenu();
+				return false;
+			} else {
+				//菜单处于隐藏状态，执行返回时，要先close菜单页面，然后继续执行mui.back逻辑关闭主窗口；
+				menu.close('none');
+				return true;
+			}
+		}
+			//获取个人信息
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('personal:' + JSON.stringify(personal));
+			var main,menu, mask = mui.createMask(_closeMenu);
+			var showMenu = false,mode = 'all-move';
+			//首先改变移动标志
+						slideTogether = true;
+						//变换menu界面初始化位置，整体移动时，Menu界面left需要在-70%的地方；
+//						menu.setStyle({
+//							left: '-70%'
+//						});
 			mui.plusReady(function() {
 				//安卓的连续点击两次退出程序
 				var backButtonPress = 0;
@@ -156,13 +209,202 @@
 					}, 1000);
 					return false;
 				};
+				//12.获取某人未读学校通知个数
+				getNoReadNoticeCntByMan();
+				
+				main = plus.webview.currentWebview();
+			//setTimeout的目的是等待窗体动画结束后，再执行create webview操作，避免资源竞争，导致窗口动画不流畅；
+			setTimeout(function () {
+				//侧滑菜单默认隐藏，这样可以节省内存；
+				menu = mui.preload({
+					id: 'mine.html',
+					url: 'mine.html',
+					styles: {
+						left: 0,
+						width: '70%',
+						zindex: 9997
+					}
+				});
+			},300);
 			});
+			window.addEventListener('menu:swiperight', function(data) {
+				closeMenu();
+			});
+
+			/**
+		 * 显示菜单菜单
+		 */
+		function openMenu() {
+			if (!showMenu) {
+				//侧滑菜单处于隐藏状态，则立即显示出来；
+				//显示完毕后，根据不同动画效果移动窗体；
+				menu.show('none', 0, function() {
+					switch (mode){
+						case 'main-move':
+							//主窗体开始侧滑；
+							main.setStyle({
+								left: '70%',
+								transition: {
+									duration: 150
+								}
+							});
+							break;
+						case 'menu-move':
+							menu.setStyle({
+								left: '0%',
+								transition: {
+									duration: 150
+								}
+							});
+							break;
+						case 'all-move':
+							main.setStyle({
+								left: '70%',
+								transition: {
+									duration: 150
+								}
+							});
+							menu.setStyle({
+								left: '0%',
+								transition: {
+									duration: 150
+								}
+							});
+							break;
+					}
+				});
+				//显示遮罩
+				mask.show();
+				showMenu = true;
+			}
+		}
+		/**
+		 * 关闭侧滑菜单
+		 */
+		function closeMenu () {
+			_closeMenu();
+			//关闭遮罩
+			mask.close();
+		}
+		
+		/**
+		 * 关闭侧滑菜单（业务部分）
+		 */
+		function _closeMenu() {
+			if (showMenu) {
+				//关闭遮罩；
+				switch (mode){
+					case 'main-move':
+						//主窗体开始侧滑；
+						main.setStyle({
+							left: '0',
+							transition: {
+								duration: 150
+							}
+						});
+						break;
+					case 'menu-move':
+						//主窗体开始侧滑；
+						menu.setStyle({
+							left: '-70%',
+							transition: {
+								duration: 150
+							}
+						});
+						break;
+					case 'all-move':
+						//主窗体开始侧滑；
+						main.setStyle({
+							left: '0',
+							transition: {
+								duration: 150
+							}
+						});
+						//menu页面同时移动
+						menu.setStyle({
+							left: '-70%',
+							transition: {
+								duration: 150
+							}
+						});
+						
+						break;
+				}
+				
+				//等窗体动画结束后，隐藏菜单webview，节省资源；
+				setTimeout(function() {
+					menu.hide();
+				}, 200);
+				//改变标志位
+				showMenu = false;
+			}
+		}
+			 //重写mui.menu方法，Android版本menu按键按下可自动打开、关闭侧滑菜单；
+			mui.menu = function() {
+				if (showMenu) {
+					closeMenu();
+				} else {
+					openMenu();
+				}
+			}
+			//9.新增定制城市
+			var addPersonCity = function(){
+				var tempData = {
+					userId: personal.utid, //登录人ID
+					cityCodes: noticelistData.pageIndex, //定制城市Code,多个的情况用英文逗号隔开
+					cityNames: '10' //定制城市名称,多个的情况用英文逗号隔开
+				}
+				events.showWaiting();
+				addPersonCityPro(tempData, function function_name(data) {
+					events.closeWaiting();
+					console.log('data:' + JSON.stringify(data));
+					if(data.RspCode == 0) {
+						
+					} else {
+						mui.toast(data.RspTxt);
+					}
+				});
+			}
+			//10.获取某用户的定制城市
+			var getPersonCitysByUser = function(){
+				var tempData = {
+					userId: personal.utid //登录人ID
+				}
+				events.showWaiting();
+				getPersonCitysByUserPro(tempData, function function_name(data) {
+					events.closeWaiting();
+					console.log('data:' + JSON.stringify(data));
+					if(data.RspCode == 0) {
+						
+					} else {
+						mui.toast(data.RspTxt);
+					}
+				});
+			}
+			//12.获取某人未读学校通知个数
+			var getNoReadNoticeCntByMan = function(){
+				var tempData = {
+					manId: personal.utid, //登录人ID
+					schoolId: personal.schid, //学校ID,统一部署的时候，学校ID传000000
+				}
+				events.showWaiting();
+				getNoReadNoticeCntByManPro(tempData, function function_name(data) {
+					events.closeWaiting();
+					console.log('data:' + JSON.stringify(data));
+					if(data.RspCode == 0) {
+						contentData.NoReadCnt = data.RspData.NoReadCnt;
+					} else {
+						mui.toast(data.RspTxt);
+					}
+				});
+			}
 			var tempHead = new Vue({
 				el: "#tempHead",
 				data: {},
 				methods: {
 					clickLeftImg:function(){
 						console.log('indexweeeeeeeeee:');
+						openMenu();
 					}
 				}
 			});
@@ -170,6 +412,7 @@
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
+					NoReadCnt:0,//未读通知数
 					//圆形单个功能
 					singleFunctionArray: [{
 						picName: '学校通知',
@@ -219,7 +462,7 @@
 						if (index == 0) {//学校通知
 							utils.mOpenWithData("noticeList.html", {index:1});
 						} else{
-							
+							mui.toast('此功能暂未开放');
 						}
 					}
 				}

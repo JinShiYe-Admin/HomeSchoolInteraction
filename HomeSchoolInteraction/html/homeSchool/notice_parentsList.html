@@ -34,6 +34,15 @@
 			.flex-container .flex-item:last-child {
 				background-color: white;
 			}
+			.className{
+				font-size: 16px;
+				color: #333333;
+			}
+			.stuName{
+				font-size: 15px;
+				color: #666666;
+				width: 150px;
+			}
 		</style>
 	</head>
 
@@ -44,22 +53,22 @@
 			<a @click="addNotice()" class="mui-pull-right" style="color: white;font-size: 15px;margin-top: 10px;">确定</a>
 		</header>
 		<div class="mui-content" style="background: white;" id="classListData" v-if="flag>0">
-			<div class="mui-input-row mui-checkbox mui-left">
-				<label>全选</label>
+			<div class="mui-input-row mui-checkbox mui-left" style="margin-top: 10px;margin-bottom: 5px;">
+				<label class="className">全选</label>
 				<input v-model="selectFlag" name="checkbox1" type="checkbox" @click="clickAll">
 			</div>
 
 			<ul class="mui-table-view" v-for="(classModel,index) in classListArray">
 				<li class="mui-table-view-cell">
-					<div style="width: 50%;height: 40px;" class="flex-item">
+					<div style="width: 50%;height: 40px;margin-top: 5px;" class="flex-item">
 						<div class="mui-input-row mui-checkbox mui-left" style="margin-top: -10px;height: 30px;">
-							<label>{{classModel.clsname}}</label>
+							<label class="className">{{classModel.clsname}}</label>
 							<input v-model="classModel.flag" name="checkbox1" type="checkbox" @click="clickClass(classModel)">
 						</div>
 					</div>
 					<div class="flex-container" style="padding-left: 20px;">
 						<div class="mui-input-row mui-checkbox mui-left" v-for="(stuModel,index) in classModel.stuArray">
-							<label style="width: 150px;">{{stuModel.stuname}}</label>
+							<label class="stuName" style="width: 150px;">{{stuModel.stuname}}</label>
 							<input v-model="stuModel.flag" name="checkbox1" type="checkbox" @click="clickStu(classModel,stuModel)">
 						</div>
 					</div>
