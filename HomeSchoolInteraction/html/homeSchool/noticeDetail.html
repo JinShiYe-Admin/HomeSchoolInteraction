@@ -11,6 +11,7 @@
 		<link rel="stylesheet" href="../../css/utils/MultiMedia.css" />
 		<link rel="stylesheet" href="../../css/utils/preview.css" />
 		<link rel="stylesheet" href="../../css/utils/audiopopover.css" />
+		<link rel="stylesheet" href="../../css/utils/notice-img.css" />
 		<style type="text/css">
 			.img-wrap {
 				width: 40%;
@@ -140,6 +141,11 @@
 			.mui-grid-view {
 				border: 0px;
 			}
+			
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+			    color: #00CFBD;
+			    border-bottom: 2px solid #00CFBD;
+			}
 		</style>
 	</head>
 
@@ -154,9 +160,9 @@
 				<button v-on:click.stop="replyContent()" type="button" class="" style="width: 20%;margin-top: 2px;border: 0px;font-size: 18px;color: #00cfbd;">回复</button>
 			</div>
 		</nav>
+		
 		<div class="mui-content" id="noticeDetailData" v-if="flag>0" style="background: white;">
 			<p style="color: black;padding: 10px;font-size: 14px;color: #333333;">{{noticesDetail.NoticeContent}}</p>
-
 			<!--<p class="" style="height: 10px;background-color: #f2f2f2;"></p>-->
 			<div id="" v-show="noticesDetail.NoticeEncAddr.length>0">
 				<div class="" v-if="noticesDetail.NoticeEncAddr.length==1&&noticesDetail.encFlag==2">
@@ -169,25 +175,25 @@
 				</div>
 				<div class="" v-else-if="noticesDetail.NoticeEncAddr.length==1&&noticesDetail.encFlag==1">
 					<ul class="mui-table-view mui-grid-view">
-						<li class="mui-table-view-cell mui-media mui-col-xs-12" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
-							<a href="#" style="">
-								<img class="mui-media-object" data-preview-src="" :src=picModel style=""></a>
+						<li class="mui-table-view-cell mui-media" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
+							<a href="#" class="img-box">
+								<img class="notice-one-img" data-preview-src="" :src=picModel ></a>
 						</li>
 					</ul>
 				</div>
-				<div class="" v-else-if="noticesDetail.NoticeEncAddr.length==2||noticesDetail.NoticeEncAddr.length==4">
+				<div class="" v-else-if="noticesDetail.NoticeEncAddr.length==2">
 					<ul class="mui-table-view mui-grid-view">
-						<li class="mui-table-view-cell mui-media mui-col-xs-6" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
-							<a href="#">
-								<img class="mui-media-object" data-preview-src="" :src=picModel style="width: 45%;height: auto;"></a>
+						<li class="mui-table-view-cell mui-media" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
+							<a href="#" class="img-box">
+								<img class="notice-two-img" data-preview-src="" :src=picModel ></a>
 						</li>
 					</ul>
 				</div>
-				<div class="" v-else-if="noticesDetail.NoticeEncAddr.length>0">
+				<div class="" v-else-if="noticesDetail.NoticeEncAddr.length>=3">
 					<ul class="mui-table-view mui-grid-view">
-						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
-							<a href="#">
-								<img class="mui-media-object" data-preview-src="" :src=picModel></a>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
+							<a href="#" class="img-box">
+								<img class="notice-more-img" data-preview-src="" :src=picModel></a>
 						</li>
 					</ul>
 				</div>
@@ -302,7 +308,6 @@
 				mui.plusReady(function() {
 					//初始化图片查看控件
 					previewImage = mui.previewImage();
-
 					//初始化视频播放器
 					ShowVideoUtil.initVideo(document.getElementById("video"));
 					ShowAudioUtil.initAudioPopover({

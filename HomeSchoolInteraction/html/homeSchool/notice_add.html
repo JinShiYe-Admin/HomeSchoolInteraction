@@ -71,13 +71,13 @@
 		<div class="mui-content mui-fullscreen" style="background: white;">
 			<textarea id="notes" maxlength="2000" placeholder="请输入发布内容（最多2000字）"></textarea>
 			<div id="MultiMedia">
-			</div>
-			<div class="" id="addNoticeContent">
-				<div class="mui-input-row mui-checkbox mui-left" style="float: right;margin-top: -50px;">
+				<div class="mui-input-row mui-checkbox mui-left" id="senMSN" style="float: right;margin-top: 3px;display: none;">
 					<label style="font-size: 14px;color: #333333;">发送短信</label>
 					<input v-model="msgFlag" name="checkbox1" type="checkbox">
 				</div>
-				<div class="" style="margin-top: 10px;">
+			</div>
+			<div class="" id="addNoticeContent" >  
+				<div class="" id="bootom-card" style="margin-top: -15px;">  
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
 							<a class="aCss" style="width: 100px;">
@@ -369,7 +369,10 @@
 					TotalAudio: 1, //音频的个数
 					TotalVideo: 1, //视频的个数
 				});
-
+			//显示发送短信按钮
+			document.getElementById('senMSN').style.display ='inherit';
+			//设置底部卡片上边距-15px→10px;
+			document.getElementById("bootom-card").style.marginTop="10px"; 
 				/**
 				 * 播放视频
 				 * @param {Object} data
