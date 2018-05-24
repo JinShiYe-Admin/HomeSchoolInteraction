@@ -231,7 +231,8 @@
 			//			console.log('personal:' + JSON.parse(personal));
 			if(personal) {
 				if(personal.utid == 'undefined' || personal.utid == null || personal.userName0 == null) {
-
+					//login登录
+					loginPro('00000000000', '123');
 				} else {
 					document.getElementById("account").value = personal.userName0;
 					document.getElementById("password").value = personal.password0;
@@ -274,6 +275,8 @@
 					//						}
 					//					});
 				}
+			}else{
+				loginPro('00000000000', '000000');
 			}
 
 		}
