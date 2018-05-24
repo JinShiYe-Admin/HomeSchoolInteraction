@@ -106,7 +106,7 @@
 			if(checkInput(tempName)) {
 				if(checkInput(tempPW)) {
 					//login登录
-					loginPro(tempName,tempPW);
+					loginPro(tempName, tempPW);
 				} else {
 
 				}
@@ -127,86 +127,97 @@
 			outLine("appid: " + info.appid);
 			outLine("appkey: " + info.appkey);
 		}
-		
+
 		//login登录
-		var loginPro = function(tempName,tempPW){
-					//握手
-					var enData0 = {};
+		var loginPro = function(tempName, tempPW) {
+			//握手
+			var enData0 = {};
+			//不需要加密的数据
+			var comData0 = {
+				uuid: tempModel.uuid, //用户设备号
+				shaketype: 'login', //注册(reg),登录(login),修改密码(repw)
+				appid: tempModel.appid //系统所分配的应用ID
+			};
+			events.showWaiting();
+			//发送网络请求，data为网络返回值
+			postDataEncry('ShakeHand', enData0, comData0, 0, function(data) {
+				console.log('2121212');
+				if(data.RspCode == 0) {
+					//							window.myStorage.setItem(window.storageKeyName.SHAKEHAND, data.RspData);
+					store.set(window.storageKeyName.SHAKEHAND, data.RspData);
+					var enData1 = {
+						uid: tempName, //用户账号
+						pw: tempPW //用户密码
+					};
 					//不需要加密的数据
-					var comData0 = {
+					var comData1 = {
 						uuid: tempModel.uuid, //用户设备号
 						shaketype: 'login', //注册(reg),登录(login),修改密码(repw)
-						appid: tempModel.appid //系统所分配的应用ID
+						appid: tempModel.appid, //系统所分配的应用ID
+						schid: storageKeyName.SCHOOLID, //学校ID
+						utp: storageKeyName.USERTYPE //用户类型，0老师,1家长,2学生
 					};
-					events.showWaiting();
-					//发送网络请求，data为网络返回值
-					postDataEncry('ShakeHand', enData0, comData0, 0, function(data) {
-						console.log('2121212');
-						if(data.RspCode == 0) {
-							//							window.myStorage.setItem(window.storageKeyName.SHAKEHAND, data.RspData);
-							store.set(window.storageKeyName.SHAKEHAND, data.RspData);
-							var enData1 = {
-								uid: tempName, //用户账号
-								pw: tempPW //用户密码
-							};
-							//不需要加密的数据
-							var comData1 = {
-								uuid: tempModel.uuid, //用户设备号
-								shaketype: 'login', //注册(reg),登录(login),修改密码(repw)
-								appid: tempModel.appid, //系统所分配的应用ID
-								schid: storageKeyName.SCHOOLID, //学校ID
-								utp: storageKeyName.USERTYPE //用户类型，0老师,1家长,2学生
-							};
-							//登录
-							postDataEncry('Login', enData1, comData1, 0, function(data1) {
-								events.closeWaiting();
-								if(data1.RspCode == 0) {
-									if(data1.RspData.dpts == null) {
-										data1.RspData.dpts = [];
-									}
-									if(data1.RspData.grds == null) {
-										data1.RspData.grds = [];
-									}
-									if(data1.RspData.clss == null) {
-										data1.RspData.clss = [];
-									}
-									if(data1.RspData.subs == null) {
-										data1.RspData.subs = [];
-									}
-									//									if (data1.RspData.clss.length>0) {
-									//										data1.RspData.grds = data1.RspData.grds.concat(data1.RspData.clss);
-									//									}
-									if(data1.RspData.urolestr == null) {
-										data1.RspData.urolestr = '00000000000000000000000000000';
-									}
-									data1.RspData.userName0 = tempName;
-									data1.RspData.password0 = tempPW;
-									store.set(window.storageKeyName.PERSONALINFO, data1.RspData);
-									
-									var info = plus.push.getClientInfo();
-									var tempBindData = {
-										appId: info.appid,
-										alias: data1.RspData.utid,
-										cid: info.clientid
-									}
-									bindPro(tempBindData, function function_name(data) {
-										//									events.closeWaiting();
-										if(data.RspCode == 0) {
-											//										utils.mOpenWithData("../../index.html", {});
-										} else {
-//											mui.toast(data.RspTxt);
-										}
-									});
-									utils.mOpenWithData("../../index.html", {});
+					//登录
+					postDataEncry('Login', enData1, comData1, 0, function(data1) {
+						events.closeWaiting();
+						if(data1.RspCode == 0) {
+							if(data1.RspData.dpts == null) {
+								data1.RspData.dpts = [];
+							}
+							if(data1.RspData.grds == null) {
+								data1.RspData.grds = [];
+							}
+							if(data1.RspData.clss == null) {
+								data1.RspData.clss = [];
+							}
+							if(data1.RspData.subs == null) {
+								data1.RspData.subs = [];
+							}
+							//									if (data1.RspData.clss.length>0) {
+							//										data1.RspData.grds = data1.RspData.grds.concat(data1.RspData.clss);
+							//									}
+							if(data1.RspData.urolestr == null) {
+								data1.RspData.urolestr = '00000000000000000000000000000';
+							}
+							data1.RspData.userName0 = tempName;
+							data1.RspData.password0 = tempPW;
+							var model_area = {
+								procode: '00', //省份code，自己添加的参数
+								proname: '全国', //省份名称，自己添加的参数
+								acode: '000000', //节点代码,通用6位,前两位为省份编码,中间两位为城市编码,后两位为区县编码--城市代码
+								aname: '全国', //节点名称--城市名称
+								atype: '' //节点类型,0省1城市2区县
+							}
+							data1.RspData.uarea = model_area; //用户区域,省代码 市代码|省名称 市名称
+							store.set(window.storageKeyName.PERSONALINFO, data1.RspData);
+							var personal = store.get(window.storageKeyName.PERSONALINFO);
+							console.log('personal000:' + JSON.stringify(personal));
+
+							var info = plus.push.getClientInfo();
+							var tempBindData = {
+								appId: info.appid,
+								alias: data1.RspData.utid,
+								cid: info.clientid
+							}
+							bindPro(tempBindData, function function_name(data) {
+								//									events.closeWaiting();
+								if(data.RspCode == 0) {
+									//										utils.mOpenWithData("../../index.html", {});
 								} else {
-									mui.toast(data1.RspTxt);
+									//											mui.toast(data.RspTxt);
 								}
 							});
+
+							utils.mOpenWithData("../../index.html", personal);
 						} else {
-							mui.toast(data.RspTxt);
+							mui.toast(data1.RspTxt);
 						}
 					});
-				
+				} else {
+					mui.toast(data.RspTxt);
+				}
+			});
+
 		}
 
 		//从ios原生得到信息
@@ -219,49 +230,49 @@
 
 			//			console.log('personal:' + JSON.parse(personal));
 			if(personal) {
-				if(personal.utid == 'undefined' || personal.utid == null|| personal.userName0 == null) {
+				if(personal.utid == 'undefined' || personal.utid == null || personal.userName0 == null) {
 
 				} else {
 					document.getElementById("account").value = personal.userName0;
 					document.getElementById("password").value = personal.password0;
 					//login登录
-					loginPro(personal.userName0,personal.password0);
+					loginPro(personal.userName0, personal.password0);
 					//需要参数
-//					var comData = {
-//						uuid: tempModel.uuid,
-//						utid: personal.utid,
-//						utoken: personal.utoken,
-//						appid: tempModel.appid,
-//						schid: personal.schid,
-//						utname: personal.utname
-//					};
-//					events.showWaiting();
-//					//令牌续订
-//					postDataEncry('TokenReset', {}, comData, 0, function(data) {
-//						events.closeWaiting();
-//						if(data.RspCode == 0) {
-//							var tempInfo00 = store.get(window.storageKeyName.PERSONALINFO);
-//							tempInfo00.utoken = data.RspData;
-//							store.set(window.storageKeyName.PERSONALINFO, tempInfo00);
-//							var info = plus.push.getClientInfo();
-//							var tempBindData = {
-//								appId: info.appid,
-//								alias: tempInfo00.utid,
-//								cid: info.clientid
-//							}
-//							bindPro(tempBindData, function function_name(data) {
-//								//									events.closeWaiting();
-//								if(data.RspCode == 0) {
-//									//										utils.mOpenWithData("../../index.html", {});
-//								} else {
-//									mui.toast(data.RspTxt);
-//								}
-//							});
-//							//						utils.mOpenWithData("../../index.html", {});
-//						} else {
-//							mui.toast(data.RspTxt);
-//						}
-//					});
+					//					var comData = {
+					//						uuid: tempModel.uuid,
+					//						utid: personal.utid,
+					//						utoken: personal.utoken,
+					//						appid: tempModel.appid,
+					//						schid: personal.schid,
+					//						utname: personal.utname
+					//					};
+					//					events.showWaiting();
+					//					//令牌续订
+					//					postDataEncry('TokenReset', {}, comData, 0, function(data) {
+					//						events.closeWaiting();
+					//						if(data.RspCode == 0) {
+					//							var tempInfo00 = store.get(window.storageKeyName.PERSONALINFO);
+					//							tempInfo00.utoken = data.RspData;
+					//							store.set(window.storageKeyName.PERSONALINFO, tempInfo00);
+					//							var info = plus.push.getClientInfo();
+					//							var tempBindData = {
+					//								appId: info.appid,
+					//								alias: tempInfo00.utid,
+					//								cid: info.clientid
+					//							}
+					//							bindPro(tempBindData, function function_name(data) {
+					//								//									events.closeWaiting();
+					//								if(data.RspCode == 0) {
+					//									//										utils.mOpenWithData("../../index.html", {});
+					//								} else {
+					//									mui.toast(data.RspTxt);
+					//								}
+					//							});
+					//							//						utils.mOpenWithData("../../index.html", {});
+					//						} else {
+					//							mui.toast(data.RspTxt);
+					//						}
+					//					});
 				}
 			}
 

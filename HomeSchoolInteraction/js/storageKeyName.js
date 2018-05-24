@@ -20,8 +20,8 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACEGU = 'https://jsypay.jiaobaowang.net/useradminwebapi/api/data/';//顾工接口
 			mod.INTERFACEKONG = 'https://jbyj.jiaobaowang.net/SchoolCommunicationService/';//孔工接口
 			//---开发---start---
-			mod.MAINEDU = 'http://192.168.1.44:8511/'; //科教图片url
-			mod.MAINURL = 'http://192.168.1.44:8511/api/CloudApi/'; //主url
+			mod.MAINEDU = 'https://jbyc.jiaobaowang.net:8442/'; //科教图片url
+			mod.MAINURL = 'https://jbyc.jiaobaowang.net:8442/api/CloudApi/'; //主url
 			mod.MAINJIAOXIAOURL = 'http://192.168.1.113:8081/JiaoBaoCloudService/'; //家校圈url
 			mod.MAINHOMEWORKURL = 'http://192.168.1.44:8513/'; //作业主url
 			mod.MAINQIUZHI = 'http://192.168.1.113:8081/JiaoBaoCloudService/'; //求知主url

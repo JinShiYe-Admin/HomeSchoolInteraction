@@ -215,6 +215,8 @@
 				};
 				//12.获取某人未读学校通知个数
 				getNoReadNoticeCntByMan();
+				//10.获取某用户的定制城市
+//				getPersonCitysByUser();
 
 				main = plus.webview.currentWebview();
 				//setTimeout的目的是等待窗体动画结束后，再执行create webview操作，避免资源竞争，导致窗口动画不流畅；
@@ -361,7 +363,7 @@
 				events.showWaiting();
 				addPersonCityPro(tempData, function function_name(data) {
 					events.closeWaiting();
-					console.log('data:' + JSON.stringify(data));
+					console.log('9data:' + JSON.stringify(data));
 					if(data.RspCode == 0) {
 
 					} else {
@@ -377,7 +379,7 @@
 				events.showWaiting();
 				getPersonCitysByUserPro(tempData, function function_name(data) {
 					events.closeWaiting();
-					console.log('data:' + JSON.stringify(data));
+					console.log('10data:' + JSON.stringify(data));
 					if(data.RspCode == 0) {
 
 					} else {
@@ -394,7 +396,7 @@
 				events.showWaiting();
 				getNoReadNoticeCntByManPro(tempData, function function_name(data) {
 					events.closeWaiting();
-					console.log('data:' + JSON.stringify(data));
+					console.log('12data:' + JSON.stringify(data));
 					if(data.RspCode == 0) {
 						contentData.NoReadCnt = data.RspData.NoReadCnt;
 					} else {

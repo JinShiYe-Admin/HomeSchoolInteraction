@@ -232,6 +232,8 @@ var jQAjaxPost = function(url, data, callback) {
 		},
 		error: function(xhr, type, errorThrown) {
 			console.log('jQAP-Error777:', xhr, type);
+			events.closeWaiting();
+			mui.toast('网络连接失败,请重新尝试一下');
 			callback({
 				RspCode: 404,
 				RspData: null,
@@ -358,14 +360,14 @@ var getNoticeByIdPro = function(data0, callback) {
 
 //9.新增定制城市（先进行删除，再新增，不进行是否有重复定制的判断）
 var addPersonCityPro = function(data0, callback) {
-	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
+	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'scienceTeach/';
 	data0 = extendParameter(data0);
 	xhrPost(tempAttendUrl + 'addPersonCity', data0, callback);
 }
 
 //10.获取某用户的定制城市
 var getPersonCitysByUserPro = function(data0, callback) {
-	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
+	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'scienceTeach/';
 	data0 = extendParameter(data0);
 	xhrPost(tempAttendUrl + 'getPersonCitysByUser', data0, callback);
 }

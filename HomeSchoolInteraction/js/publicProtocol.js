@@ -83,26 +83,27 @@ var modifyTimeFormat = function(str) {
 
 //10.Token续订(之前有过相同登陆数据的才能续订成功)
 //修改本地存储中的值，返回值
-//window.myStorage.getItem(window.storageKeyName.PERSONALINFO).token = data.RspData;
+//store.get(window.storageKeyName.PERSONALINFO).token = data.RspData;
 var renewToken = function(tempFlag, url, encryData, commonData, flag, waitingDialog, callback) {
-	var personalUTID = window.myStorage.getItem(window.storageKeyName.PERSONALINFO);
+	var personalUTID = store.get(window.storageKeyName.PERSONALINFO);
+	var publicParameter = store.get(window.storageKeyName.PUBLICPARAMETER);
 	//需要加密的数据
 	var enData = {};
 	var comData = {
-		uuid: plus.device.uuid,
+		uuid: publicParameter.uuid,
 		utid: personalUTID.utid,
-		token: personalUTID.token,
-		appid: plus.runtime.appid
+		token: personalUTID.utoken,
+		appid: publicParameter.appid
 	};
 	// 等待的对话框
 	var wd = plus.nativeUI.showWaiting(storageKeyName.WAITING);
 	postDataPro_PostTokenRenew(comData, wd, function(data) {
 		wd.close();
 		if(data.RspCode == 0) {
-			personalUTID.token = data.RspData;
+			personalUTID.utoken = data.RspData;
 			window.myStorage.setItem(window.storageKeyName.PERSONALINFO, personalUTID);
 			if (tempFlag == 1) {
-				postDataEncry(url, encryData, commonData, flag, waitingDialog, callback);
+				postDataEncryMMM(url, encryData, commonData, flag, waitingDialog, callback);
 			}
 		} else {
 			mui.toast(data.RspTxt);
@@ -132,7 +133,7 @@ var postDataPro_PostReUinf = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostReUinf', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostReUinf', enData, commonData, 1, wd, callback);
 }
 
 //7.用户创建群
@@ -146,7 +147,7 @@ var postDataPro_PostCrGrp = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostCrGrp', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostCrGrp', enData, commonData, 1, wd, callback);
 }
 
 //8.用户修改群各项信息
@@ -161,12 +162,12 @@ var postDataPro_PostReGinfo = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostReGinfo', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostReGinfo', enData, commonData, 1, wd, callback);
 }
 
 //9.获取用户群
 //获取个人信息
-//	var personalUTID = window.myStorage.getItem(window.storageKeyName.PERSONALINFO).utid;
+//	var personalUTID = store.get(window.storageKeyName.PERSONALINFO).utid;
 //	//需要参数
 //	var comData = {
 //		vtp: 'cg', //要获取的项:cg(创建的群),ug(参与群),mg(协管的群),ag(所有的群),ig(群信息vvl对应群ID)
@@ -177,12 +178,12 @@ var postDataPro_PostGList = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostGList', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostGList', enData, commonData, 1, wd, callback);
 }
 
 //10.Token续订(之前有过相同登陆数据的才能续订成功)
 //获取个人信息
-//		var personalUTID = window.myStorage.getItem(window.storageKeyName.PERSONALINFO).utid;
+//		var personalUTID = store.get(window.storageKeyName.PERSONALINFO).utid;
 //		//需要参数
 //		var comData = {
 //			uuid: plus.device.uuid,
@@ -191,12 +192,12 @@ var postDataPro_PostGList = function(commonData, wd, callback) {
 //			appid: plus.runtime.appid
 //		};
 //修改本地存储中的值，返回值
-//window.myStorage.getItem(window.storageKeyName.PERSONALINFO).token = data.RspData;
+//store.get(window.storageKeyName.PERSONALINFO).token = data.RspData;
 var postDataPro_PostTokenRenew = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostTokenRenew', enData, commonData, 0, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostTokenRenew', enData, commonData, 0, wd, callback);
 }
 
 //11.通过用户账号和手机号搜索用户
@@ -210,7 +211,7 @@ var postDataPro_PostUList = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostUList', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostUList', enData, commonData, 1, wd, callback);
 }
 
 //12.邀请用户入群
@@ -229,7 +230,7 @@ var postDataPro_PostInvGuser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostInvGuser', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostInvGuser', enData, commonData, 1, wd, callback);
 }
 
 //13.通过群ID获取群的正常用户
@@ -244,12 +245,12 @@ var postDataPro_PostGusers = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostGusers', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostGusers', enData, commonData, 1, wd, callback);
 }
 
 //14.验证Token是否已过期
 //获取个人信息
-//		var personalToken = window.myStorage.getItem(window.storageKeyName.PERSONALINFO).token;
+//		var personalToken = store.get(window.storageKeyName.PERSONALINFO).token;
 //		//需要参数
 //		var comData = {
 //			token: personalToken
@@ -258,7 +259,7 @@ var postDataPro_PostVerifyToken = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostVerifyToken', enData, commonData, 0, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostVerifyToken', enData, commonData, 0, wd, callback);
 }
 
 //15.用户添加资料
@@ -278,7 +279,7 @@ var postDataPro_PostGAddUInf = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostGAddUInf', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostGAddUInf', enData, commonData, 1, wd, callback);
 }
 
 //16.通过群ID获取群对象资料
@@ -294,7 +295,7 @@ var postDataPro_PostGUInf = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostGUInf', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostGUInf', enData, commonData, 1, wd, callback);
 }
 
 //17.通过审批者ID获取相应的入群邀请或申请
@@ -307,7 +308,7 @@ var postDataPro_PostGrInv = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostGrInv', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostGrInv', enData, commonData, 1, wd, callback);
 }
 
 //18.管理员审批用户入群
@@ -323,7 +324,7 @@ var postDataPro_PostJoinDo = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostJoinDo', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostJoinDo', enData, commonData, 1, wd, callback);
 }
 
 //19.用户申请入群
@@ -338,7 +339,7 @@ var postDataPro_PostJoinGuser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostJoinGuser', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostJoinGuser', enData, commonData, 1, wd, callback);
 }
 
 //20.用户审批申请
@@ -351,7 +352,7 @@ var postDataPro_PostInvDo = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostInvDo', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostInvDo', enData, commonData, 1, wd, callback);
 }
 
 //21.通过用户ID或ID串获取用户资料
@@ -365,7 +366,7 @@ var postDataPro_PostUinf = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostUinf', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostUinf', enData, commonData, 1, wd, callback);
 }
 
 //22.通过用户资料ID获取用户各项资料
@@ -378,7 +379,7 @@ var postDataPro_PostUuinf = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostUuinf', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostUuinf', enData, commonData, 1, wd, callback);
 }
 
 //23.通过用户资料ID或关联ID更改各类型资料
@@ -399,7 +400,7 @@ var postDataPro_PostReStu = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostReStu', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostReStu', enData, commonData, 1, wd, callback);
 }
 
 //24.通过用户表ID获取用户关联的学生
@@ -412,7 +413,7 @@ var postDataPro_PostUstu = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostUstu', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostUstu', enData, commonData, 2, wd, callback);
 }
 
 //25.用户注销
@@ -423,7 +424,7 @@ var postDataPro_PostLoginOut = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostLoginOut', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostLoginOut', enData, commonData, 1, wd, callback);
 }
 
 //---------------------------------------云盘-----------------------------------------------------------------------------------------------------------
@@ -438,7 +439,7 @@ var postDataPro_PostDiFi = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostDiFi', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostDiFi', enData, commonData, 1, wd, callback);
 }
 
 //27.用户云盘文件上传或创建文件夹
@@ -454,7 +455,7 @@ var postDataPro_PostDiFiA = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostDiFiA', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostDiFiA', enData, commonData, 1, wd, callback);
 }
 
 //28.用户修改文件或文件夹名称
@@ -467,7 +468,7 @@ var postDataPro_PostDiFiE = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostDiFiE', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostDiFiE', enData, commonData, 1, wd, callback);
 }
 
 //29.用户修改个人群昵称
@@ -480,7 +481,7 @@ var postDataPro_PostGuNameE = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostGuNameE', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostGuNameE', enData, commonData, 1, wd, callback);
 }
 
 //30.通过资料ID获取关联的人员
@@ -494,7 +495,7 @@ var postDataPro_PostStuU = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostStuU', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostStuU', enData, commonData, 1, wd, callback);
 }
 
 //31.群成员退出群或者剔除群成员
@@ -506,7 +507,7 @@ var postDataPro_PostGuD = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostGuD', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostGuD', enData, commonData, 1, wd, callback);
 }
 
 //32.通过群ID,类型获取用户自身在群的信息
@@ -520,7 +521,7 @@ var postDataPro_PostGuI = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostGuI', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostGuI', enData, commonData, 1, wd, callback);
 }
 
 //33.根据资料表ID删除资料
@@ -532,7 +533,7 @@ var postDataPro_PostStuD = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostStuD', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostStuD', enData, commonData, 1, wd, callback);
 }
 
 //34.通过个人用户表ID获取我的入群申请
@@ -544,7 +545,7 @@ var postDataPro_PostMJoin = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostMJoin', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostMJoin', enData, commonData, 1, wd, callback);
 }
 
 //35.个人获取对某人或一群人的备注
@@ -557,7 +558,7 @@ var postDataPro_PostUmk = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostUmk', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostUmk', enData, commonData, 1, wd, callback);
 }
 
 //36.用户修改或添加对个人备注
@@ -571,7 +572,7 @@ var postDataPro_PostUmkA = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostUmkA', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostUmkA', enData, commonData, 1, wd, callback);
 }
 
 //37.用户删除对个人备注
@@ -584,7 +585,7 @@ var postDataPro_PostUmkD = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostUmkD', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostUmkD', enData, commonData, 1, wd, callback);
 }
 
 //38.用户云盘文件及文件夹删除
@@ -597,7 +598,7 @@ var postDataPro_PostDiFiD = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostDiFiD', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostDiFiD', enData, commonData, 1, wd, callback);
 }
 
 //39.通过审批者ID获取相应的入群邀请或申请数
@@ -609,7 +610,7 @@ var postDataPro_PostGrInvC = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostGrInvC', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostGrInvC', enData, commonData, 1, wd, callback);
 }
 
 //40.通过用户ID获取用户各项资料
@@ -622,7 +623,7 @@ var postDataPro_PostGusinf = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostGusinf', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostGusinf', enData, commonData, 1, wd, callback);
 }
 
 //41.获取某个区域下的所有子区域或查询城市
@@ -636,7 +637,7 @@ var postDataPro_PostArea = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostArea', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostArea', enData, commonData, 1, wd, callback);
 }
 
 //42.获取某个区域下的所有子区域
@@ -649,7 +650,7 @@ var postDataPro_PostAreaCode = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostAreaCode', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostAreaCode', enData, commonData, 1, wd, callback);
 }
 
 //43.用户修改或添加区域阅读设置
@@ -663,7 +664,7 @@ var postDataPro_PostUTcityA = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostUTcityA', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostUTcityA', enData, commonData, 1, wd, callback);
 }
 
 //44.获取个人的订制城市
@@ -676,7 +677,7 @@ var postDataPro_PostUTcity = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostUTcity', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostUTcity', enData, commonData, 1, wd, callback);
 }
 
 //45.通过区域代码获取对应区域的分页新闻
@@ -691,7 +692,7 @@ var postDataPro_PostTnews = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostTnews', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostTnews', enData, commonData, 1, wd, callback);
 }
 
 //46.科教频道新闻添加
@@ -709,7 +710,7 @@ var postDataPro_PostTnewsA = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostTnewsA', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostTnewsA', enData, commonData, 1, wd, callback);
 }
 
 //47.获取APP版本号
@@ -724,7 +725,7 @@ var postDataPro_PostVerInfo = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostVerInfo', enData, commonData, 0, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostVerInfo', enData, commonData, 0, wd, callback);
 }
 
 //48.通过区域代码及相应参数获取对应分页新闻
@@ -741,7 +742,7 @@ var postDataPro_PostTnewsC = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostTnewsC', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostTnewsC', enData, commonData, 1, wd, callback);
 }
 
 //49.审核科教频道新闻
@@ -755,7 +756,7 @@ var postDataPro_PostTnewsE = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostTnewsE', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostTnewsE', enData, commonData, 1, wd, callback);
 }
 
 //50.更改用户绑定
@@ -773,7 +774,7 @@ var postDataPro_PostTnewsE = function(commonData, wd, callback) {
 //返回值：
 var postDataPro_PostBindMobile = function(commonData, enData, wd, callback) {
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostBindMobile', enData, commonData, 0, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostBindMobile', enData, commonData, 0, wd, callback);
 }
 
 //51.管理员修改用户权限
@@ -788,7 +789,7 @@ var postDataPro_PostReUpower = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostReUpower', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostReUpower', enData, commonData, 1, wd, callback);
 }
 
 //52.通过手机号或登录名查找相应的分页记录
@@ -803,7 +804,7 @@ var postDataPro_PostUListP = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostUListP', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostUListP', enData, commonData, 1, wd, callback);
 }
 
 //53.用户移动云盘文件
@@ -818,7 +819,7 @@ var postDataPro_PostDiFiM = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINURL + 'PostDiFiM', enData, commonData, 1, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINURL + 'PostDiFiM', enData, commonData, 1, wd, callback);
 }
 
 //---------------------------------------家校圈-----------------------------------------------------------------------------------------------------------
@@ -833,7 +834,7 @@ var postDataPro_PostDiFiM = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getNoReadNotesCntByUser', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getNoReadNotesCntByUser', enData, commonData, 2, wd, callback);
 //}
 
 //2.（点到记事）获取用户未读点到记事列表
@@ -848,7 +849,7 @@ var postDataPro_PostDiFiM = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getNoReadNotesByUser', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getNoReadNotesByUser', enData, commonData, 2, wd, callback);
 //}
 
 //3.（点到记事）获取用户针对某学生未读点到记事条数
@@ -861,7 +862,7 @@ var postDataPro_getNoReadNotesCntByUserForStudent = function(commonData, wd, cal
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getNoReadNotesCntByUserForStudent', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getNoReadNotesCntByUserForStudent', enData, commonData, 2, wd, callback);
 }
 
 //4.（点到记事）获取用户针对某学生的点到记事列表
@@ -879,7 +880,7 @@ var postDataPro_getNotesByUserForStudent = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getNotesByUserForStudent', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getNotesByUserForStudent', enData, commonData, 2, wd, callback);
 }
 
 //5.（点到记事）获取某学生点到记事条数
@@ -891,7 +892,7 @@ var postDataPro_getNotesByUserForStudent = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getNotesCntByStudent', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getNotesCntByStudent', enData, commonData, 2, wd, callback);
 //}
 
 //6.（点到记事）获取某学生点到记事列表
@@ -906,7 +907,7 @@ var postDataPro_getNotesByUserForStudent = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getNotesByStudent', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getNotesByStudent', enData, commonData, 2, wd, callback);
 //}
 
 //7.（点到记事）获取某条点到记事信息
@@ -919,7 +920,7 @@ var postDataPro_getNotesByUserForStudent = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getNoteById', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getNoteById', enData, commonData, 2, wd, callback);
 //}
 
 //8.（点到记事）新增某学生点到记事信息
@@ -946,7 +947,7 @@ var postDataPro_addNote = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/addNote', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/addNote', enData, commonData, 2, wd, callback);
 }
 
 //9.（点到记事）推送给多用户某点到记事
@@ -960,7 +961,7 @@ var postDataPro_addNote = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/addNoteForMutiUsers', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/addNoteForMutiUsers', enData, commonData, 2, wd, callback);
 //}
 
 //10.（点到记事）修改某用户针对某学生所有点到记事阅读状态为已读
@@ -975,7 +976,7 @@ var postDataPro_setNoteReadByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/setNoteReadByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/setNoteReadByUser', enData, commonData, 2, wd, callback);
 }
 
 //11.（点到记事）屏蔽某学生某点到记事信息
@@ -988,7 +989,7 @@ var postDataPro_setOffNoteById = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/setOffNoteById', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/setOffNoteById', enData, commonData, 2, wd, callback);
 }
 
 //12.（点到记事）删除某点到记事
@@ -1001,7 +1002,7 @@ var postDataPro_delNoteById = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/delNoteById', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/delNoteById', enData, commonData, 2, wd, callback);
 }
 
 //13.（班级空间）获取用户未读班级空间条数
@@ -1013,7 +1014,7 @@ var postDataPro_delNoteById = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getNoReadClassSpacesCntByUser', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getNoReadClassSpacesCntByUser', enData, commonData, 2, wd, callback);
 //}
 
 //14.（班级空间）获取用户未读班级空间列表
@@ -1028,7 +1029,7 @@ var postDataPro_delNoteById = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getNoReadClassSpacesByUser', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getNoReadClassSpacesByUser', enData, commonData, 2, wd, callback);
 //}
 
 //15.（班级空间）获取用户未读某班级空间条数
@@ -1041,7 +1042,7 @@ var postDataPro_getNoReadClassSpacesCntByUserForClass = function(commonData, wd,
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getNoReadClassSpacesCntByUserForClass', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getNoReadClassSpacesCntByUserForClass', enData, commonData, 2, wd, callback);
 }
 
 //16.（班级空间）获取用户针对某班级的空间列表
@@ -1057,7 +1058,7 @@ var postDataPro_getClassSpacesByUserForClass = function(commonData, wd, callback
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getClassSpacesByUserForClass', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getClassSpacesByUserForClass', enData, commonData, 2, wd, callback);
 }
 
 //17.（班级空间）获取某班级空间条数
@@ -1069,7 +1070,7 @@ var postDataPro_getClassSpacesByUserForClass = function(commonData, wd, callback
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getClassSpacesCntByClass', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getClassSpacesCntByClass', enData, commonData, 2, wd, callback);
 //}
 
 //18.（班级空间）获取某班级空间列表
@@ -1084,7 +1085,7 @@ var postDataPro_getClassSpacesByUserForClass = function(commonData, wd, callback
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getClassSpacesByClass', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getClassSpacesByClass', enData, commonData, 2, wd, callback);
 //}
 
 //19.（班级空间）获取某条班级空间信息
@@ -1097,7 +1098,7 @@ var postDataPro_getClassSpacesByUserForClass = function(commonData, wd, callback
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getClassSpaceById', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getClassSpaceById', enData, commonData, 2, wd, callback);
 //}
 
 //20.（班级空间）新增某班级空间信息
@@ -1117,7 +1118,7 @@ var postDataPro_addClassSpace = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/addClassSpace', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/addClassSpace', enData, commonData, 2, wd, callback);
 }
 
 //21.（班级空间）推送给多用户某班级空间
@@ -1131,7 +1132,7 @@ var postDataPro_addClassSpace = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/addClassSpaceForMutiUsers', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/addClassSpaceForMutiUsers', enData, commonData, 2, wd, callback);
 //}
 
 //22.（班级空间）修改某用户针对某班级所有空间阅读状态为已读
@@ -1145,7 +1146,7 @@ var postDataPro_setClassSpaceReadByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/setClassSpaceReadByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/setClassSpaceReadByUser', enData, commonData, 2, wd, callback);
 }
 
 //23.（班级空间）屏蔽某班级空间信息
@@ -1158,7 +1159,7 @@ var postDataPro_setOffClassSpaceById = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/setOffClassSpaceById', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/setOffClassSpaceById', enData, commonData, 2, wd, callback);
 }
 
 //24.（班级空间）删除某班级空间
@@ -1171,7 +1172,7 @@ var postDataPro_delClassSpaceById = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/delClassSpaceById', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/delClassSpaceById', enData, commonData, 2, wd, callback);
 }
 
 //25.（用户空间）获取用户未读用户空间条数
@@ -1183,7 +1184,7 @@ var postDataPro_delClassSpaceById = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getNoReadUserSpacesCntByUser', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getNoReadUserSpacesCntByUser', enData, commonData, 2, wd, callback);
 //}
 
 //26.（用户空间）获取用户未读用户空间列表
@@ -1198,7 +1199,7 @@ var postDataPro_delClassSpaceById = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getNoReadUserSpacesByUser', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getNoReadUserSpacesByUser', enData, commonData, 2, wd, callback);
 //}
 
 //27.（用户空间）获取用户未读某用户空间条数
@@ -1211,7 +1212,7 @@ var postDataPro_delClassSpaceById = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getNoReadUserSpacesCntByUserForPublisher', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getNoReadUserSpacesCntByUserForPublisher', enData, commonData, 2, wd, callback);
 //}
 
 //28.（用户空间）获取用户针对某用户的空间列表
@@ -1228,7 +1229,7 @@ var postDataPro_getUserSpacesByUserForPublisher = function(commonData, wd, callb
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpacesByUserForPublisher', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpacesByUserForPublisher', enData, commonData, 2, wd, callback);
 }
 
 //29.（用户空间）获取用户某条用户空间是否点赞
@@ -1242,7 +1243,7 @@ var postDataPro_getIsLikeUserSpaceByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getIsLikeUserSpaceByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getIsLikeUserSpaceByUser', enData, commonData, 2, wd, callback);
 }
 
 //30.（用户空间）获取用户空间所有评论条数
@@ -1254,7 +1255,7 @@ var postDataPro_getIsLikeUserSpaceByUser = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceCommentsCntById', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceCommentsCntById', enData, commonData, 2, wd, callback);
 //}
 
 //31.（用户空间）获取用户空间所有评论
@@ -1269,7 +1270,7 @@ var postDataPro_getIsLikeUserSpaceByUser = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceCommentsById', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceCommentsById', enData, commonData, 2, wd, callback);
 //}
 
 //32.（用户空间）获取用户空间所有点赞用户
@@ -1282,7 +1283,7 @@ var postDataPro_getUserIsLikeUsersById = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getIsLikeUsersById', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getIsLikeUsersById', enData, commonData, 2, wd, callback);
 }
 
 //33.屏蔽（用户空间）获取用户用户空间所有未读评论回复条数
@@ -1294,7 +1295,7 @@ var postDataPro_getUserSpaceCommentReplysCntByUser = function(commonData, wd, ca
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceCommentReplysCntByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceCommentReplysCntByUser', enData, commonData, 2, wd, callback);
 }
 
 //34.屏蔽（用户空间）获取用户用户空间所有未读评论回复列表
@@ -1309,7 +1310,7 @@ var postDataPro_getUserSpaceCommentReplysByUser = function(commonData, wd, callb
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceCommentReplysByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceCommentReplysByUser', enData, commonData, 2, wd, callback);
 }
 
 //35.（用户空间）获取某用户空间条数
@@ -1321,7 +1322,7 @@ var postDataPro_getUserSpaceCommentReplysByUser = function(commonData, wd, callb
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpacesCntByUser', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpacesCntByUser', enData, commonData, 2, wd, callback);
 //}
 
 //36.（用户空间）获取多用户空间列表
@@ -1335,7 +1336,7 @@ var postDataPro_getUserSpacesByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpacesByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpacesByUser', enData, commonData, 2, wd, callback);
 }
 
 //37.（用户空间）获取某条用户空间信息
@@ -1348,7 +1349,7 @@ var postDataPro_getUserSpacesByUser = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceById', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceById', enData, commonData, 2, wd, callback);
 //}
 
 //38.（用户空间）新增某用户空间信息 （云笔记）
@@ -1372,7 +1373,7 @@ var postDataPro_addUserSpace = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addUserSpace', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addUserSpace', enData, commonData, 2, wd, callback);
 }
 
 //39.（用户空间）推送给多用户某用户空间
@@ -1386,7 +1387,7 @@ var postDataPro_addUserSpace = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addUserSpaceForMutiUsers', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addUserSpaceForMutiUsers', enData, commonData, 2, wd, callback);
 //}
 
 //40.（用户空间）新增某用户某用户空间评论
@@ -1401,7 +1402,7 @@ var postDataPro_addUserSpaceComment = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addUserSpaceComment', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addUserSpaceComment', enData, commonData, 2, wd, callback);
 }
 
 //41.（用户空间）新增某用户某用户空间评论回复
@@ -1418,7 +1419,7 @@ var postDataPro_addUserSpaceCommentReply = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addUserSpaceCommentReply', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addUserSpaceCommentReply', enData, commonData, 2, wd, callback);
 }
 
 //42.（用户空间）修改某用户针对某发布用户的空间阅读状态为已读
@@ -1432,7 +1433,7 @@ var postDataPro_setUserSpaceReadByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setUserSpaceReadByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setUserSpaceReadByUser', enData, commonData, 2, wd, callback);
 }
 
 //43.（用户空间）修改某用户某用户空间点赞状态为点赞
@@ -1446,7 +1447,7 @@ var postDataPro_setUserSpaceLikeByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setUserSpaceLikeByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setUserSpaceLikeByUser', enData, commonData, 2, wd, callback);
 }
 
 //44.（用户空间）修改某用户空间评论回复查看状态
@@ -1458,7 +1459,7 @@ var postDataPro_setUserSpaceLikeByUser = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setUserSpaceCommentReplyById', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setUserSpaceCommentReplyById', enData, commonData, 2, wd, callback);
 //}
 
 //45.（用户空间）屏蔽某用户空间信息
@@ -1471,7 +1472,7 @@ var postDataPro_setOffUserSpaceById = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setOffUserSpaceById', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setOffUserSpaceById', enData, commonData, 2, wd, callback);
 }
 
 //46.（用户空间）删除某用户空间
@@ -1484,7 +1485,7 @@ var postDataPro_delUserSpaceById = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/delUserSpaceById', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/delUserSpaceById', enData, commonData, 2, wd, callback);
 }
 
 //47.（用户空间）删除某条用户空间评论
@@ -1497,7 +1498,7 @@ var postDataPro_delUserSpaceCommentById = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/delUserSpaceCommentById', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/delUserSpaceCommentById', enData, commonData, 2, wd, callback);
 }
 
 //48.（用户空间）获取用户空间所有留言条数
@@ -1509,7 +1510,7 @@ var postDataPro_delUserSpaceCommentById = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceMsgsCntById', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceMsgsCntById', enData, commonData, 2, wd, callback);
 //}
 
 //49.（用户空间）获取用户空间所有留言
@@ -1524,7 +1525,7 @@ var postDataPro_getUserSpaceMsgsById = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceMsgsById', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceMsgsById', enData, commonData, 2, wd, callback);
 }
 
 //50.（用户空间）获取用户用户空间所有未读留言回复条数
@@ -1537,7 +1538,7 @@ var postDataPro_getUserSpaceMsgsById = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceMsgReplysCntByUser', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceMsgReplysCntByUser', enData, commonData, 2, wd, callback);
 //}
 
 //51.屏蔽（用户空间）获取用户用户空间所有未读留言回复列表
@@ -1552,7 +1553,7 @@ var postDataPro_getUserSpaceMsgReplysByUser = function(commonData, wd, callback)
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceMsgReplysByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceMsgReplysByUser', enData, commonData, 2, wd, callback);
 }
 
 //52.（用户空间）新增某用户某用户空间留言
@@ -1567,7 +1568,7 @@ var postDataPro_addUserSpaceMsg = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addUserSpaceMsg', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addUserSpaceMsg', enData, commonData, 2, wd, callback);
 }
 
 //53.（用户空间）新增某用户某用户空间留言回复
@@ -1584,7 +1585,7 @@ var postDataPro_addUserSpaceMsgReply = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addUserSpaceMsgReply', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addUserSpaceMsgReply', enData, commonData, 2, wd, callback);
 }
 
 //54.（用户空间）修改某用户空间留言回复查看状态
@@ -1596,7 +1597,7 @@ var postDataPro_addUserSpaceMsgReply = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setUserSpaceMsgReplyById', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setUserSpaceMsgReplyById', enData, commonData, 2, wd, callback);
 //}
 
 //55.（用户空间）删除某条用户空间留言
@@ -1609,7 +1610,7 @@ var postDataPro_delUserMsgById = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/delUserMsgById', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/delUserMsgById', enData, commonData, 2, wd, callback);
 }
 
 //56.（用户空间）获取与我相关
@@ -1624,7 +1625,7 @@ var postDataPro_getAboutMe = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getAboutMe', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getAboutMe', enData, commonData, 2, wd, callback);
 }
 
 //57.（班级空间）获取用户某条班级空间是否点赞
@@ -1638,7 +1639,7 @@ var postDataPro_getIsLikeClassSpaceByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getIsLikeClassSpaceByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getIsLikeClassSpaceByUser', enData, commonData, 2, wd, callback);
 }
 
 //58.（班级空间）修改某用户某班级空间点赞状态为点赞
@@ -1652,7 +1653,7 @@ var postDataPro_setClassSpaceLikeByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/setClassSpaceLikeByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/setClassSpaceLikeByUser', enData, commonData, 2, wd, callback);
 }
 
 //59.（用户空间）修改某用户评论、回复、留言状态为已读
@@ -1666,7 +1667,7 @@ var postDataPro_setCommentMsgReadByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setCommentMsgReadByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setCommentMsgReadByUser', enData, commonData, 2, wd, callback);
 }
 
 //60.（用户空间）修改留言板备注
@@ -1680,7 +1681,7 @@ var postDataPro_setMsgNoteByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setMsgNoteByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setMsgNoteByUser', enData, commonData, 2, wd, callback);
 }
 
 //61.（用户空间）新增留言板
@@ -1693,7 +1694,7 @@ var postDataPro_addNewUserMsgInfo = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addNewUserMsgInfo', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/addNewUserMsgInfo', enData, commonData, 2, wd, callback);
 }
 
 //62.（用户空间）新增用户空间
@@ -1706,7 +1707,7 @@ var postDataPro_setCommentMsgReadByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setCommentMsgReadByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setCommentMsgReadByUser', enData, commonData, 2, wd, callback);
 }
 
 //63.（点到记事）新增学生点到记事空间
@@ -1720,7 +1721,7 @@ var postDataPro_addNewNoteInfo = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/addNewNoteInfo', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/addNewNoteInfo', enData, commonData, 2, wd, callback);
 }
 
 //64.（班级空间）新增班级空间
@@ -1733,7 +1734,7 @@ var postDataPro_addNewClassInfo = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/addNewClassInfo', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/addNewClassInfo', enData, commonData, 2, wd, callback);
 }
 
 //65.（用户空间）获取用户空间所有已读用户
@@ -1746,7 +1747,7 @@ var postDataPro_getReadUserBySpaceId = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getReadUserBySpaceId', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getReadUserBySpaceId', enData, commonData, 2, wd, callback);
 }
 
 //66.（点到记事）获取针对某班的点到记事列表
@@ -1762,7 +1763,7 @@ var postDataPro_getNotesForClass = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getNotesForClass', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getNotesForClass', enData, commonData, 2, wd, callback);
 }
 
 //67.（班级空间）获取班级空间所有已读用户
@@ -1775,7 +1776,7 @@ var postDataPro_getReadUserBySpaceId = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getReadUserBySpaceId', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getReadUserBySpaceId', enData, commonData, 2, wd, callback);
 }
 
 //68.（班级空间）获取班级空间所有点赞用户
@@ -1788,7 +1789,7 @@ var postDataPro_getIsLikeUsersById = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getIsLikeUsersById', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getIsLikeUsersById', enData, commonData, 2, wd, callback);
 }
 
 //69.（云档案）按家长获取学生档案
@@ -1805,7 +1806,7 @@ var postDataPro_getStudentFile = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'file/getStudentFile', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'file/getStudentFile', enData, commonData, 2, wd, callback);
 }
 
 //70.（云档案）新增某学生档案
@@ -1830,7 +1831,7 @@ var postDataPro_addStudentFile = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'file/addStudentFile', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'file/addStudentFile', enData, commonData, 2, wd, callback);
 }
 
 //71.（班级空间）删除某用户某班级空间点赞
@@ -1844,7 +1845,7 @@ var postDataPro_delClassSpaceLikeByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/delClassSpaceLikeByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/delClassSpaceLikeByUser', enData, commonData, 2, wd, callback);
 }
 
 //72.（用户空间）删除某用户某用户空间点赞
@@ -1858,7 +1859,7 @@ var postDataPro_delUserSpaceLikeByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/delUserSpaceLikeByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/delUserSpaceLikeByUser', enData, commonData, 2, wd, callback);
 }
 
 //73.（云档案）按家长获取学生档案姓名
@@ -1871,7 +1872,7 @@ var postDataPro_delUserSpaceLikeByUser = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'file/getStudentName', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'file/getStudentName', enData, commonData, 2, wd, callback);
 //}
 
 //74.(用户空间）获取多用户空间所有用户动态列表
@@ -1887,7 +1888,7 @@ var postDataPro_getAllUserSpacesByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getAllUserSpacesByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getAllUserSpacesByUser', enData, commonData, 2, wd, callback);
 }
 
 //75.（点到记事）删除某学生点到记事
@@ -1901,7 +1902,7 @@ var postDataPro_delNoteByStudent = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/delNoteByStudent', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/delNoteByStudent', enData, commonData, 2, wd, callback);
 }
 
 //76.（班级空间）获取用户针对多班级的空间列表
@@ -1915,7 +1916,7 @@ var postDataPro_getClassSpacesByUserForMutiClass = function(commonData, wd, call
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getClassSpacesByUserForMutiClass', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'classSpace/getClassSpacesByUserForMutiClass', enData, commonData, 2, wd, callback);
 }
 
 //77.（点到记事）获取用户针对多学生的点到记事列表
@@ -1930,7 +1931,7 @@ var postDataPro_getNotesByUserForMutiStudent = function(commonData, wd, callback
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getNotesByUserForMutiStudent', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getNotesByUserForMutiStudent', enData, commonData, 2, wd, callback);
 }
 
 //78.（用户空间）获取区域用户空间列表
@@ -1946,7 +1947,7 @@ var postDataPro_getUserSpacesByArea = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpacesByArea', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpacesByArea', enData, commonData, 2, wd, callback);
 }
 
 //79.（用户空间）获取多班级多用户空间所有用户未读数
@@ -1960,7 +1961,7 @@ var postDataPro_getNoReadCntForClassByUser = function(commonData, wd, callback) 
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getNoReadCntForClassByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getNoReadCntForClassByUser', enData, commonData, 2, wd, callback);
 }
 
 //80.（用户空间）设置某用户的关注
@@ -1975,7 +1976,7 @@ var postDataPro_setUserFocus = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setUserFocus', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/setUserFocus', enData, commonData, 2, wd, callback);
 }
 
 //80.（用户空间）获取用户所有关注的用户
@@ -1988,7 +1989,7 @@ var postDataPro_getFocusByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getFocusByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getFocusByUser', enData, commonData, 2, wd, callback);
 }
 
 //81.（用户空间）获取用户针对某条空间详情
@@ -2004,7 +2005,7 @@ var postDataPro_getUserSpaceByUser = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceByUser', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpaceByUser', enData, commonData, 2, wd, callback);
 }
 
 //83.（点到记事）获取某学生的点到情况统计
@@ -2021,7 +2022,7 @@ var postDataPro_getUserSpaceByUser = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getCheckStatisticForStudent', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getCheckStatisticForStudent', enData, commonData, 2, wd, callback);
 //}
 
 //84.（点到记事）获取某班级的点到情况统计
@@ -2037,7 +2038,7 @@ var postDataPro_getUserSpaceByUser = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getCheckStatisticForClass', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getCheckStatisticForClass', enData, commonData, 2, wd, callback);
 //}
 
 //85.（云档案）按ID删除学生档案内容
@@ -2050,7 +2051,7 @@ var postDataPro_delStudentFileByIds = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'file/delStudentFileByIds', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'file/delStudentFileByIds', enData, commonData, 2, wd, callback);
 }
 
 //86.（云档案）修改档案名称
@@ -2065,7 +2066,7 @@ var postDataPro_setStudentFileInfoName = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'file/setStudentFileInfoName', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'file/setStudentFileInfoName', enData, commonData, 2, wd, callback);
 }
 
 //87.（云档案）新增档案文件夹
@@ -2079,7 +2080,7 @@ var postDataPro_setStudentFileInfoName = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'file/addStudentDocInfo', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'file/addStudentDocInfo', enData, commonData, 2, wd, callback);
 //}
 
 //88.（云档案）合并档案到档案文件夹
@@ -2093,7 +2094,7 @@ var postDataPro_setStudentFileInfoName = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'file/addStudentFileToDoc', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'file/addStudentFileToDoc', enData, commonData, 2, wd, callback);
 //}
 
 //89.（云档案）拆离档案从档案文件夹
@@ -2107,7 +2108,7 @@ var postDataPro_setStudentFileInfoName = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'file/delStudentFileFromDoc', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'file/delStudentFileFromDoc', enData, commonData, 2, wd, callback);
 //}
 
 //90.（云档案）删除档案文件夹
@@ -2121,7 +2122,7 @@ var postDataPro_delStudentDoc = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'file/delStudentDoc', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'file/delStudentDoc', enData, commonData, 2, wd, callback);
 }
 
 //91.（云档案）按家长获取档案文件夹
@@ -2134,7 +2135,7 @@ var postDataPro_getStudentDocByParent = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'file/getStudentDocByParent', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'file/getStudentDocByParent', enData, commonData, 2, wd, callback);
 }
 
 //92.（云档案）获取档案文件夹内档案
@@ -2147,7 +2148,7 @@ var postDataPro_getStudentDocByParent = function(commonData, wd, callback) {
 //	//需要加密的数据
 //	var enData = {};
 //	//发送网络请求，data为网络返回值
-//	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'file/getStudentFileFromDoc', enData, commonData, 2, wd, callback);
+//	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'file/getStudentFileFromDoc', enData, commonData, 2, wd, callback);
 //}
 
 //93.（点到记事）获取班级统计月份的点到记事统计
@@ -2162,7 +2163,7 @@ var postDataPro_getMonthStatisticForMonth = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getMonthStatisticForMonth', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getMonthStatisticForMonth', enData, commonData, 2, wd, callback);
 }
 
 //94.（点到记事）获取某学生的点到记事统计
@@ -2180,7 +2181,7 @@ var postDataPro_getNotesStatisticForStudent = function(commonData, wd, callback)
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'note/getNotesStatisticForStudent', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'note/getNotesStatisticForStudent', enData, commonData, 2, wd, callback);
 }
 
 //95.（用户空间）按ID获取区域用户空间列表
@@ -2196,5 +2197,5 @@ var postDataPro_getUserSpacesForAreaByIds = function(commonData, wd, callback) {
 	//需要加密的数据
 	var enData = {};
 	//发送网络请求，data为网络返回值
-	postDataEncry(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpacesForAreaByIds', enData, commonData, 2, wd, callback);
+	postDataEncryMMM(storageKeyName.MAINJIAOXIAOURL + 'userSpace/getUserSpacesForAreaByIds', enData, commonData, 2, wd, callback);
 }

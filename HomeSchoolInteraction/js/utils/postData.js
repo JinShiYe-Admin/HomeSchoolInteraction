@@ -73,7 +73,7 @@ function tempTime() {
 //flag,0表示不需要合并共用数据，1为添加uuid、utid、token、appid普通参数，2为uuid、appid、token
 //waitingDialog,等待框
 //callback,返回值
-function postDataEncry(url, encryData, commonData, flag, waitingDialog, callback) {
+function postDataEncryMMM(url, encryData, commonData, flag, waitingDialog, callback) {
 	if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
 		var data = {
 				RspCode: '404',
@@ -88,7 +88,7 @@ function postDataEncry(url, encryData, commonData, flag, waitingDialog, callback
 		return;
 	}
 	//拼接登录需要的签名
-	var signTemp = postDataEncry1(encryData, commonData, flag);
+	var signTemp = postDataEncry12(encryData, commonData, flag);
 
 	//生成签名，返回值sign则为签名
 	signHmacSHA1.sign(signTemp, storageKeyName.SIGNKEY, function(sign) {
@@ -162,7 +162,8 @@ function postDataEncry(url, encryData, commonData, flag, waitingDialog, callback
 }
 
 //拼接参数
-function postDataEncry1(encryData, commonData, flag) {
+function postDataEncry12(encryData, commonData, flag) {
+	console.log('postDataEncry12000000000');
 	//循环
 	var tempStr = '';
 	for(var tempData in encryData) {
@@ -171,30 +172,32 @@ function postDataEncry1(encryData, commonData, flag) {
 		//修改值
 		encryData[tempData] = encryptStr;
 	}
+	var publicParameter = store.get(window.storageKeyName.PUBLICPARAMETER);
 	//判断是否需要添加共用数据
 	if(flag == 1) {
+		console.log('hahhahahahahahahahahhaha');
 		//获取个人信息
-		var personalUTID = window.myStorage.getItem(window.storageKeyName.PERSONALINFO).utid;
-		var personalToken = window.myStorage.getItem(window.storageKeyName.PERSONALINFO).token;
+		var personalUTID = store.get(window.storageKeyName.PERSONALINFO).utid;
+		var personalToken = store.get(window.storageKeyName.PERSONALINFO).utoken;
 		var comData = {
-			uuid: plus.device.uuid,
+			uuid: publicParameter.uuid,
 			utid: personalUTID,
 			token: personalToken,
-			appid: plus.runtime.appid
+			appid: publicParameter.appid
 		};
 		commonData = $.extend(commonData, comData);
 	} else if(flag == 2) {
 		//获取个人信息
-		var personalToken = window.myStorage.getItem(window.storageKeyName.PERSONALINFO).token;
+		var personalToken = store.get(window.storageKeyName.PERSONALINFO).utoken;
 		var comData = {
-			uuid: plus.device.uuid,
+			uuid: publicParameter.uuid,
 			token: personalToken,
-			appid: plus.runtime.appid
+			appid: publicParameter.appid
 		};
 		commonData = $.extend(commonData, comData);
 	} else if(flag == 3) {
 		//获取个人信息
-		var personalToken = window.myStorage.getItem(window.storageKeyName.PERSONALINFO).token;
+		var personalToken = store.get(window.storageKeyName.PERSONALINFO).utoken;
 		var comData = {
 			token: personalToken
 		};
@@ -219,7 +222,7 @@ function postDataEncry1(encryData, commonData, flag) {
 //生成二维码链接
 function QRCodeUrl(url, encryData, commonData, flag) {
 	//拼接登录需要的签名
-	var signTemp = postDataEncry1(encryData, commonData, flag);
+	var signTemp = postDataEncry12(encryData, commonData, flag);
 	//生成签名，返回值sign则为签名
 	signHmacSHA1.sign(signTemp, storageKeyName.SIGNKEY, function(sign) {
 		//组装发送握手协议需要的data

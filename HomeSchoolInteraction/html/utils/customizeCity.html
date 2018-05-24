@@ -17,17 +17,17 @@
 			.mui-content {
 				background: white;
 			}
-
+			
 			.mui-table-view:before,
 			.mui-table-view:after,
 			.mui-table-view-cell:after {
 				height: 0px;
 			}
-
+			
 			.mui-table-view {
 				text-align: center;
 			}
-
+			
 			.mui-table-view-cell {
 				/*box-shadow: 0px 1px 5px #888888;*/
 				border: 1px solid #D9D9D9;
@@ -36,7 +36,7 @@
 				padding: 6px;
 				color: #323232
 			}
-
+			
 			.city-p {
 				width: 100%;
 				background: #E6E6E6;
@@ -45,15 +45,15 @@
 				color: #9D9D9D;
 				text-align: left;
 			}
-
+			
 			.city-select {
 				border: 1px solid #12B8F6;
 			}
-
+			
 			.mui-col-xs-4 {
 				padding: 5px 10px;
 			}
-
+			
 			.city-my {
 				position: absolute;
 				height: 1px;
@@ -61,7 +61,7 @@
 				background-color: #E4E4E4;
 				margin-top: 10px;
 			}
-
+			
 			.city-my-point {
 				position: absolute;
 				width: 7px;
@@ -70,11 +70,11 @@
 				border-radius: 50%;
 				margin-top: 7px;
 			}
-
+			
 			#myCityTitle .city-my:nth-child(2) {
 				right: 5px;
 			}
-
+			
 			.city-delete {
 				width: 20px;
 				border-radius: 50%;
@@ -86,7 +86,7 @@
 	</head>
 
 	<body>
-		<header class="mui-bar mui-bar-nav" style="background-color:#63BBFF;">
+		<header class="mui-bar mui-bar-nav" style="background-color:#00CFBD;">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="title" class="mui-title" style="color: white;"></h1>
 			<div id="commit" class="title-text-pull-right">提交</div>
@@ -144,17 +144,32 @@
 			</div>
 		</div>
 		<script src="../../js/mui.min.js"></script>
-		<script src="../../js/publicProtocol.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/publicProtocolNew.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../js/storageKeyName.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="../../js/utils/events.js"></script>
+		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/utils/utils.js"></script>
+		<!--加密-->
+		<script src="../../js/libs/RSA/Barrett.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/libs/RSA/BigInt.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/libs/RSA/RSA.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/utils/RSAEncrypt.js" type="text/javascript" charset="utf-8"></script>
+
+		<script src='../../js/libs/crypto-js/require.js'></script>
+		<script src='../../js/utils/signHmacSHA1.js'></script>
+		<script src='../../js/utils/sortSign.js'></script>
+		<script src="../../js/libs/jquery.js"></script>
 		<script type="text/javascript">
 			var main = null; //获取当前窗体对象
 			var cities = []; //传值的当前已经选择的城市
 			var cityArray = []; //获取到的所有城市
 			var commitCities = []; //提交的城市
 			var selectId = ''; //修改账号地区时记录选择的元素id（acode）
-			var pInfo = myStorage.getItem(window.storageKeyName.PERSONALINFO);
-
+			var pInfo = store.get(window.storageKeyName.PERSONALINFO);
+			//获取个人信息
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('personal:' + JSON.stringify(personal));
+			var publicParameter = store.get(window.storageKeyName.PUBLICPARAMETER);
 			init();
 
 			/**
@@ -451,21 +466,62 @@
 				div.innerHTML = '<li class="mui-table-view-cell mui-media" data-acode="' + data.acode + '">\
 									  <div class="mui-media-body mui-ellipsis">' + data.aname + '</div>\
 								</li>\
-								<img src="../../image/utils/delete.png" class="city-delete" />';
+								<img src="../../img/utils/delete.png" class="city-delete" />';
 				document.getElementById("myCity").insertBefore(div, document.getElementById("myAllCity"));
 			}
 
 			//41.获取某个区域下的所有子区域或查询城市
 			function requestAllCity(wd) {
-				var wd = wd || events.showWaiting();
-				//所需参数
-				var comData = {
-					vtp: '3', //0(获取省份),1(获取城市),2(获取区县),3获取所有城市,4模糊查询城市
-					vvl: '' //查询的值(acode节点编码,查询所有省份或城市留空,模糊查询城市填写查询值)
-				};
-				//41.获取某个区域下的所有子区域或查询城市
-				postDataPro_PostArea(comData, wd, function(data) {
-					cityArray = data.RspData;
+				//				var wd = wd || events.showWaiting();
+				//				//所需参数
+				//				var comData = {
+				//					vtp: '3', //0(获取省份),1(获取城市),2(获取区县),3获取所有城市,4模糊查询城市
+				//					vvl: '' //查询的值(acode节点编码,查询所有省份或城市留空,模糊查询城市填写查询值)
+				//				};
+				//				//41.获取某个区域下的所有子区域或查询城市
+				//				postDataPro_PostArea(comData, wd, function(data) {
+				//					cityArray = data.RspData;
+				//					//console.log('所有子区域或查询城市:' + JSON.stringify(data));
+				//					if(data.RspCode == 0) {
+				//						var tempArry = cities;
+				//						mui.each(cityArray, function(index, element) {
+				//							//遍历，然后判断是否是之前选择的城市，修改选中状态
+				//							var proAcode = element.acode.substring(0, 2); //截取省份代码
+				//							if(proAcode == '37' || proAcode == '42' || proAcode == '45' || proAcode == '46') {
+				//								//山东，湖北，广西，海南
+				//								var select = 0; //默认为不选中
+				//								for(var m in tempArry) {
+				//									var tempModel = tempArry[m];
+				//									if(element.acode == tempModel.acode) {
+				//										select = 1; //选中
+				//										tempArry.splice(m, 1); //去掉已选中了的
+				//									}
+				//								}
+				//								element.select = select;
+				//								////console.log('addAllCity:' + JSON.stringify(element));
+				//								addAllCity(proAcode, element);
+				//							}
+				//						});
+				//					} else {
+				//						mui.toast(data.RspTxt);
+				//					}
+				//					wd.close();
+				//				});
+
+				var enData0 = {};
+				//不需要加密的数据
+				var comData0 = {
+					uuid: publicParameter.uuid, //用户设备号
+					utoken: personal.utoken, //用户令牌
+					appid: publicParameter.appid, //系统所分配的应用ID
+					type: 3, //类型,0获取省份,1获取城市,2获取区县,3获取所有城市,4获取某个城市信息
+					areano: '' //区域代码,获取type:1,2,4时必填(填写相关区域代码),其他留空
+				}
+				events.showWaiting();
+				//发送网络请求，data为网络返回值
+				postDataEncry('SysArea', enData0, comData0, 0, function(data) {
+					events.closeWaiting();
+					cityArray = data.RspData.sysarea;
 					//console.log('所有子区域或查询城市:' + JSON.stringify(data));
 					if(data.RspCode == 0) {
 						var tempArry = cities;
@@ -491,6 +547,7 @@
 						mui.toast(data.RspTxt);
 					}
 					wd.close();
+
 				});
 			}
 
@@ -547,7 +604,8 @@
 							}
 							pInfo.uarea = model_area;
 						}
-						window.myStorage.setItem(window.storageKeyName.PERSONALINFO, pInfo);
+						//						window.myStorage.setItem(window.storageKeyName.PERSONALINFO, pInfo);
+						store.set(window.storageKeyName.PERSONALINFO, pInfo);
 						events.fireToPageNone(main.data.webid, 'infoChanged');
 						mui.back();
 					} else {

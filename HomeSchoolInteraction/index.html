@@ -22,8 +22,8 @@
 				<span class="mui-icon iconfont icon-jiaxiaohudong"></span>
 				<span class="mui-tab-label">家校互动</span>
 			</a>
-			<!--<a class="mui-tab-item" href="html/ScienceEducation/sciedu_home.html">-->
-			<a class="mui-tab-item" href="html/Course/courseIndex.html">
+			<a class="mui-tab-item" href="html/sciedu/sciedu_home.html">
+			<!--<a class="mui-tab-item" href="html/Course/courseIndex.html">-->
 				<span class="mui-icon iconfont icon-jiaoyu"></span>
 				<span class="mui-tab-label">科教活动</span>
 			</a>
@@ -40,8 +40,8 @@
 		<script type="text/javascript" charset="utf-8">
 			//mui初始化
 			mui.init();
-//			var subpages = ['html/homeSchool/homeSchoolIndex.html', 'html/ScienceEducation/sciedu_home.html', 'html/Course/courseIndex.html', 'html/homeSchool/homeSchoolIndex.html'];
-			var subpages = ['html/homeSchool/homeSchoolIndex.html', 'html/Course/courseIndex.html', 'html/Course/courseIndex.html', 'html/Course/courseIndex.html'];
+			var subpages = ['html/homeSchool/homeSchoolIndex.html', 'html/sciedu/sciedu_home.html', 'html/Course/courseIndex.html', 'html/Course/courseIndex.html'];
+//			var subpages = ['html/homeSchool/homeSchoolIndex.html', 'html/Course/courseIndex.html', 'html/Course/courseIndex.html', 'html/Course/courseIndex.html'];
 			var subpage_style = {
 				top: '0px',
 				bottom: '51px'
@@ -51,6 +51,7 @@
 
 			//创建子页面，首个选项卡页面显示，其它均隐藏；
 			mui.plusReady(function() {
+				console.log('oooooooooooooooooooooooooooooooooooooooooooooooooooo');
 				//安卓的连续点击两次退出程序
 				var backButtonPress = 0;
 				//重写返回键
