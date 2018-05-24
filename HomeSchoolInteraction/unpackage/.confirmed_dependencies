@@ -1,32 +1,32 @@
 {
-	"index.html": {
-		"resources": [
-			"html/homeSchool/homeSchoolIndex.html"
-		],
-		"refer": [
-			"html/Course/courseIndex.html",
-			"html/homeSchool/homeSchoolIndex.html"
-		]
-	},
-	"html/login/loginIndex.html": {
-		"refer": [
-			"index.html"
-		]
-	},
-	"html/homeSchool/homeSchoolIndex.html": {
-		"refer": [
-			"html/homeSchool/noticeList.html"
-		]
-	},
-	"html/homeSchool/noticeList.html": {
-		"refer": [
-			"html/homeSchool/noticeDetail.html",
-			"html/homeSchool/notice_add.html"
-		]
-	},
-	"html/homeSchool/notice_add.html": {
-		"refer": [
-			"html/homeSchool/gradeList.html"
-		]
-	}
+  "index.html": {
+    "resources": [
+      "html/homeSchool/homeSchoolIndex.html"
+    ],
+    "refer": [
+      "html/Course/courseIndex.html",
+      "html/homeSchool/homeSchoolIndex.html"
+    ]
+  },
+  "html/login/loginIndex.html": {
+    "refer": [
+      "index.html"
+    ]
+  },
+  "html/homeSchool/homeSchoolIndex.html": {
+    "refer": [
+      "html/homeSchool/noticeList.html"
+    ]
+  },
+  "html/homeSchool/noticeList.html": {
+    "refer": [
+      "html/homeSchool/noticeDetail.html",
+      "html/homeSchool/notice_add.html"
+    ]
+  },
+  "html/homeSchool/notice_add.html": {
+    "refer": [
+      "html/homeSchool/gradeList.html"
+    ]
+  }
 }

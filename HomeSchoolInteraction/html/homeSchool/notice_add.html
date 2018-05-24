@@ -40,24 +40,29 @@
 			.mui-backdrop {
 				background-color: transparent;
 			}
-			.aCss{
+			
+			.aCss {
 				font-size: 15px;
 				color: #999999;
 				width: 70px;
 			}
-			.pCss{
+			
+			.pCss {
 				font-size: 14px;
 				color: #666666;
-				margin-left: 50px;margin-top: -32px;margin-right: 10px;
+				margin-left: 50px;
+				margin-top: -32px;
+				margin-right: 10px;
 			}
-			.mui-table-view-cell{
+			
+			.mui-table-view-cell {
 				min-height: 44px;
 			}
 		</style>
 	</head>
 
 	<body>
-		<header class="mui-bar mui-bar-nav" style="background-color:#63BBFF;" id="tempVue">
+		<header class="mui-bar mui-bar-nav" style="background-color:#00CFBD;" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>
 			<h1 class="mui-title" style="color: white;">新建通知</h1>
 			<!--<a @click="addNotice()" class="mui-pull-right" style="color: white;font-size: 15px;margin-top: 10px;">发布</a>-->
@@ -69,36 +74,36 @@
 			</div>
 			<div class="" id="addNoticeContent">
 				<div class="mui-input-row mui-checkbox mui-left" style="float: right;margin-top: -50px;">
-				<label style="font-size: 14px;color: #333333;">发送短信</label>
-				<input v-model="msgFlag" name="checkbox1" type="checkbox">
-			</div>
-			<div class="" style="margin-top: 10px;">
-				<ul class="mui-table-view">
-					<li class="mui-table-view-cell">
-						<a class="aCss" style="width: 100px;">
-							接收人
-						</a>
-					</li>
-					<li class="mui-table-view-cell">
-						<a class="aCss" @click="clickSelect(0)">
-							年级:
-						</a>
-						<p @click="clickSelect(0)" class="mui-navigate-right pCss">{{gradeStr}}</p>
-					</li>
-					<li class="mui-table-view-cell">
-						<a @click="clickSelect(1)" class="aCss">
-							班级:
-						</a>
-						<p @click="clickSelect(1)" class="mui-navigate-right pCss">{{classStr}}</p>
-					</li>
-					<li class="mui-table-view-cell" v-show="flag>0">
-						<a class="aCss" @click="clickSelect(2)">
-							家长:
-						</a>
-						<p @click="clickSelect(2)" class="mui-navigate-right pCss">{{parentsStr}}</p>
-					</li>
-				</ul>
-			</div>
+					<label style="font-size: 14px;color: #333333;">发送短信</label>
+					<input v-model="msgFlag" name="checkbox1" type="checkbox">
+				</div>
+				<div class="" style="margin-top: 10px;">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<a class="aCss" style="width: 100px;">
+								接收人
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="aCss" @click="clickSelect(0)">
+								年级:
+							</a>
+							<p @click="clickSelect(0)" class="mui-navigate-right pCss">{{gradeStr}}</p>
+						</li>
+						<li class="mui-table-view-cell">
+							<a @click="clickSelect(1)" class="aCss">
+								班级:
+							</a>
+							<p @click="clickSelect(1)" class="mui-navigate-right pCss">{{classStr}}</p>
+						</li>
+						<li class="mui-table-view-cell" v-show="flag>0">
+							<a class="aCss" @click="clickSelect(2)">
+								家长:
+							</a>
+							<p @click="clickSelect(2)" class="mui-navigate-right pCss">{{parentsStr}}</p>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		<div id="videoPopover" class="mui-popover">
@@ -180,6 +185,9 @@
 					if(classModel.isms == 1) {
 						addNoticeContent.flag++;
 						addNoticeContent.gradeArray.push(classModel.grdid);
+						addNoticeContent.classIDsArray.push(classModel.clsid);
+						addNoticeContent.gradeIDsArray.push(classModel.grdid);
+						addNoticeContent.classIDs = addNoticeContent.classIDs + ',' + classModel.clsid;
 						addNoticeContent.classStr = addNoticeContent.classStr + ',' + classModel.clsname;
 						addNoticeContent.parentsStr = addNoticeContent.parentsStr + ';' + classModel.clsname + '全部家长';
 					}
@@ -187,10 +195,10 @@
 				//去重
 				addNoticeContent.gradeArray = unique(addNoticeContent.gradeArray);
 				//合并选择的班级ids
-				for(var i = 0; i < addNoticeContent.gradeArray.length; i++) {
-					var clsModel = addNoticeContent.gradeArray[i];
-					addNoticeContent.classIDs = addNoticeContent.classIDs + ',' + clsModel;
-				}
+//				for(var i = 0; i < addNoticeContent.gradeArray.length; i++) {
+//					var clsModel = addNoticeContent.gradeArray[i];
+//					addNoticeContent.classIDs = addNoticeContent.classIDs + ',' + clsModel.clsid;
+//				}
 				//去掉首个，
 				if(addNoticeContent.classIDs.length > 0) {
 					addNoticeContent.classIDs = addNoticeContent.classIDs.substr(1);
@@ -229,13 +237,16 @@
 							mui.toast(data.RspTxt, "cancel");
 						}
 					});
+				}else{
+					addNoticeContent.gradeStr = '请选择';
+					addNoticeContent.classStr = '请选择';
 				}
 			});
 
 			var addNoticeContent = new Vue({
 				el: "#addNoticeContent",
 				data: {
-					pageFlag:0,//页面是否加载完成
+					pageFlag: 0, //页面是否加载完成
 					flag: 0, //0不是班主任，1是
 					gradeArray: [], //班主任身份时，执教年级列表
 					noticeArray: [], //通知列表数组
@@ -245,18 +256,27 @@
 					classStr: '', //班级列表
 					parentsStr: '', //家长列表
 					classIDs: '', //选择的班级ids
+					classIDsArray: [], //选择的班级id数组
+					gradeIDsArray: [], //全选择班级的年级id数组
 					parentArray: [] //家长列表
 				},
 				methods: {
 					clickSelect: function(flag) {
 						console.log('flag:' + flag);
 						if(flag == 0) { //年级
-							utils.mOpenWithData("../../html/homeSchool/gradeList.html", {});
+							utils.mOpenWithData("../../html/homeSchool/gradeList.html", {
+								classIDsArray: addNoticeContent.classIDsArray, //选择的班级id数组
+								gradeIDsArray: [] //全选择班级的年级id数组
+							});
 						} else if(flag == 1) { //班级
-							utils.mOpenWithData("../../html/homeSchool/gradeList.html", {});
+							utils.mOpenWithData("../../html/homeSchool/gradeList.html", {
+								classIDsArray: addNoticeContent.classIDsArray, //选择的班级id数组
+								gradeIDsArray: [] //全选择班级的年级id数组
+							});
 						} else if(flag == 2) { //家长
 							utils.mOpenWithData("../../html/homeSchool/notice_parentsList.html", {
-								classIDs: addNoticeContent.classIDs
+								classIDs: addNoticeContent.classIDs,
+								parentArray:addNoticeContent.parentArray
 							});
 						}
 					}
@@ -268,18 +288,22 @@
 				var tempData = data.detail;
 				addNoticeContent.gradeStr = tempData.gradeShow;
 				addNoticeContent.classStr = tempData.classShow;
+				addNoticeContent.classIDsArray =  [].concat(tempData.classIDsArray);
+				addNoticeContent.gradeIDsArray =  [].concat(tempData.gradeIDsArray);
+				addNoticeContent.classIDs = tempData.classIDs;
 				//6.学校班级学生,获取选择班级中对应的人
 				getClassParents(tempData.classIDs);
 				addNoticeContent.parentsStr = tempData.classShow.replace(/;/g, '全部家长;');
 				addNoticeContent.parentsStr = addNoticeContent.parentsStr.replace(/全部班级/g, '');
-				addNoticeContent.parentsStr = addNoticeContent.parentsStr+'全部家长';
+				addNoticeContent.parentsStr = addNoticeContent.parentsStr + '全部家长';
+
 			});
 
 			window.addEventListener('selectStudents', function(data) {
 				console.log("data" + JSON.stringify(data.detail));
 				var tempData = data.detail;
 				addNoticeContent.parentsStr = tempData.parentsShow;
-				addNoticeContent.parentArray = tempData.parentsArray;
+				addNoticeContent.parentArray =  [].concat(tempData.parentsArray);
 			});
 
 			//6.学校班级学生,获取选择班级中对应的人
@@ -298,7 +322,13 @@
 					events.closeWaiting();
 					if(data.RspCode == 0) {
 						console.log('data:' + JSON.stringify(data));
-						addNoticeContent.parentArray = data.RspData.clssstus;
+						if (data.RspData==null) {
+							console.log('qqqqqqqqq');
+							addNoticeContent.parentsStr = '所在班级没有学生';
+						}else{
+							console.log('qqqqqqqqw');
+							addNoticeContent.parentArray = [].concat(data.RspData.clssstus);
+						}
 					} else {
 						mui.toast(data.RspTxt, "cancel");
 					}
@@ -393,8 +423,10 @@
 					events.hideKeyBoard(hideOption);
 					if(notes.value.replace(/(^\s*)|(\s*$)/g, "") == "") { //为空不允许发送
 						mui.toast('通知内容不能为空');
+						document.getElementById("finish").disabled = false;
 					} else if(notes.value.length > 2000) {
 						mui.toast('内容最多2000字');
+						document.getElementById("finish").disabled = false;
 					} else {
 						var wd = events.showWaiting();
 						document.getElementById("finish").disabled = true;
@@ -419,12 +451,18 @@
 				var temp1 = [];
 				var temp2 = [];
 				var temp3 = [];
-				for(var i = 0; i < addNoticeContent.parentArray.length.length; i++) {
+				for(var i = 0; i < addNoticeContent.parentArray.length; i++) {
 					var stuModel = addNoticeContent.parentArray[i];
 					temp0.push(stuModel.stuid);
 					temp1.push(stuModel.stuname);
 					temp2.push(stuModel.stuno);
 					temp3.push(stuModel.stuid);
+				}
+				if (temp0.length==0) {
+					mui.toast('选择的接收人为空');
+					events.closeWaiting();
+					document.getElementById("finish").disabled = false;
+					return;
 				}
 				//1.新增学校通知（同时增加通知未读）
 				var tempData1 = {
@@ -451,6 +489,7 @@
 						mui.toast('成功');
 						mui.back();
 					} else {
+						document.getElementById("finish").disabled = false;
 						mui.toast(data.RspTxt);
 					}
 				});

@@ -40,10 +40,10 @@
 	</head>
 
 	<body style="background: white;">
-		<header class="mui-bar mui-bar-nav" style="background-color:#63BBFF;" id="tempVue">
+		<header class="mui-bar mui-bar-nav" style="background-color:#00CFBD;" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>
 			<h1 class="mui-title" style="color: white;">学校通知</h1>
-			<a @click="revoke()" class="mui-pull-right" style="color: white;font-size: 25px;margin-top: 10px;">+</a>
+			<a v-if="personal.appxxtservstat>0" @click="revoke()" class="mui-pull-right" style="color: white;font-size: 25px;margin-top: 10px;">+</a>
 		</header>
 		<div class="mui-content" id="noticelistData" style="margin-top: -40px;">
 			<ul class="mui-table-view" v-for="(noticeModel,index) in noticeArray">
