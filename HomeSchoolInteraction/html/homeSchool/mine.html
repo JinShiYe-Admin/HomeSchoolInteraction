@@ -73,7 +73,6 @@
 			})
 
 			function closeMenu() {
-//				console.log('99999999999');
 //				mui.fire(plus.webview.currentWebview().opener(), 'closeMinePage', {});
 //				store.remove(window.storageKeyName.PERSONALINFO);
 //				utils.mOpenWithData("../../html/login/loginIndex.html", {});
@@ -84,9 +83,10 @@
 				var curr = plus.webview.currentWebview();
 				var wvs = plus.webview.all();
 				for (var i = 0, len = wvs.length; i < len; i++) {
-                    //关闭除login页面外的其他页面
-					if (wvs[i].getURL() == curr.getURL())
+		            //关闭除login页面外的其他页面
+					if (wvs[i].getURL().indexOf('loginIndex.html')!=-1){
 						continue;
+					}
 					plus.webview.close(wvs[i]);
 				}
 				curr.close();
