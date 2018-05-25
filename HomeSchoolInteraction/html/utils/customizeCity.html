@@ -346,6 +346,13 @@
 					//console.log('commitCities:' + JSON.stringify(commitCities));
 
 					if(main.data.id == '0' || main.data.id == '1') { //0科教，1展现
+						var tempCodeArray = [];
+						var tempNameArray = [];
+						for(var m in tempCities) {
+							var tempModel = tempCities[m];
+							tempCodeArray.push(tempModel.acode);
+							tempNameArray.push(tempModel.aname);
+						}
 						//将数组改为字符串
 						var tempStr = '';
 						for(var m in tempCities) {
@@ -354,6 +361,7 @@
 							tempCities.splice(m, 1, tempStr1);
 							tempStr = tempCities.join('|');
 						}
+						//						console.log('tempStr00000:' + tempStr);
 						if(!parseInt((pInfo.utid))) {
 							var citiesInfo = {
 								type: main.data.id,
@@ -361,16 +369,26 @@
 							};
 							//记录游客订制的城市
 							if(main.data.id == '0') { //科教
-								window.myStorage.setItem(window.storageKeyName.SECITY, localCity);
+//								window.myStorage.setItem(window.storageKeyName.SECITY, localCity);
+								store.set(window.storageKeyName.SECITY, localCity);
 							} else if(main.data.id == '1') { //展现
-								window.myStorage.setItem(window.storageKeyName.SHOWCITY, localCity);
+//								window.myStorage.setItem(window.storageKeyName.SHOWCITY, localCity);
+								store.set(window.storageKeyName.SHOWCITY, localCity);
 							}
-							events.fireToPageNone(main.data.webid, 'customizeCity', citiesInfo);
+//							events.fireToPageNone(main.data.webid, 'customizeCity', citiesInfo);
+							mui.fire(plus.webview.currentWebview().opener(), 'customizeCity', citiesInfo);
 							mui.toast('订制城市成功');
 							mui.back();
 						} else {
 							//43.用户修改或添加区域阅读设置
-							requestCitySetting(tempStr);
+							//							requestCitySetting(tempStr);
+
+							var tempCode = tempCodeArray.join(',');
+							var tempName = tempNameArray.join(',');
+							//							console.log('tempCode:' + tempCode);
+							//							console.log('tempName:' + tempName);
+							//9.新增定制城市
+							addPersonCity(tempCode, tempName);
 						}
 					} else if(main.data.id == 'uarea') { //uarea账号地区
 						if(commitCities.length == 0 || commitCities[0].acode == pInfo.uarea.acode) {
@@ -548,6 +566,33 @@
 					}
 					wd.close();
 
+				});
+			}
+
+			//9.新增定制城市
+			var addPersonCity = function(cityCodes, cityNames) {
+				var tempData = {
+					userId: personal.utid, //登录人ID
+					cityCodes: cityCodes, //定制城市Code,多个的情况用英文逗号隔开
+					cityNames: cityNames //定制城市名称,多个的情况用英文逗号隔开
+				}
+				events.showWaiting();
+				addPersonCityPro(tempData, function function_name(data) {
+					events.closeWaiting();
+					console.log('9data:' + JSON.stringify(data));
+					if(data.RspCode == 0) {
+						var citiesInfo = {
+							type: main.data.id,
+							cities: commitCities
+						};
+//						events.fireToPageNone(main.data.webid, 'customizeCity', citiesInfo);
+						mui.fire(plus.webview.currentWebview().opener(), 'customizeCity', citiesInfo);
+						mui.toast('订制城市成功');
+						mui.back();
+
+					} else {
+						mui.toast(data.RspTxt);
+					}
 				});
 			}
 

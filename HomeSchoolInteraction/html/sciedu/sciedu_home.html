@@ -155,8 +155,9 @@
 
 				//退出订制城市界面返回的数据
 				window.addEventListener('customizeCity', function(e) {
-					var data = e.detail.data;
-					//console.log('获取的修改后的城市信息:' + JSON.stringify(data));
+//					var data = e.detail.data;
+					var data = e.detail;
+					console.log('获取的修改后的城市信息:' + JSON.stringify(data));
 					cities = []; //存储当前定制的城市
 					show = true; //是否显示科教的内容
 					sliderId = ''; //记录显示的城市
@@ -231,8 +232,8 @@
 						sliderId = city.acode;
 						changeIndexHeader();
 						var ipr = pageAndInfo[sliderId];
-						//console.log('slide info ' + JSON.stringify(ipr.info));
-						//console.log('slide page ' + JSON.stringify(ipr.page));
+						console.log('slide info ' + JSON.stringify(ipr.info));
+						console.log('slide page ' + JSON.stringify(ipr.page));
 						if(!ipr.page) {
 							requestCityNews(ipr.info.acode, 1, 0);
 						}
@@ -252,8 +253,10 @@
 						if(dataHistory != 'true') { //不是历史记录
 							////console.log('dataHistory ' + dataHistory);
 							this.setAttribute('data-seHistory', true);
+//							var personalUID = store.get(window.storageKeyName.PERSONALINFO).uid;
+//							var History = window.myStorage.getItem(window.storageKeyName.seHistory + '_' + personalUID);
 							var personalUID = store.get(window.storageKeyName.PERSONALINFO).uid;
-							var History = window.myStorage.getItem(window.storageKeyName.seHistory + '_' + personalUID);
+							var History = store.get(window.storageKeyName.seHistory + '_' + personalUID);
 							if(History == null) {
 								History = [];
 							}
@@ -261,7 +264,8 @@
 							if(History.length > 100) {
 								History.splice(0, 1); //删掉第一个
 							}
-							window.myStorage.setItem(window.storageKeyName.seHistory + '_' + personalUID, History);
+//							window.myStorage.setItem(window.storageKeyName.seHistory + '_' + personalUID, History);
+							store.set(window.storageKeyName.seHistory + '_' + personalUID, History);
 							////console.log('tap seHistory ' + JSON.stringify(History));
 						}
 						document.getElementById("title_" + id).style.color = 'darkgray';
@@ -403,10 +407,13 @@
 				var personalUID = store.get(window.storageKeyName.PERSONALINFO).uid;
 				var seHistory = [];
 				//如果没有这个人的记录，则创建一份空记录
-				if(window.myStorage.getItem(window.storageKeyName.seHistory + '_' + personalUID)) {
-					seHistory = window.myStorage.getItem(window.storageKeyName.seHistory + '_' + personalUID);
+//				if(window.myStorage.getItem(window.storageKeyName.seHistory + '_' + personalUID)) {
+				if(store.get(window.storageKeyName.seHistory + '_' + personalUID)) {
+//					seHistory = window.myStorage.getItem(window.storageKeyName.seHistory + '_' + personalUID);
+					seHistory = store.get(window.storageKeyName.seHistory + '_' + personalUID);
 				} else {
-					window.myStorage.setItem(window.storageKeyName.seHistory + '_' + personalUID, []);
+//					window.myStorage.setItem(window.storageKeyName.seHistory + '_' + personalUID, []);
+					store.set(window.storageKeyName.seHistory + '_' + personalUID, []);
 				}
 				var placeholder = '../../' + window.storageKeyName.DEFAULTSCIEDUIMAGELOAD;
 				var lazyLoad = mui("#bot_ul_" + cityCode).imageLazyload({
@@ -460,7 +467,8 @@
 				//44.获取个人的订制城市
 				//游客身份
 				if(!store.get(window.storageKeyName.PERSONALINFO).utid) {
-					var localCity = window.myStorage.getItem(window.storageKeyName.SECITY);
+//					var localCity = window.myStorage.getItem(window.storageKeyName.SECITY);
+					var localCity = store.get(window.storageKeyName.SECITY);
 					if(localCity && localCity.length != 0) {
 						eduArray = localCity;
 					}
@@ -480,15 +488,15 @@
 					getPersonCitysByUserPro(tempData, function function_name(data) {
 						//					events.closeWaiting();
 						console.log('10data:' + JSON.stringify(data));
-						if(data.RspCode == 0) {
+						if(data.RspCode == 0) { 
 							if(data.RspData.Data.length == 0) {
 								//从来就没有订制过城市的就强制添加一个账号所在地
-								var uarea = store.get(window.storageKeyName.PERSONALINFO).uarea;
+//								var uarea = store.get(window.storageKeyName.PERSONALINFO).uarea;
 								//console.log('个人账号地区的城市 ' + JSON.stringify(uarea));
-								eduArray.push({
-									acode: uarea.acode,
-									aname: uarea.aname
-								});
+//								eduArray.push({
+//									acode: uarea.acode,
+//									aname: uarea.aname
+//								});
 							} else {
 								for(var i = 0; i < data.RspData.Data.length; i++) {
 									var tempCityModel = data.RspData.Data[i];
