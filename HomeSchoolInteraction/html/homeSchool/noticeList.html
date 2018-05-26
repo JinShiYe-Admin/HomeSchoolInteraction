@@ -61,10 +61,10 @@
 							<span class="nameTime">{{noticeModel.SendManName}}  {{noticeModel.SendTime}}</span>
 
 						</div>
-						<div id="" v-if="noticeModel.ReadCnt==0&&noticeModel.ReplyCnt==0&&noticeModel.SendManId==personal.utid&&noticeModel.SmsSync==0">
-							<button @click.stop="deleteNotice(noticeModel)" type="button" style="width: 50px;margin-top: -20px;border: 0px;font-size: 12px;color: #ff6666;float: right;margin-right: 10px;">删除</button>
+						<div id="" v-if="noticeModel.ReadCnt==0&&noticeModel.ReplyCnt==0&&noticeModel.SendManId==personal.utid&&noticeModel.SmsSync==0" style="float: right;margin-right: 10px;margin-top: -23px">
+							<button @click.stop="deleteNotice(noticeModel)" type="button" style="width: 50px;border: 0px;font-size: 12px;color: #ff6666;">删除</button>
 						</div>
-						<div id="" v-else="">
+						<div id="" v-else="" style="float: right;margin-right: 10px;margin-top: -22px;">
 							<image src='../../img/homeSchool/lookCount.png' style="width: 10px;height: 10px;border-radius: 50%;" />
 							<span class="nameTime">{{noticeModel.ReadCnt}}</span>
 							<image src="../../img/homeSchool/contentCount.png" style="width: 10px;height: 10px;border-radius: 50%;" />
@@ -74,6 +74,28 @@
 				</li>
 			</ul>
 		</div>
+
+
+			<!--<div class="mui-content" style="margin-top: -40px;">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" >
+					<div class="mui-navigate-right">
+						<div id="">
+							<image src="../../img/homeSchool/redColor.png" style="width: 7px;height: 7px;border-radius: 50%;" />
+							<p style="font-size: 15px;color: #333333;margin-top: -17px;margin-left: 12px;">11111111</p>
+						</div>
+						<div class="">
+							<image :src=noticeModel.SendManImg style="width: 15px;height: 15px;border-radius: 50%;vertical-align: middle;" />
+							<span class="nameTime">222222222222</span>
+
+						</div>
+						<div id="" style="float: right;margin-right: 10px;margin-top: -33px">
+							<button @click.stop="deleteNotice(noticeModel)" type="button" style="width: 50px;border: 0px;font-size: 12px;color: #ff6666;">删除</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>-->
 
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../js/utils/vue.min.js"></script>
