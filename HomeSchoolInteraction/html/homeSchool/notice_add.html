@@ -68,15 +68,15 @@
 			<!--<a @click="addNotice()" class="mui-pull-right" style="color: white;font-size: 15px;margin-top: 10px;">发布</a>-->
 			<div id="finish" class="title-text-pull-right">完成</div>
 		</header>
-		<div class="mui-content mui-fullscreen" style="background: white;">
-			<textarea id="notes" maxlength="2000" placeholder="请输入发布内容（最多2000字）"></textarea>
+		<div class="mui-content mui-fullscreen" style="background: white;" id="addNoticeContent">
+			<textarea id="notes" v-model="content" maxlength="350" placeholder="请输入发布内容（最多350字）"></textarea>
 			<div id="MultiMedia">
 				<div class="mui-input-row mui-checkbox mui-left" id="senMSN" style="float: right;margin-top: 3px;display: none;">
 					<label style="font-size: 14px;color: #333333;">发送短信</label>
 					<input v-model="msgFlag" name="checkbox1" type="checkbox">
 				</div>
 			</div>
-			<div class="" id="addNoticeContent" >  
+			<div class="" >  
 				<div class="" id="bootom-card" style="margin-top: -15px;">  
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
@@ -424,11 +424,11 @@
 				//完成
 				document.getElementById('finish').addEventListener('tap', function() {
 					events.hideKeyBoard(hideOption);
-					if(notes.value.replace(/(^\s*)|(\s*$)/g, "") == "") { //为空不允许发送
+					if(addNoticeContent.content.replace(/(^\s*)|(\s*$)/g, "") == "") { //为空不允许发送
 						mui.toast('通知内容不能为空');
 						document.getElementById("finish").disabled = false;
-					} else if(notes.value.length > 2000) {
-						mui.toast('内容最多2000字');
+					} else if(addNoticeContent.content.length > 350) {
+						mui.toast('内容最多350字');
 						document.getElementById("finish").disabled = false;
 					} else {
 						var wd = events.showWaiting();
@@ -467,10 +467,15 @@
 					document.getElementById("finish").disabled = false;
 					return;
 				}
+				if (addNoticeContent.msgFlag) {
+					addNoticeContent.msgFlag = 1;
+				} else{
+					addNoticeContent.msgFlag = 0;
+				}
 				//1.新增学校通知（同时增加通知未读）
 				var tempData1 = {
 					schoolId: personal.schid, //学校ID，统一部署的时候，学校ID传000000
-					noticeContent: notes.value, //内容
+					noticeContent: addNoticeContent.content, //内容
 					noticEncName: '', //附件名称，竖杠隔开
 					noticeEncAddr: encAddr, //附件地址，竖杠隔开
 					smsSync: addNoticeContent.msgFlag, //是否短信同步，先填0
@@ -488,7 +493,7 @@
 				addNoticePro(tempData1, function function_name(data) {
 					events.closeWaiting();
 					if(data.RspCode == 0) {
-						notes.value = '';
+						addNoticeContent.content = '';
 						mui.toast('成功');
 						mui.back();
 					} else {

@@ -49,13 +49,12 @@
 			<ul class="mui-table-view" v-for="(noticeModel,index) in noticeArray">
 				<li class="mui-table-view-cell" @click="clickNoticeList(noticeModel)">
 					<div class="mui-navigate-right">
-						<div id="" v-if="noticeModel.IsRead==0">
-							<image v-if="noticeModel.IsRead==0" src="../../img/homeSchool/redColor.png" style="width: 7px;height: 7px;border-radius: 50%;" />
+						<div id="" v-if="noticeModel.IsRead==0&&noticeModel.NoticeType==1">
+							<image src="../../img/homeSchool/redColor.png" style="width: 7px;height: 7px;border-radius: 50%;" />
 							<p style="font-size: 15px;color: #333333;margin-top: -17px;margin-left: 12px;">{{noticeModel.NoticeContent}}</p>
 						</div>
 						<div id="" v-else="">
-							<image v-if="noticeModel.IsRead==0" src="../../img/homeSchool/redColor.png" style="width: 7px;height: 7px;border-radius: 50%;" />
-							<p style="font-size: 15px;color: #333333;margin-left: 12px;">{{noticeModel.NoticeContent}}</p>
+							<p style="font-size: 15px;color: #333333;margin-left: 0px;">{{noticeModel.NoticeContent}}</p>
 						</div>
 						<div class="">
 							<image :src=noticeModel.SendManImg style="width: 15px;height: 15px;border-radius: 50%;vertical-align: middle;" />

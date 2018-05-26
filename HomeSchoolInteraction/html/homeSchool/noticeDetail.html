@@ -157,7 +157,7 @@
 		<nav class="mui-bar mui-bar-tab" id="noticeReplyContent" style="background: white;">
 			<div style="padding-top: 5px;">
 				<input v-model="content" type="text" style="border: 0px;margin-bottom: 0px;margin-left: 5px;width: 75%;font-size: 16px;color: #999999;" placeholder="请输入要回复的内容" />
-				<button v-on:click.stop="replyContent()" type="button" class="" style="width: 20%;margin-top: 2px;border: 0px;font-size: 18px;color: #00cfbd;">回复</button>
+				<button v-on:click.stop="replyContent()" type="button" maxlength="200" class="" style="width: 20%;margin-top: 2px;border: 0px;font-size: 18px;color: #00cfbd;">回复</button>
 			</div>
 		</nav>
 		
@@ -167,10 +167,14 @@
 			<div id="" v-show="noticesDetail.NoticeEncAddr.length>0">
 				<div class="" v-if="noticesDetail.NoticeEncAddr.length==1&&noticesDetail.encFlag==2">
 					<ul class="mui-table-view mui-grid-view">
-						<li class="mui-table-view-cell mui-media mui-col-xs-12" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
+						<li class="mui-table-view-cell mui-media" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
+							<a href="#" class="img-box">
+								<img @click="playVideo" class="notice-one-img mui-media-object" src="../../img/utils/playvideo2.png" style="height: 80px;width: 80px;"></a>
+						</li>
+						<!--<li class="mui-table-view-cell mui-media mui-col-xs-12" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
 							<a href="#" style="">
 								<img @click="playVideo" class="mui-media-object video-play" src="../../img/utils/playvideo.png" style="margin-left: 15px;height: 80px;width: 80px;"></a>
-						</li>
+						</li>-->
 					</ul>
 				</div>
 				<div class="" v-else-if="noticesDetail.NoticeEncAddr.length==1&&noticesDetail.encFlag==1">
@@ -333,7 +337,6 @@
 					},
 					methods: {
 						playVideo: function() {
-							console.log('333333333333333');
 							ShowVideoUtil.showVideo(document.getElementById("video"), 'videoPopover', noticeDetailData.noticesDetail.NoticeEncAddr[0], '../../img/utils/playvideo.png');
 						}
 					}
