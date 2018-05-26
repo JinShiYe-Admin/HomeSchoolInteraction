@@ -26,7 +26,7 @@
 				<span class="mui-icon iconfont icon-jiaxiaohudong"></span>
 				<span class="mui-tab-label">家校互动</span>
 			</a>
-			<a class="mui-tab-item" href="html/sciedu/sciedu_home.html">
+			<a id="noPermission" class="mui-tab-item" href="html/sciedu/sciedu_home.html">
 			<!--<a class="mui-tab-item" href="html/Course/courseIndex.html">-->
 				<span class="mui-icon iconfont icon-jiaoyu"></span>
 				<span class="mui-tab-label">科教活动</span>
@@ -41,11 +41,21 @@
 			</a>
 		</nav>
 		<script src="js/mui.min.js"></script>
+		<script src="js/storageKeyName.js"></script>
+		<script src="js/utils/store.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			//mui初始化
 			mui.init();
-			var subpages = ['html/homeSchool/homeSchoolIndex.html', 'html/sciedu/sciedu_home.html', 'html/Course/courseIndex.html', 'html/Course/courseIndex.html'];
-//			var subpages = ['html/homeSchool/homeSchoolIndex.html', 'html/Course/courseIndex.html', 'html/Course/courseIndex.html', 'html/Course/courseIndex.html'];
+			//判断权限 
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			var authority =true;
+			if(personal.utid=='0')
+				authority=false;
+
+			var subpages =[];
+			
+				subpages=['html/homeSchool/homeSchoolIndex.html', 'html/sciedu/sciedu_home.html',  'html/Course/courseIndex.html', 'html/Course/courseIndex.html'];
+			
 			var subpage_style = {
 				top: '0px',
 				bottom: '51px'
@@ -83,44 +93,61 @@
 					}
 					self.append(sub);
 				}
-			});
-			//当前激活选项
-			var activeTab = subpages[0];
-			var title = document.getElementById("title");
-			//选项卡点击事件
-			mui('.mui-bar-tab').on('tap', 'a', function(e) {
-				var targetTab = this.getAttribute('href');
-				if(targetTab == activeTab) {
-					return;
-				}
-				//更换标题
-//				title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
-				//显示目标选项卡
-				//若为iOS平台或非首次显示，则直接显示
-				if(mui.os.ios || aniShow[targetTab]) {
-					plus.webview.show(targetTab);
-				} else {
-					//否则，使用fade-in动画，且保存变量
-					var temp = {};
-					temp[targetTab] = "true";
-					mui.extend(aniShow, temp);
-					plus.webview.show(targetTab, "fade-in", 300);
-				}
-				//隐藏当前;
-				plus.webview.hide(activeTab);
-				//更改当前活跃的选项卡
-				activeTab = targetTab;
-			});
-			//自定义事件，模拟点击“首页选项卡”
-			document.addEventListener('gohome', function() {
-				var defaultTab = document.getElementById("defaultTab");
-				//模拟首页点击
-				mui.trigger(defaultTab, 'tap');
-				//切换选项卡高亮
-				var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
-				if(defaultTab !== current) {
-					current.classList.remove('mui-active');
-					defaultTab.classList.add('mui-active');
+				
+				//当前激活选项
+					activeTab = subpages[0];
+				var title = document.getElementById("title");
+				//选项卡点击事件
+				mui('.mui-bar-tab').on('tap', 'a', function(e) {
+					var targetTab = this.getAttribute('href');
+					if(targetTab == activeTab) {
+						return;
+					}
+					//更换标题
+	//				title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
+					//显示目标选项卡
+					//若为iOS平台或非首次显示，则直接显示
+					var target =targetTab.indexOf("homeSchoolIndex")==-1;
+					if(authority==false&&target==false){//没有权限且目标页为homeSchoolIndex.html
+							alert('没有该模块权限');
+							return;
+					}
+					if(mui.os.ios || aniShow[targetTab]) {
+						plus.webview.show(targetTab);
+					} else {
+						//否则，使用fade-in动画，且保存变量
+						var temp = {};
+						temp[targetTab] = "true";
+						mui.extend(aniShow, temp);
+						plus.webview.show(targetTab, "fade-in", 300);
+					}
+					//隐藏当前;
+					plus.webview.hide(activeTab);
+					//更改当前活跃的选项卡
+					activeTab = targetTab;
+				});
+			
+				if(!authority){//没有权限
+					//自定义事件，模拟点击“首页选项卡”
+					var defaultTab = document.getElementById("noPermission");
+					//模拟首页点击
+					mui.trigger(defaultTab, 'tap');
+					//切换选项卡高亮
+					var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
+					if(defaultTab !== current) {
+						current.classList.remove('mui-active');
+						defaultTab.classList.add('mui-active');
+					}
+				}else{
+					var defaultTab = document.getElementById("defaultTab");
+					//模拟首页点击
+					mui.trigger(defaultTab, 'tap');
+					//切换选项卡高亮
+					var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
+					if(defaultTab !== current) {
+						current.classList.remove('mui-active');
+						defaultTab.classList.add('mui-active');
+					}
 				}
 			});
 		</script>
