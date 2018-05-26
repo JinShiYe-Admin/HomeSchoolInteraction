@@ -48,6 +48,7 @@
 			mui.init();
 			//判断权限 
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log("personal"+personal)
 			var authority =true;
 			if(personal.utid=='0')
 				authority=false;
