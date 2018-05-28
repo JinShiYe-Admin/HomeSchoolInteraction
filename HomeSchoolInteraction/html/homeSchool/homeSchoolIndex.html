@@ -233,8 +233,19 @@
 					});
 				}, 300);
 			});
+			//关闭侧滑
 			window.addEventListener('closeMinePage', function(data) {
 				closeMenu();
+			});
+			//获取未读数
+			window.addEventListener('getNoticeNoReadCnt', function(data) {
+				//12.获取某人未读学校通知个数
+				getNoReadNoticeCntByMan();
+			});
+			
+			//阅读了一条未读状态的通知数据
+			window.addEventListener('readNoticeList', function(data) {
+				contentData.NoReadCnt--;
 			});
 
 			/**

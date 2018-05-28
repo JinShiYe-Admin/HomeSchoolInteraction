@@ -169,6 +169,10 @@
 						console.log('点击li：' + model);
 						model.IsRead = 1;
 						utils.mOpenWithData("../../html/homeSchool/noticeDetail.html", model);
+						//让首页的未读数减1
+						if (model.IsRead ==0&&mode.NoticeType ==1) {
+							mui.fire(plus.webview.currentWebview().opener(), 'readNoticeList', {});
+						}
 					},
 					deleteNotice: function(noticeModel) {
 						mui.confirm('', '确定删除？', ['取消', '确认'], function(e) {
@@ -222,6 +226,8 @@
 					mui('#noticelistData').pullRefresh().endPullupToRefresh(); //参数为true代表没有更多数据了。
 					mui('#noticelistData').pullRefresh().endPulldownToRefresh();
 					console.log('data:' + JSON.stringify(data));
+					//在主界面重新获取通知未读数
+					mui.fire(plus.webview.currentWebview().opener(), 'getNoticeNoReadCnt', {});
 					if(data.RspCode == 0) {
 						noticelistData.pageIndex++;
 						for(var i = 0; i < data.RspData.Data.length; i++) {
