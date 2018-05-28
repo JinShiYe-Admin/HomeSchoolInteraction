@@ -26,7 +26,7 @@
 				<span class="mui-icon iconfont icon-jiaxiaohudong"></span>
 				<span class="mui-tab-label">家校互动</span>
 			</a>
-			<a id="noPermission" class="mui-tab-item" href="html/sciedu/sciedu_home.html">
+			<a id="noPermission" class="mui-tab-item " href="html/sciedu/sciedu_home.html">
 			<!--<a class="mui-tab-item" href="html/Course/courseIndex.html">-->
 				<span class="mui-icon iconfont icon-jiaoyu"></span>
 				<span class="mui-tab-label">科教活动</span>
@@ -44,18 +44,18 @@
 		<script src="js/storageKeyName.js"></script>
 		<script src="js/utils/store.js"></script>
 		<script src="js/utils/utils.js"></script>
+		<script src="js/libs/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			//mui初始化
 			mui.init();
-			//判断权限 
+			//判断权限  
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
-			console.log("personal"+personal)
+			console.log("personal============"+JSON.stringify(personal))
 			var authority =true; 
-			if(personal.utid=='0')
+			if(personal.utid=='0'){
 				authority=false;
-
+			}
 			var subpages =[];
-			
 				subpages=['html/homeSchool/homeSchoolIndex.html', 'html/sciedu/sciedu_home.html',  'html/Course/courseIndex.html', 'html/helpStudy/helpStudyIndex.html'];
 			
 			var subpage_style = {
@@ -87,7 +87,7 @@
 				for(var i = 0; i < 4; i++) {
 					var temp = {};
 					var sub = plus.webview.create(subpages[i], subpages[i], subpage_style);
-					if(i > 0) {
+					if(i>0) {
 						sub.hide();
 					} else {
 						temp[subpages[i]] = "true";
@@ -97,7 +97,7 @@
 				}
 				
 				//当前激活选项
-					activeTab = subpages[0];
+				activeTab = subpages[0];
 				var title = document.getElementById("title");
 				//选项卡点击事件
 				mui('.mui-bar-tab').on('tap', 'a', function(e) {
@@ -106,15 +106,14 @@
 						return;
 					}
 					//更换标题
-	//				title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
+					//title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
 					//显示目标选项卡
-					//若为iOS平台或非首次显示，则直接显示
 					var target =targetTab.indexOf("homeSchoolIndex")==-1;
 					if(authority==false&&target==false){//没有权限且目标页为homeSchoolIndex.html
-//						utils.mOpenWithData("html/login/loginIndex.html", personal);
-							alert('没有该模块权限');
-							return;
+						plus.webview.open('html/login/loginIndex.html');
+						return
 					}
+					//若为iOS平台或非首次显示，则直接显示
 					if(mui.os.ios || aniShow[targetTab]) {
 						plus.webview.show(targetTab);
 					} else {
