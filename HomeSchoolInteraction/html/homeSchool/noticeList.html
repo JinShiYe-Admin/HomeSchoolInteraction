@@ -57,7 +57,8 @@
 							<p style="font-size: 15px;color: #333333;margin-left: 0px;">{{noticeModel.NoticeContent}}</p>
 						</div>
 						<div class="">
-							<image :src=noticeModel.SendManImg style="width: 15px;height: 15px;border-radius: 50%;vertical-align: middle;" />
+							<image v-if="noticeModel.SendManImg==null" src='../../img/noImgPerson.jpg' style="width: 15px;height: 15px;border-radius: 50%;vertical-align: middle;" />
+							<image v-else="" :src=noticeModel.SendManImg style="width: 15px;height: 15px;border-radius: 50%;vertical-align: middle;" />
 							<span class="nameTime">{{noticeModel.SendManName}}  {{noticeModel.SendTime}}</span>
 
 						</div>

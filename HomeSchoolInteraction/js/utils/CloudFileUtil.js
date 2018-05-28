@@ -140,9 +140,12 @@ var CloudFileUtil = (function($, mod) {
 	 * @param {Object} callBack
 	 */
 	mod.getUpLoadTokens = function(data, callBack) {
-		//console.log("getUpLoadTokens " + JSON.stringify(data));
+//		console.log("getUpLoadTokens " + JSON.stringify(data));
 		var appId = data.appId; //项目id
 		var desKey = getAppKey(appId); //项目名称
+		if (appId==8) {
+			appId = 4;
+		}
 		var configure = {}; //配置的数据
 		var params = []; //配置的参数信息
 
@@ -181,7 +184,7 @@ var CloudFileUtil = (function($, mod) {
 					break;
 			}
 
-			//console.log("参数数据 param " + JSON.stringify(param));
+//			console.log("参数数据 param " + JSON.stringify(param));
 			params.push(param);
 		}
 		configure.options = {
@@ -189,7 +192,7 @@ var CloudFileUtil = (function($, mod) {
 			Param: encryptByDES(desKey, JSON.stringify(params))
 		}
 
-		//console.log("参数数据：" + JSON.stringify(configure.options))
+//		console.log("参数数据：" + JSON.stringify(configure.options))
 		//获取token
 		mod.getQNUpTokenWithManage(window.storageKeyName.QNGETUPLOADTOKEN, configure.options, function(data) {
 			callBack({
@@ -229,7 +232,7 @@ var CloudFileUtil = (function($, mod) {
 	 * }
 	 */
 	mod.getQNUpToken = function(url, data, successCB, errorCB) {
-		//console.log('getQNUpToken ' + url + ' ' + JSON.stringify(data));
+//		console.log('getQNUpToken ' + url + ' ' + JSON.stringify(data));
 		var type = ''; //获取上传token的类型。0上传需要生成缩略图的文件；1上传文件
 		var QNFileName = ''; //存放到七牛的文件名
 		var fileList = []; //上传文件的路径
@@ -412,7 +415,7 @@ var CloudFileUtil = (function($, mod) {
 			}
 		}
 
-		//console.log("参数数据：" + JSON.stringify(configure.options))
+//		console.log("参数数据：" + JSON.stringify(configure.options))
 		//获取token
 		mod.getQNUpTokenWithManage(url, configure.options, function(data) {
 			successCB({
@@ -648,6 +651,9 @@ var CloudFileUtil = (function($, mod) {
 			case 7: //求知
 				desKey = storageKeyName.QNPUBQZKEY;
 				break;
+			case 8: //校讯通
+				desKey = storageKeyName.QNPUBXXT;
+				break;
 			default:
 				break;
 		}
@@ -713,6 +719,8 @@ var CloudFileUtil = (function($, mod) {
 	 * @param {Object} errorCB
 	 */
 	mod.getQNUpTokenWithManage = function(url, data, successCB, errorCB) {
+//		console.log('url:'+url);
+//		console.log('data:'+data);
 		mui.ajax(url, {
 			async: false,
 			data: data, //请求参数
@@ -744,7 +752,7 @@ var CloudFileUtil = (function($, mod) {
 		//console.log('upload fPath ' + fPath);
 		//console.log('upload token ' + token);
 		//console.log('upload key ' + key);
-		var task = plus.uploader.createUpload("http://upload.qiniu.com/", {
+		var task = plus.uploader.createUpload("https://upload.qiniu.com/", {
 				method: "POST"
 			},
 			/**
@@ -786,7 +794,7 @@ var CloudFileUtil = (function($, mod) {
 	 */
 	mod.uploadFile = function(tokenInfo, fileName, callback) {
 		////console.log('upload:' + fPath);
-		var task = plus.uploader.createUpload("http://upload.qiniu.com/", {
+		var task = plus.uploader.createUpload("https://upload.qiniu.com/", {
 				method: "POST"
 			},
 			/**
@@ -829,7 +837,7 @@ var CloudFileUtil = (function($, mod) {
 	}
 
 	function createTask(tokenInfo, fileName, index, callback) {
-		var task = plus.uploader.createUpload("http://upload.qiniu.com/", {
+		var task = plus.uploader.createUpload("https://upload.qiniu.com/", {
 				method: "POST"
 			},
 			/**

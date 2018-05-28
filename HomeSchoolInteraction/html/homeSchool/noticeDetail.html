@@ -221,7 +221,8 @@
 					<ul class="mui-table-view" v-for="(model,index) in noticesDetail.ReplyArray">
 						<li class="mui-table-view-cell">
 							<div class="mui-media-body replyName">
-								<img class="mui-media-object mui-pull-left peopleImg" :src=model.ReplyManImg> {{model.ReplyManName}}
+								<img v-if="model.ReplyManImg==null||model.ReplyManImg==''" class="mui-media-object mui-pull-left peopleImg" src='../../img/noImgPerson.jpg'> {{model.ReplyManName}}
+								<img v-else="" class="mui-media-object mui-pull-left peopleImg" :src=model.ReplyManImg> {{model.ReplyManName}}
 								<p class="mui-ellipsis replyTime">{{model.ReplyTime}}</p>
 								<p class="replyContent" style="padding-left: 52px;">{{model.ReplyContent}}</p>
 							</div>
@@ -232,7 +233,8 @@
 					<ul class="mui-table-view" v-for="(model,index) in noticesDetail.ReadArray">
 						<li class="mui-table-view-cell">
 							<a href="javascript:;">
-								<img class="mui-media-object mui-pull-left peopleImg" :src=model.ReceiveManImg>
+								<img v-if="model.ReceiveManImg==null||model.ReceiveManImg==''" class="mui-media-object mui-pull-left peopleImg" src='../../img/noImgPerson.jpg'>
+								<img v-else="" class="mui-media-object mui-pull-left peopleImg" :src=model.ReceiveManImg>
 								<div class="mui-media-body replyName">
 									{{model.ReceiveManName}}
 									<p class="mui-ellipsis replyTime">{{model.ReadTime}}</p>
@@ -245,7 +247,8 @@
 					<ul class="mui-table-view" v-for="(model,index) in noticesDetail.NoReadArray">
 						<li class="mui-table-view-cell">
 							<a href="javascript:;">
-								<img class="mui-media-object mui-pull-left peopleImg" :src=model.ReceiveManImg>
+								<img v-if="model.ReceiveManImg==null||model.ReceiveManImg==''" class="mui-media-object mui-pull-left peopleImg" src='../../img/noImgPerson.jpg'>
+								<img v-else="" class="mui-media-object mui-pull-left peopleImg" :src=model.ReceiveManImg>
 								<div class="mui-media-body replyName" style="padding-top: 10px;">
 									{{model.ReceiveManName}}
 								</div>
