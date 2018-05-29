@@ -249,9 +249,9 @@
 								
 								tempGradeIDsArray.push(gradeModel.grdid);
 							}
-							console.log('gradeModel.flag:'+gradeModel.flag);
-							console.log('personalFlag:'+personalFlag);
-							console.log('gradeModel.tempGradeIsms:'+gradeModel.tempGradeIsms);
+//							console.log('gradeModel.flag:'+gradeModel.flag);
+//							console.log('personalFlag:'+personalFlag);
+//							console.log('gradeModel.tempGradeIsms:'+gradeModel.tempGradeIsms);
 							for(var a = 0; a < gradeModel.classArray.length; a++) {
 								var classModel = gradeModel.classArray[a];
 								if(classModel.flag == 1) {
@@ -354,7 +354,6 @@
 											var grdModel = personal.clss[a];
 											if(grdModel.isms == 1) { //班主任
 												if(model.grdid == grdModel.grdid) {
-													console.log('1111113');
 													gradeStr = gradeStr + ',' + model.grdid;
 													gradeListData.gradeListArray.push(model);
 													break;
@@ -377,7 +376,6 @@
 						}
 						//获取年级里面的班级
 						gradeStr = gradeStr.substr(1);
-						console.log('gradeStr:' + gradeStr);
 						//3.学校年级下班级
 						getClassList(gradeStr);
 					} else {

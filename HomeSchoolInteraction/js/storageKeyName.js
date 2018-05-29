@@ -130,7 +130,7 @@ var storageKeyName = (function(mod) {
 		default:
 			break;
 	}
-	
+	mod.BADGENUMBER = 'badgeNumber'//app角标
 	mod.PUBLICPARAMETER = 'publicParameter'//共用参数
 
 	mod.PERSONALINFO = 'personalInfo1111'; //个人信息，登录成功后返回值

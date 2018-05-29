@@ -216,7 +216,7 @@
 				//12.获取某人未读学校通知个数
 				getNoReadNoticeCntByMan();
 				//10.获取某用户的定制城市
-//				getPersonCitysByUser();
+				//				getPersonCitysByUser();
 
 				main = plus.webview.currentWebview();
 				//setTimeout的目的是等待窗体动画结束后，再执行create webview操作，避免资源竞争，导致窗口动画不流畅；
@@ -242,7 +242,7 @@
 				//12.获取某人未读学校通知个数
 				getNoReadNoticeCntByMan();
 			});
-			
+
 			//阅读了一条未读状态的通知数据
 			window.addEventListener('readNoticeList', function(data) {
 				contentData.NoReadCnt--;
@@ -410,6 +410,8 @@
 					console.log('12data:' + JSON.stringify(data));
 					if(data.RspCode == 0) {
 						contentData.NoReadCnt = data.RspData.NoReadCnt;
+						//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
+						setBadgeNumber(0,contentData.NoReadCnt);
 					} else {
 						mui.toast(data.RspTxt);
 					}
