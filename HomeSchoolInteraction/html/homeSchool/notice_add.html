@@ -76,8 +76,8 @@
 					<input v-model="msgFlag" name="checkbox1" type="checkbox">
 				</div>
 			</div>
-			<div class="" >  
-				<div class="" id="bootom-card" style="margin-top: -15px;">  
+			<div class="">
+				<div class="" id="bootom-card" style="margin-top: -15px;">
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
 							<a class="aCss" style="width: 100px;">
@@ -175,15 +175,15 @@
 			//var persistentId; //记录persistentId
 			var multiMedia; //多媒体控件
 			var notes = document.getElementById("notes"); //输入框
-
 			mui.plusReady(function() {
 				init(); //初始化控件
 				initListener(); //初始化监听
-				//判断是否是班主任
+				//判断是否包含班主任身份
 				for(var i = 0; i < personal.clss.length; i++) {
 					var classModel = personal.clss[i];
 					if(classModel.isms == 1) {
-						addNoticeContent.flag++;
+						addNoticeContent.teacherFlag = 1;
+						addNoticeContent.flag = 1;
 						addNoticeContent.gradeArray.push(classModel.grdid);
 						addNoticeContent.classIDsArray.push(classModel.clsid);
 						addNoticeContent.gradeIDsArray.push(classModel.grdid);
@@ -195,17 +195,17 @@
 				//去重
 				addNoticeContent.gradeArray = unique(addNoticeContent.gradeArray);
 				//合并选择的班级ids
-//				for(var i = 0; i < addNoticeContent.gradeArray.length; i++) {
-//					var clsModel = addNoticeContent.gradeArray[i];
-//					addNoticeContent.classIDs = addNoticeContent.classIDs + ',' + clsModel.clsid;
-//				}
+				//				for(var i = 0; i < addNoticeContent.gradeArray.length; i++) {
+				//					var clsModel = addNoticeContent.gradeArray[i];
+				//					addNoticeContent.classIDs = addNoticeContent.classIDs + ',' + clsModel.clsid;
+				//				}
 				//去掉首个，
 				if(addNoticeContent.classIDs.length > 0) {
 					addNoticeContent.classIDs = addNoticeContent.classIDs.substr(1);
 					addNoticeContent.parentsStr = addNoticeContent.parentsStr.substr(1);
 				}
 				//如果是班主任
-				if(addNoticeContent.flag > 0) {
+				if(addNoticeContent.teacherFlag > 0) {
 					//获取所有年级
 					var enData0 = {};
 					//不需要加密的数据
@@ -237,7 +237,7 @@
 							mui.toast(data.RspTxt, "cancel");
 						}
 					});
-				}else{
+				} else {
 					addNoticeContent.gradeStr = '请选择';
 					addNoticeContent.classStr = '请选择';
 				}
@@ -247,7 +247,8 @@
 				el: "#addNoticeContent",
 				data: {
 					pageFlag: 0, //页面是否加载完成
-					flag: 0, //0不是班主任，1是
+					flag: 0, //0没有选择含班主任的班级、1选择
+					teacherFlag: 0, //当前账号，是否有班主任身份
 					gradeArray: [], //班主任身份时，执教年级列表
 					noticeArray: [], //通知列表数组
 					content: '', //内容
@@ -276,7 +277,7 @@
 						} else if(flag == 2) { //家长
 							utils.mOpenWithData("../../html/homeSchool/notice_parentsList.html", {
 								classIDs: addNoticeContent.classIDs,
-								parentArray:addNoticeContent.parentArray
+								parentArray: addNoticeContent.parentArray
 							});
 						}
 					}
@@ -284,26 +285,39 @@
 			});
 
 			window.addEventListener('selectGradeClass', function(data) {
-//				console.log("data" + JSON.stringify(data.detail));
+				//				console.log("data" + JSON.stringify(data.detail));
 				var tempData = data.detail;
 				addNoticeContent.gradeStr = tempData.gradeShow;
 				addNoticeContent.classStr = tempData.classShow;
-				addNoticeContent.classIDsArray =  [].concat(tempData.classIDsArray);
-				addNoticeContent.gradeIDsArray =  [].concat(tempData.gradeIDsArray);
+				addNoticeContent.classIDsArray = [].concat(tempData.classIDsArray);
+				addNoticeContent.gradeIDsArray = [].concat(tempData.gradeIDsArray);
 				addNoticeContent.classIDs = tempData.classIDs;
 				//6.学校班级学生,获取选择班级中对应的人
 				getClassParents(tempData.classIDs);
 				addNoticeContent.parentsStr = tempData.classShow.replace(/;/g, '全部家长;');
 				addNoticeContent.parentsStr = addNoticeContent.parentsStr.replace(/全部班级/g, '');
 				addNoticeContent.parentsStr = addNoticeContent.parentsStr + '全部家长';
-
+				addNoticeContent.flag = 0;
+				//判断选择的班级，是否有当前身份是班主任的
+				if(addNoticeContent.teacherFlag > 0) {
+					for(var i = 0; i < addNoticeContent.classIDsArray.length; i++) {
+						var temp = addNoticeContent.classIDsArray[i];
+						//判断是否是班主任
+						for(var a = 0; a < personal.clss.length; a++) {
+							var classModel = personal.clss[a];
+							if(classModel.isms == 1&&temp==classModel.clsid) {
+								addNoticeContent.flag = 1;
+							}
+						}
+					}
+				}
 			});
 
 			window.addEventListener('selectStudents', function(data) {
-//				console.log("data" + JSON.stringify(data.detail));
+				//				console.log("data" + JSON.stringify(data.detail));
 				var tempData = data.detail;
 				addNoticeContent.parentsStr = tempData.parentsShow;
-				addNoticeContent.parentArray =  [].concat(tempData.parentsArray);
+				addNoticeContent.parentArray = [].concat(tempData.parentsArray);
 			});
 
 			//6.学校班级学生,获取选择班级中对应的人
@@ -321,12 +335,12 @@
 				postDataEncry('ClassStu', enData0, comData0, 0, function(data) {
 					events.closeWaiting();
 					if(data.RspCode == 0) {
-//						console.log('data:' + JSON.stringify(data));
-						if (data.RspData==null) {
-//							console.log('qqqqqqqqq');
+						//						console.log('data:' + JSON.stringify(data));
+						if(data.RspData == null) {
+							//							console.log('qqqqqqqqq');
 							addNoticeContent.parentsStr = '所在班级没有学生';
-						}else{
-//							console.log('qqqqqqqqw');
+						} else {
+							//							console.log('qqqqqqqqw');
 							addNoticeContent.parentArray = [].concat(data.RspData.clssstus);
 						}
 					} else {
@@ -369,10 +383,10 @@
 					TotalAudio: 1, //音频的个数
 					TotalVideo: 1, //视频的个数
 				});
-			//显示发送短信按钮
-			document.getElementById('senMSN').style.display ='inherit';
-			//设置底部卡片上边距-15px→10px;
-			document.getElementById("bootom-card").style.marginTop="10px"; 
+				//显示发送短信按钮
+				document.getElementById('senMSN').style.display = 'inherit';
+				//设置底部卡片上边距-15px→10px;
+				document.getElementById("bootom-card").style.marginTop = "10px";
 				/**
 				 * 播放视频
 				 * @param {Object} data
@@ -461,30 +475,30 @@
 					temp2.push(stuModel.stuno);
 					temp3.push('');
 				}
-				if (temp0.length==0) {
+				if(temp0.length == 0) {
 					mui.toast('选择的接收人为空');
 					events.closeWaiting();
 					document.getElementById("finish").disabled = false;
 					return;
 				}
-				if (addNoticeContent.msgFlag) {
+				if(addNoticeContent.msgFlag) {
 					addNoticeContent.msgFlag = 1;
-				} else{
+				} else {
 					addNoticeContent.msgFlag = 0;
 				}
 				//附件名称
 				var encName = '';
-				if (encAddr.length>0) {
+				if(encAddr.length > 0) {
 					var tempArray = [];
 					var tempAddr = encAddr.split('|');
-					for (var i = 0; i < tempAddr.length; i++) {
+					for(var i = 0; i < tempAddr.length; i++) {
 						var tempModel = tempAddr[i];
 						var temp000 = tempModel.split('/');
 						tempArray.push(temp000[temp000.length - 1]);
 					}
 					encName = tempArray.join('|');
 				}
-//				console.log('encName:'+encName);
+				//				console.log('encName:'+encName);
 				//1.新增学校通知（同时增加通知未读）
 				var tempData1 = {
 					schoolId: personal.schid, //学校ID，统一部署的时候，学校ID传000000
@@ -544,13 +558,13 @@
 					}
 				}
 				uploadNum = getUpTokenData.fileArray.length; //记录上传的次数
-//				console.log('uploadNum:' + uploadNum);
-//				console.log('getUpTokenData:' + JSON.stringify(getUpTokenData));
+				//				console.log('uploadNum:' + uploadNum);
+				//				console.log('getUpTokenData:' + JSON.stringify(getUpTokenData));
 				CloudFileUtil.getUpLoadTokens(getUpTokenData, function(data) {
-//					console.log("getUpLoadTokens111111 " + JSON.stringify(data));
+					//					console.log("getUpLoadTokens111111 " + JSON.stringify(data));
 					if(data.code == 1) {
-//						console.log('上传配置 ' + JSON.stringify(data.configure));
-//						console.log('上传凭证 ' + JSON.stringify(data.data));
+						//						console.log('上传配置 ' + JSON.stringify(data.configure));
+						//						console.log('上传凭证 ' + JSON.stringify(data.data));
 						QNUptoken = data.data; //token数据
 
 						if(multiMedia.data.PictureArray.length != 0) { //图片
@@ -562,9 +576,9 @@
 									var fileName = filePath[filePath.length - 1];
 									var fileId = fileName.split("_")[0];
 									if(multiMedia.data.PictureArray[j].id == fileId) {
-//										console.log('QNUptoken.Data[i].Domain:'+QNUptoken.Data[i].Domain);
-//										console.log('+QNUptoken.Data[i].Key:'+QNUptoken.Data[i].Key);
-//										multiMedia.data.PictureArray[j].domain = QNUptoken.Data[i].Domain + QNUptoken.Data[i].Key;
+										//										console.log('QNUptoken.Data[i].Domain:'+QNUptoken.Data[i].Domain);
+										//										console.log('+QNUptoken.Data[i].Key:'+QNUptoken.Data[i].Key);
+										//										multiMedia.data.PictureArray[j].domain = QNUptoken.Data[i].Domain + QNUptoken.Data[i].Key;
 										multiMedia.data.PictureArray[j].domain = window.storageKeyName.QNPB + QNUptoken.Data[i].Key;
 									}
 								}
@@ -604,7 +618,7 @@
 						//开始执行上传任务
 						taskCreate(wd);
 					} else {
-//						console.log('### ERROR ### 获取上传凭证失败 ### ');
+						//						console.log('### ERROR ### 获取上传凭证失败 ### ');
 						document.getElementById("finish").disabled = false;
 						wd.close();
 						mui.toast('上传失败 ' + data.message);
@@ -652,7 +666,7 @@
 						var num; //记录第几个文件
 						if(multiMedia.data.PictureArray.length !== 0) { //图片
 							for(var k = 0; k < multiMedia.data.PictureArray.length; k++) {
-//								console.log('multiMedia.data:'+multiMedia.data.PictureArray[k].path);
+								//								console.log('multiMedia.data:'+multiMedia.data.PictureArray[k].path);
 								var path = multiMedia.data.PictureArray[k].path.split("/");
 								var name = path[path.length - 1];
 								if(fileName == name) {
@@ -684,7 +698,7 @@
 						}
 						CloudFileUtil.upload(fPath, QNUptoken.Data[i].Token, QNUptoken.Data[i].Key, function(upload, status) {
 							//上传任务完成的监听
-//							console.log('上传任务完成' + status + '|' + JSON.stringify(upload));
+							//							console.log('上传任务完成' + status + '|' + JSON.stringify(upload));
 							if(status == 200) {
 								//console.log('上传成功');
 								QNUptoken.Data[i].task = true;

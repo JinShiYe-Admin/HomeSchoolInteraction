@@ -61,12 +61,12 @@
 			</div>
 
 			<ul class="mui-table-view" v-for="(classModel,index) in classListArray">
-				<li class="mui-table-view-cell">
+				<li v-if="classModel.showFlag>0" class="mui-table-view-cell">
 					<div style="width: 50%;height: 40px;margin-top: 5px;" class="flex-item">
 						<div class="mui-input-row mui-checkbox mui-left" style="margin-top: -10px;height: 30px;">
 							<label class="className">{{classModel.clsname}}</label>
 							<input v-model="classModel.flag" name="checkbox1" type="checkbox" @click="clickClass(classModel)">
-						</div>	
+						</div>
 					</div>
 					<div class="flex-container" style="padding-left: 20px;">
 						<div class="mui-input-row mui-checkbox mui-left" v-for="(stuModel,index) in classModel.stuArray">
@@ -144,10 +144,14 @@
 			var clickSelectAll = function(flag) {
 				for(var i = 0; i < classListData.classListArray.length; i++) {
 					var classModel = classListData.classListArray[i];
-					classModel.flag = flag;
-					for(var a = 0; a < classModel.stuArray.length; a++) {
-						var stuModel = classModel.stuArray[a];
-						stuModel.flag = flag;
+					if(classModel.showFlag == 0) {
+
+					} else {
+						classModel.flag = flag;
+						for(var a = 0; a < classModel.stuArray.length; a++) {
+							var stuModel = classModel.stuArray[a];
+							stuModel.flag = flag;
+						}
 					}
 				}
 			}
@@ -217,17 +221,17 @@
 							for(var a = 0; a < classModel.stuArray.length; a++) {
 								var stuModel = classModel.stuArray[a];
 								if(stuModel.flag == 1) {
-									if (tempMMM==0&&classModel.flag == 0) {
+									if(tempMMM == 0 && classModel.flag == 0) {
 										tempMMM++;
-										tempStu = tempStu + ';' + classModel.clsname+'：';
+										tempStu = tempStu + ';' + classModel.clsname + '：';
 									}
 									tempStuArray.push(stuModel);
 								}
 								if(classModel.flag == 0 && stuModel.flag == 1) {
-									if (tempNNN==0) {
+									if(tempNNN == 0) {
 										tempNNN++;
 										tempStu = tempStu + stuModel.stuname;
-									} else{
+									} else {
 										tempStu = tempStu + '、' + stuModel.stuname;
 									}
 								}
@@ -266,10 +270,20 @@
 					if(data.RspCode == 0) {
 						for(var i = 0; i < data.RspData.clss.length; i++) {
 							var tempClassModel = data.RspData.clss[i];
+							//如果当前的班级，是班主任身份的，显示，否则不显示
+							tempClassModel.showFlag = 0;
 							for(var m = 0; m < tempArr.length; m++) {
 								if(tempClassModel.clsid == tempArr[m]) {
 									tempClassModel.flag = 0;
 									tempClassModel.stuArray = [];
+
+									//循环个人信息中，班主任身份的班级，这个界面，只显示选择的班级，并且是班主任身份
+									for(var n = 0; n < personal.clss.length; n++) {
+										var classModel = personal.clss[n];
+										if(classModel.isms == 1 && classModel.clsid == tempArr[m]) {
+											tempClassModel.showFlag++;
+										}
+									}
 									classListData.classListArray.push(tempClassModel);
 								}
 							}
@@ -343,7 +357,7 @@
 							tempFalg0++;
 						}
 					}
-					if(tempFalg0 == classModel.stuArray.length&&classModel.stuArray.length>0) {
+					if(tempFalg0 == classModel.stuArray.length && classModel.stuArray.length > 0) {
 						classModel.flag = 1;
 						tempFlag++;
 					} else {
