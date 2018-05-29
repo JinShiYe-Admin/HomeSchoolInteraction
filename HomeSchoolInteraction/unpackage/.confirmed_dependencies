@@ -1,32 +1,46 @@
 {
-  "index.html": {
-    "resources": [
-      "html/homeSchool/homeSchoolIndex.html"
-    ],
-    "refer": [
-      "html/Course/courseIndex.html",
-      "html/homeSchool/homeSchoolIndex.html"
-    ]
-  },
-  "html/login/loginIndex.html": {
-    "refer": [
-      "index.html"
-    ]
-  },
-  "html/homeSchool/homeSchoolIndex.html": {
-    "refer": [
-      "html/homeSchool/noticeList.html"
-    ]
-  },
-  "html/homeSchool/noticeList.html": {
-    "refer": [
-      "html/homeSchool/noticeDetail.html",
-      "html/homeSchool/notice_add.html"
-    ]
-  },
-  "html/homeSchool/notice_add.html": {
-    "refer": [
-      "html/homeSchool/gradeList.html"
-    ]
-  }
+	"index.html": {
+		"resources": [
+			"html/homeSchool/homeSchoolIndex.html"
+		],
+		"refer": [
+			"html/Course/courseIndex.html",
+			"html/homeSchool/homeSchoolIndex.html",
+			"html/sciedu/sciedu_home.html",
+			"html/helpStudy/helpStudyIndex.html",
+			"html/login/loginIndex.html"
+		]
+	},
+	"html/login/loginIndex.html": {
+		"refer": [
+			"index.html"
+		]
+	},
+	"html/homeSchool/homeSchoolIndex.html": {
+		"refer": [
+			"html/homeSchool/noticeList.html",
+			"html/homeSchool/mine.html"
+		]
+	},
+	"html/homeSchool/noticeList.html": {
+		"refer": [
+			"html/homeSchool/noticeDetail.html",
+			"html/homeSchool/notice_add.html"
+		]
+	},
+	"html/homeSchool/notice_add.html": {
+		"refer": [
+			"html/homeSchool/gradeList.html"
+		]
+	},
+	"html/sciedu/sciedu_home.html": {
+		"refer": [
+			"html/sciedu/sciedu_show_main.html"
+		]
+	},
+	"html/login/firstPage.html": {
+		"refer": [
+			"index.html"
+		]
+	}
 }

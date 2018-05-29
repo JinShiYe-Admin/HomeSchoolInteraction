@@ -133,7 +133,10 @@
 					"html/homeSchool/homeSchoolIndex.html"
 				],
 				"refer": [
-					"html/Course/courseIndex.html"
+					"html/Course/courseIndex.html",
+					"html/sciedu/sciedu_home.html",
+					"html/helpStudy/helpStudyIndex.html",
+					"html/login/loginIndex.html"
 				],
 				"priority": 0
 			},
@@ -147,7 +150,8 @@
 			"html/homeSchool/homeSchoolIndex.html": {
 				"resources": [],
 				"refer": [
-					"html/homeSchool/noticeList.html"
+					"html/homeSchool/noticeList.html",
+					"html/homeSchool/mine.html"
 				],
 				"priority": 0
 			},
@@ -163,6 +167,20 @@
 				"resources": [],
 				"refer": [
 					"html/homeSchool/gradeList.html"
+				],
+				"priority": 0
+			},
+			"html/sciedu/sciedu_home.html": {
+				"resources": [],
+				"refer": [
+					"html/sciedu/sciedu_show_main.html"
+				],
+				"priority": 0
+			},
+			"html/login/firstPage.html": {
+				"resources": [],
+				"refer": [
+					"index.html"
 				],
 				"priority": 0
 			}
