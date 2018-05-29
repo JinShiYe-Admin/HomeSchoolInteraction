@@ -19,7 +19,7 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav" style="background-color:#00CFBD;">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>
+			<a  class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>
 			<h1 class="mui-title" style="color: white;">登录</h1>
 		</header>
 		<div class="mui-content">
@@ -63,6 +63,14 @@
 	<script type="text/javascript">
 		
 		
+		var personal = store.get(window.storageKeyName.PERSONALINFO);
+		var authority =true; 
+		if(personal==null||personal==undefined){
+			authority=true;
+		}else if(personal.utid=='0'){
+			authority=false;
+		}
+		
 		//		$(function() {
 		//			
 		//		});
@@ -72,6 +80,22 @@
 			tempModel = {
 				uuid: plus.device.uuid,
 				appid: plus.runtime.appid
+			}
+			
+			var backButtonPress = 0;
+			if(authority==true){//如果是正式身份退出的,增加返回键监听,游客身份登录的，取消监听，点击返回键，可以返回游客界面
+				mui.back = function(event) {
+						backButtonPress++;
+						if(backButtonPress > 1) {
+							plus.runtime.quit();
+						} else {
+							plus.nativeUI.toast('再按一次退出应用');
+						}
+						setTimeout(function() {
+							backButtonPress = 0;
+						}, 1000);
+						return false;
+				};
 			}
 //			setUUID();
 		});
@@ -220,7 +244,6 @@
 								}
 							});
 							
-							
 							var wvs = plus.webview.all();
 							for (var i = 0, len = wvs.length; i < len; i++) {
 					            //关闭除login页面外的其他页面
@@ -231,6 +254,8 @@
 								}
 							}
 							plus.webview.open('../../index.html');
+							var curr = plus.webview.currentWebview();
+							curr.close();
 //							utils.mOpenWithData("../../index.html", personal);
 						} else {
 							mui.toast(data1.RspTxt);
