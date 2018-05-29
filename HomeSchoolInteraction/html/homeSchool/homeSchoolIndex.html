@@ -411,7 +411,7 @@
 					if(data.RspCode == 0) {
 						contentData.NoReadCnt = data.RspData.NoReadCnt;
 						//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
-						setBadgeNumber(0,contentData.NoReadCnt);
+						utils.setBadgeNumber(0,contentData.NoReadCnt);
 					} else {
 						mui.toast(data.RspTxt);
 					}

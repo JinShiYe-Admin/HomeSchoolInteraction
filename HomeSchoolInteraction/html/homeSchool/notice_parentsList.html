@@ -212,13 +212,24 @@
 							if(classModel.flag == 1) {
 								tempStu = tempStu + ';' + classModel.clsname + '全部家长';
 							}
+							var tempMMM = 0;
+							var tempNNN = 0;
 							for(var a = 0; a < classModel.stuArray.length; a++) {
 								var stuModel = classModel.stuArray[a];
 								if(stuModel.flag == 1) {
+									if (tempMMM==0&&classModel.flag == 0) {
+										tempMMM++;
+										tempStu = tempStu + ';' + classModel.clsname+'：';
+									}
 									tempStuArray.push(stuModel);
 								}
 								if(classModel.flag == 0 && stuModel.flag == 1) {
-									tempStu = tempStu + ';' + stuModel.stuname;
+									if (tempNNN==0) {
+										tempNNN++;
+										tempStu = tempStu + stuModel.stuname;
+									} else{
+										tempStu = tempStu + '、' + stuModel.stuname;
+									}
 								}
 							}
 						}
@@ -332,7 +343,7 @@
 							tempFalg0++;
 						}
 					}
-					if(tempFalg0 == classModel.stuArray.length) {
+					if(tempFalg0 == classModel.stuArray.length&&classModel.stuArray.length>0) {
 						classModel.flag = 1;
 						tempFlag++;
 					} else {

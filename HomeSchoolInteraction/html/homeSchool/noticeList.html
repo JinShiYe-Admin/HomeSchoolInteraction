@@ -51,10 +51,10 @@
 					<div class="mui-navigate-right">
 						<div id="" v-if="noticeModel.IsRead==0&&noticeModel.NoticeType==1">
 							<image src="../../img/homeSchool/redColor.png" style="width: 7px;height: 7px;border-radius: 50%;" />
-							<p style="font-size: 15px;color: #333333;margin-top: -17px;margin-left: 12px;">{{noticeModel.NoticeContent}}</p>
+							<p style="font-size: 15px;color: #333333;margin-top: -17px;margin-left: 12px;word-break: break-all;">{{noticeModel.NoticeContent}}</p>
 						</div>
 						<div id="" v-else="">
-							<p style="font-size: 15px;color: #333333;margin-left: 0px;">{{noticeModel.NoticeContent}}</p>
+							<p style="font-size: 15px;color: #333333;margin-left: 0px;word-break: break-all;">{{noticeModel.NoticeContent}}</p>
 						</div>
 						<div class="">
 							<image v-if="noticeModel.SendManImg==null" src='../../img/noImgPerson.jpg' style="width: 15px;height: 15px;border-radius: 50%;vertical-align: middle;" />
@@ -172,7 +172,7 @@
 						//让首页的未读数减1
 						if(model.IsRead == 0 && mode.NoticeType == 1) {
 							//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
-							setBadgeNumber(1,0);
+							utils.setBadgeNumber(1,0);
 						}
 					},
 					deleteNotice: function(noticeModel) {
