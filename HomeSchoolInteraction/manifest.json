@@ -143,7 +143,10 @@
 			"html/login/loginIndex.html": {
 				"resources": [],
 				"refer": [
-					"index.html"
+					"index.html",
+					"html/login/noPermissions.html",
+					"noPermissions.html",
+					"html/login/loginFnoPermissions.html"
 				],
 				"priority": 0
 			},
@@ -173,14 +176,54 @@
 			"html/sciedu/sciedu_home.html": {
 				"resources": [],
 				"refer": [
-					"html/sciedu/sciedu_show_main.html"
+					"html/sciedu/sciedu_show_main.html",
+					"html/utils/customizeCity.html"
 				],
 				"priority": 0
 			},
 			"html/login/firstPage.html": {
 				"resources": [],
 				"refer": [
+					"index.html",
+					"html/login/noPermissions.html"
+				],
+				"priority": 0
+			},
+			"html/homeSchool/mine.html": {
+				"resources": [],
+				"refer": [
+					"html/login/loginIndex.html"
+				],
+				"priority": 0
+			},
+			"html/login/noPermissions.html": {
+				"resources": [
+					"html/login/loginIndex.html",
+					"html/login/loginFnoPermissions.html"
+				],
+				"refer": [
+					"html/Course/courseIndex.html",
+					"html/sciedu/sciedu_home.html",
+					"html/helpStudy/helpStudyIndex.html"
+				],
+				"priority": 0
+			},
+			"html/login/loginFnoPermissions.html": {
+				"resources": [],
+				"refer": [
+					"html/login/noPermissions.html",
 					"index.html"
+				],
+				"priority": 0
+			},
+			"noPermissions.html": {
+				"resources": [
+					"html/login/loginFnoPermissions.html"
+				],
+				"refer": [
+					"html/Course/courseIndex.html",
+					"html/sciedu/sciedu_home.html",
+					"html/helpStudy/helpStudyIndex.html"
 				],
 				"priority": 0
 			}
@@ -419,7 +462,6 @@
 				"js/libs/crypto-js/sha384.js",
 				"js/utils/RSAEncrypt.js",
 				"js/libs/CryptoJS/components/evpkdf.js",
-				"html/utils/customizeCity.html",
 				"js/libs/CryptoJS/components/mode-ctr.js",
 				"js/libs/crypto-js/README.md",
 				"js/qiniu/plupload.dev.js",

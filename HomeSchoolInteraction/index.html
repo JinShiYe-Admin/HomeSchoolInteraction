@@ -22,23 +22,23 @@
 
 	<body>
 		<nav class="mui-bar mui-bar-tab">
-			<a id="defaultTab" class="mui-tab-item mui-active" href="html/homeSchool/homeSchoolIndex.html">
-				<span class="mui-icon iconfont icon-jiaxiaohudong"></span>
-				<span class="mui-tab-label">家校互动</span>
-			</a>
-			<a id="noPermission" class="mui-tab-item " href="html/sciedu/sciedu_home.html">
-			<!--<a class="mui-tab-item" href="html/Course/courseIndex.html">-->
-				<span class="mui-icon iconfont icon-jiaoyu"></span>
-				<span class="mui-tab-label">科教活动</span>
-			</a>
-			<a class="mui-tab-item" href="html/Course/courseIndex.html">
-				<span class="mui-icon iconfont icon-kecheng"></span>
-				<span class="mui-tab-label">课程</span>
-			</a>
-			<a class="mui-tab-item" href="html/helpStudy/helpStudyIndex.html">
-				<span class="mui-icon iconfont icon-iconfontbangzhu"></span>
-				<span class="mui-tab-label">助学</span>
-			</a>
+				<a id="defaultTab" class="mui-tab-item mui-active" href="html/homeSchool/homeSchoolIndex.html">
+					<span class="mui-icon iconfont icon-jiaxiaohudong"></span>
+					<span class="mui-tab-label">家校互动</span>
+				</a>
+				<a id="kejiao" class="mui-tab-item " href="html/sciedu/sciedu_home.html">
+				<!--<a class="mui-tab-item" href="html/Course/courseIndex.html">-->
+					<span class="mui-icon iconfont icon-jiaoyu"></span>
+					<span class="mui-tab-label">科教活动</span>
+				</a>
+				<a id="kecheng" class="mui-tab-item" href="html/Course/courseIndex.html">
+					<span class="mui-icon iconfont icon-kecheng"></span>
+					<span class="mui-tab-label">课程</span>
+				</a>
+				<a id="zhuxue" class="mui-tab-item" href="html/helpStudy/helpStudyIndex.html">
+					<span class="mui-icon iconfont icon-iconfontbangzhu"></span>
+					<span class="mui-tab-label">助学</span>
+				</a>
 		</nav>
 		<script src="js/mui.min.js"></script>
 		<script src="js/storageKeyName.js"></script>
@@ -48,13 +48,6 @@
 		<script type="text/javascript" charset="utf-8">
 			//mui初始化
 			mui.init();
-			//判断权限  
-			var personal = store.get(window.storageKeyName.PERSONALINFO);
-			console.log("personal============"+JSON.stringify(personal))
-			var authority =true; 
-			if(personal.utid=='0'){
-				authority=false;
-			}
 			var subpages =[];
 				subpages=['html/homeSchool/homeSchoolIndex.html', 'html/sciedu/sciedu_home.html',  'html/Course/courseIndex.html', 'html/helpStudy/helpStudyIndex.html'];
 			
@@ -99,6 +92,7 @@
 				//当前激活选项
 				activeTab = subpages[0];
 				var title = document.getElementById("title");
+				
 				//选项卡点击事件
 				mui('.mui-bar-tab').on('tap', 'a', function(e) {
 					var targetTab = this.getAttribute('href');
@@ -107,12 +101,6 @@
 					}
 					//更换标题
 					//title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
-					//显示目标选项卡
-					var target =targetTab.indexOf("homeSchoolIndex")==-1;
-					if(authority==false&&target==false){//没有权限且目标页为homeSchoolIndex.html
-						plus.webview.open('html/login/loginIndex.html');
-						return
-					}
 					//若为iOS平台或非首次显示，则直接显示
 					if(mui.os.ios || aniShow[targetTab]) {
 						plus.webview.show(targetTab);
@@ -129,27 +117,14 @@
 					activeTab = targetTab;
 				});
 			
-				if(!authority){//没有权限
-					//自定义事件，模拟点击“首页选项卡”
-					var defaultTab = document.getElementById("noPermission");
-					//模拟首页点击
-					mui.trigger(defaultTab, 'tap');
-					//切换选项卡高亮
-					var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
-					if(defaultTab !== current) {
-						current.classList.remove('mui-active');
-						defaultTab.classList.add('mui-active');
-					}
-				}else{
-					var defaultTab = document.getElementById("defaultTab");
-					//模拟首页点击
-					mui.trigger(defaultTab, 'tap');
-					//切换选项卡高亮
-					var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
-					if(defaultTab !== current) {
-						current.classList.remove('mui-active');
-						defaultTab.classList.add('mui-active');
-					}
+				var defaultTab = document.getElementById("defaultTab");
+				//模拟首页点击
+				mui.trigger(defaultTab, 'tap');
+				//切换选项卡高亮
+				var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
+				if(defaultTab !== current) {
+					current.classList.remove('mui-active');
+					defaultTab.classList.add('mui-active');
 				}
 			});
 		</script>
