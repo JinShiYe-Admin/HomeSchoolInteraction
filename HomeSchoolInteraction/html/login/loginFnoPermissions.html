@@ -228,24 +228,23 @@
 							if(personal.utid=='0'){
 								permission=false;
 							}
+							console.log('11111111111111111111'+permission)
 							if(permission){
 								plus.webview.open('../../index.html');
 							}else{
-//								var wvs = plus.webview.all();
-//								for (var i = 0, len = wvs.length; i < len; i++) {
-//						            //关闭除login页面外的其他页面
-//									if (wvs[i].getURL().indexOf('homeSchoolIndex.html')!=-1
-//									||wvs[i].getURL().indexOf('sciedu_home.html')!=-1
-//									||wvs[i].getURL().indexOf('courseIndex.html')!=-1){
-//										plus.webview.close(wvs[i]);
-//									}
-//								}
-								plus.webview.open('../../index2.html');
+//								plus.webview.open('../../index2.html');
 							}
-							
+							var wvs = plus.webview.all();
+							for (var i = 0, len = wvs.length; i < len; i++) {
+								if (wvs[i].getURL().indexOf('homeSchoolIndex.html')!=-1
+								||wvs[i].getURL().indexOf('sciedu_home.html')!=-1
+								||wvs[i].getURL().indexOf('courseIndex.html')!=-1){
+											continue;
+								}
+								plus.webview.close(wvs[i]);
+							}
 							var curr = plus.webview.currentWebview();
 							curr.close();
-//							utils.mOpenWithData("../../index.html", personal);
 						} else {
 							mui.toast(data1.RspTxt);
 						}

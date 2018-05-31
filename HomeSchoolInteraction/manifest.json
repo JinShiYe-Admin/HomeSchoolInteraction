@@ -146,7 +146,8 @@
 					"index.html",
 					"html/login/noPermissions.html",
 					"noPermissions.html",
-					"html/login/loginFnoPermissions.html"
+					"html/login/loginFnoPermissions.html",
+					"index2.html"
 				],
 				"priority": 0
 			},
@@ -216,6 +217,13 @@
 					"html/Course/courseIndex.html",
 					"html/sciedu/sciedu_home.html",
 					"html/helpStudy/helpStudyIndex.html"
+				],
+				"priority": 0
+			},
+			"html/login/loginFnoPermissions.html": {
+				"resources": [],
+				"refer": [
+					"index.html"
 				],
 				"priority": 0
 			}
