@@ -179,8 +179,11 @@
 									//											mui.toast(data.RspTxt);
 								}
 							});
-
-							utils.mOpenWithData("noPermissions.html", personal);
+							if(personal.utid=='0'){
+								plus.webview.open('../../index2.html');
+							}else{
+								utils.mOpenWithData("../../index.html", personal);
+							}
 						} else {
 							mui.toast(data1.RspTxt);
 						}

@@ -6,8 +6,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<link rel="stylesheet" href="../../css/mui.min.css">
-		<link rel="stylesheet" type="text/css" href="../../fonts/iconfont.css"/>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="fonts/iconfont.css"/>
 		<style>
 			html,
 			body {
@@ -22,33 +22,34 @@
 
 	<body>
 		<nav class="mui-bar mui-bar-tab">
-				<a id="defaultTab" class="mui-tab-item " href="loginFnoPermissions.html">
+				<a id="defaultTab" class="mui-tab-item mui-active" href="html/login/loginFnoPermissions.html">
 					<span class="mui-icon iconfont icon-jiaxiaohudong"></span>
 					<span class="mui-tab-label">登录</span>
 				</a>
-				<a id="kejiao" class="mui-tab-item mui-active" href="../sciedu/sciedu_home.html">
+				<a id="kejiao" class="mui-tab-item " href="html/sciedu/sciedu_home.html">
 				<!--<a class="mui-tab-item" href="html/Course/courseIndex.html">-->
 					<span class="mui-icon iconfont icon-jiaoyu"></span>
 					<span class="mui-tab-label">科教活动</span>
 				</a>
-				<a id="kecheng" class="mui-tab-item" href="../Course/courseIndex.html">
+				<a id="kecheng" class="mui-tab-item" href="html/Course/courseIndex.html">
 					<span class="mui-icon iconfont icon-kecheng"></span>
 					<span class="mui-tab-label">课程</span>
 				</a>
-				<a id="zhuxue" class="mui-tab-item" href="../helpStudy/helpStudyIndex.html">
+				<a id="zhuxue" class="mui-tab-item" href="html/helpStudy/helpStudyIndex.html">
 					<span class="mui-icon iconfont icon-iconfontbangzhu"></span>
 					<span class="mui-tab-label">助学</span>
 				</a>
 		</nav>
-		<script src="../../js/mui.min.js"></script>
-		<script src="../../js/storageKeyName.js"></script>
-		<script src="../../js/utils/store.js"></script>
-		<script src="../../js/utils/utils.js"></script>
-		<script src="../../js/libs/jquery.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/storageKeyName.js"></script>
+		<script src="js/utils/store.js"></script>
+		<script src="js/utils/utils.js"></script>
+		<script src="js/libs/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			//mui初始化
 			mui.init();
-				var subpages=['loginFnoPermissions.html', '../sciedu/sciedu_home.html',  '../Course/courseIndex.html', '../helpStudy/helpStudyIndex.html'];
+			var subpages =[];
+				subpages=['html/login/loginFnoPermissions.html', 'html/sciedu/sciedu_home.html',  'html/Course/courseIndex.html', 'html/helpStudy/helpStudyIndex.html'];
 			
 			var subpage_style = {
 				top: '0px',
@@ -59,7 +60,7 @@
 
 			//创建子页面，首个选项卡页面显示，其它均隐藏；
 			mui.plusReady(function() {
-				console.log('liushuai');
+				console.log('oooooooooooooooooooooooooooooooooooooooooooooooooooo');
 				//安卓的连续点击两次退出程序
 				var backButtonPress = 0;
 				//重写返回键
@@ -84,7 +85,6 @@
 					} else {
 						temp[subpages[i]] = "true";
 						mui.extend(aniShow, temp);
-						
 					}
 					self.append(sub);
 				}
@@ -99,8 +99,8 @@
 					if(targetTab == activeTab) {
 						return;
 					}
-					//显示目标选项卡
-					
+					//更换标题
+					//title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
 					//若为iOS平台或非首次显示，则直接显示
 					if(mui.os.ios || aniShow[targetTab]) {
 						plus.webview.show(targetTab);
@@ -116,7 +116,7 @@
 					//更改当前活跃的选项卡
 					activeTab = targetTab;
 				});
-				
+			
 				var defaultTab = document.getElementById("kejiao");
 				//模拟首页点击
 				mui.trigger(defaultTab, 'tap');

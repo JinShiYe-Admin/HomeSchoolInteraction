@@ -1,141 +1,54 @@
 {
-<<<<<<< HEAD
+	"html/sciedu/sciedu_home.html": {
+		"refer": [
+			"html/sciedu/sciedu_show_main.html"
+		],
+		"resources": []
+	},
+	"html/login/firstPage.html": {
+		"refer": [
+			"html/login/noPermissions.html",
+			"index2.html",
+			"index.html"
+		],
+		"resources": []
+	},
+	"html/login/noPermissions.html": {
+		"resources": [
+			"html/login/loginFnoPermissions.html"
+		],
+		"refer": [
+			"html/Course/courseIndex.html",
+			"html/sciedu/sciedu_home.html",
+			"html/helpStudy/helpStudyIndex.html",
+			"html/login/loginFnoPermissions.html"
+		]
+	},
+	"index2.html": {
+		"resources": [
+			"html/login/loginFnoPermissions.html"
+		],
+		"refer": [
+			"html/Course/courseIndex.html",
+			"html/sciedu/sciedu_home.html",
+			"html/helpStudy/helpStudyIndex.html",
+			"html/login/loginFnoPermissions.html"
+		]
+	},
 	"index.html": {
 		"resources": [
 			"html/homeSchool/homeSchoolIndex.html"
 		],
 		"refer": [
 			"html/Course/courseIndex.html",
-			"html/homeSchool/homeSchoolIndex.html",
 			"html/sciedu/sciedu_home.html",
 			"html/helpStudy/helpStudyIndex.html",
-			"html/login/loginIndex.html"
+			"html/homeSchool/homeSchoolIndex.html"
 		]
-	},
-	"html/login/loginIndex.html": {
-		"refer": [
-			"index.html",
-			"html/login/noPermissions.html",
-			"noPermissions.html",
-			"html/login/loginFnoPermissions.html"
-		],
-		"resources": []
 	},
 	"html/homeSchool/homeSchoolIndex.html": {
 		"refer": [
-			"html/homeSchool/noticeList.html",
 			"html/homeSchool/mine.html"
-		],
-		"resources": []
-	},
-	"html/homeSchool/noticeList.html": {
-		"refer": [
-			"html/homeSchool/noticeDetail.html",
-			"html/homeSchool/notice_add.html"
-		],
-		"resources": []
-	},
-	"html/homeSchool/notice_add.html": {
-		"refer": [
-			"html/homeSchool/gradeList.html"
-		],
-		"resources": []
-	},
-	"html/sciedu/sciedu_home.html": {
-		"refer": [
-			"html/sciedu/sciedu_show_main.html",
-			"html/utils/customizeCity.html"
-		],
-		"resources": []
-	},
-	"html/login/firstPage.html": {
-		"refer": [
-			"index.html",
-			"html/login/noPermissions.html"
-		],
-		"resources": []
-	},
-	"html/homeSchool/mine.html": {
-		"refer": [
-			"html/login/loginIndex.html"
-		],
-		"resources": []
-	},
-	"html/login/noPermissions.html": {
-		"resources": [
-			"html/login/loginIndex.html",
-			"html/login/loginFnoPermissions.html"
-		],
-		"refer": [
-			"html/Course/courseIndex.html",
-			"html/sciedu/sciedu_home.html",
-			"html/login/loginIndex.html",
-			"html/helpStudy/helpStudyIndex.html",
-			"html/login/loginFnoPermissions.html"
-		]
-	},
-	"html/login/loginFnoPermissions.html": {
-		"refer": [
-			"html/login/noPermissions.html",
-			"index.html"
-		],
-		"resources": []
-	},
-	"noPermissions.html": {
-		"resources": [
-			"html/login/loginFnoPermissions.html"
-		],
-		"refer": [
-			"html/Course/courseIndex.html",
-			"html/sciedu/sciedu_home.html",
-			"html/helpStudy/helpStudyIndex.html",
-			"html/login/loginFnoPermissions.html"
 		]
 	}
-=======
-  "index.html": {
-    "resources": [
-      "html/homeSchool/homeSchoolIndex.html"
-    ],
-    "refer": [
-      "html/Course/courseIndex.html",
-      "html/homeSchool/homeSchoolIndex.html",
-      "html/sciedu/sciedu_home.html",
-      "html/helpStudy/helpStudyIndex.html",
-      "html/login/loginIndex.html"
-    ]
-  },
-  "html/login/loginIndex.html": {
-    "refer": [
-      "index.html"
-    ]
-  },
-  "html/homeSchool/homeSchoolIndex.html": {
-    "refer": [
-      "html/homeSchool/noticeList.html",
-      "html/homeSchool/mine.html"
-    ]
-  },
-  "html/homeSchool/noticeList.html": {
-    "refer": [
-      "html/homeSchool/noticeDetail.html",
-      "html/homeSchool/notice_add.html"
-    ]
-  },
-  "html/homeSchool/notice_add.html": {
-    "refer": [
-      "html/homeSchool/gradeList.html"
-    ]
-  },
-  "html/sciedu/sciedu_home.html": {
-    "refer": [
-      "html/sciedu/sciedu_show_main.html"
-    ]
-  },
-  "html/login/firstPage.html": {
-    "refer": [
-      "index.html"
-    ]
-  }
->>>>>>> 4fafc2851dacb6ec4594bcf75e7963dea241f8e1
 }

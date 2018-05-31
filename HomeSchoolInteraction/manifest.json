@@ -185,7 +185,8 @@
 				"resources": [],
 				"refer": [
 					"index.html",
-					"html/login/noPermissions.html"
+					"html/login/noPermissions.html",
+					"index2.html"
 				],
 				"priority": 0
 			},
@@ -198,7 +199,6 @@
 			},
 			"html/login/noPermissions.html": {
 				"resources": [
-					"html/login/loginIndex.html",
 					"html/login/loginFnoPermissions.html"
 				],
 				"refer": [
@@ -208,15 +208,7 @@
 				],
 				"priority": 0
 			},
-			"html/login/loginFnoPermissions.html": {
-				"resources": [],
-				"refer": [
-					"html/login/noPermissions.html",
-					"index.html"
-				],
-				"priority": 0
-			},
-			"noPermissions.html": {
+			"index2.html": {
 				"resources": [
 					"html/login/loginFnoPermissions.html"
 				],
