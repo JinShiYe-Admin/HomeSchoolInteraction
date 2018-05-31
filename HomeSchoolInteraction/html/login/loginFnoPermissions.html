@@ -14,12 +14,32 @@
 		<link rel="stylesheet" href="../js/demoCssJs/demos.css">-->
 		<script type="text/javascript">
 		</script>
-
+  
 	</head>
 
 	<body>
+		<header class="mui-bar mui-bar-nav" style="background-color:#00CFBD;">
+			<a  class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>
+			<h1 class="mui-title" style="color: white;">登录</h1>
+		</header>
+		<div class="mui-content">
+			<div style="height: 200px;font-size: 25px;color: #00cfba;;padding: 100px 0px;text-align: center;">登录</div>
+			<div class="mui-input-row">
+				<label style="margin-top: -5px;"><image src="../../img/login/username.png" style="width: 30px;height: 30px;" /></label>
+				<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入用户名">
+			</div>
+			<hr style=" height:1px;border:none;border-top:1px solid #00cfba;;margin: -12px 20px 5px 60px ;" />
 
-		<div style="background-image:url(../../img/ios_1242-2208.png);background-position: center; background-size: cover;background-repeat: no-repeat;" class="mui-fullscreen" style="width: 100%;height: 100%;"></div>
+			<div class="mui-input-row ">
+				<label><image src="../../img/login/password.png" style="width: 30px;height: 30px;" /></label>
+				<input id='password' type="password" class="mui-input-clear mui-input " placeholder="请输入密码">
+			</div>
+			<hr style=" height:1px;border:none;border-top:1px solid #00cfba;;margin: -12px 20px 0px 60px ;" />
+
+			<div style="padding: 0px 20px;">
+				<button id='login' type="button" class="mui-btn mui-btn-block mui-btn-primary" style="background: #00cfba; border:none; margin-top: 30px;height: 40px;padding-top: 8px;">登录</button>
+			</div>
+		</div>
 	</body>
 	<!--加密-->
 	<script src="../../js/libs/RSA/Barrett.js" type="text/javascript" charset="utf-8"></script>
@@ -41,9 +61,7 @@
 	<script src="../../js/utils/storageutil.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../../js/utils/events.js"></script>
 	<script type="text/javascript">
-		mui.init({
-				statusBarBackground: '#00CFBD'
-			});
+		
 		//		$(function() {
 		//			
 		//		});
@@ -54,38 +72,61 @@
 				uuid: plus.device.uuid,
 				appid: plus.runtime.appid
 			}
-			setUUID();
+			
+			var backButtonPress = 0;
+//			setUUID();
 		});
-		document.addEventListener("plusready", function() {
-			message = document.getElementById("message");
-			// 监听点击消息事件
-			plus.push.addEventListener("click", function(msg) {
-				// 判断是从本地创建还是离线推送的消息
-				switch(msg.payload) {
-					case "LocalMSG":
-						outSet("点击本地创建消息启动：");
-						break;
-					default:
-						outSet("点击离线推送消息启动：");
-						break;
-				}
-				// 提示点击的内容
-				plus.ui.alert(msg.content);
-				// 处理其它数据
-				logoutPushMsg(msg);
-			}, false);
-			// 监听在线消息事件
-			plus.push.addEventListener("receive", function(msg) {
-				//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
-				utils.setBadgeNumber(2,0);
-				if(msg.aps) { // Apple APNS message
-					outSet("接收到在线APNS消息：");
+//		document.addEventListener("plusready", function() {
+//			message = document.getElementById("message");
+//			// 监听点击消息事件
+//			plus.push.addEventListener("click", function(msg) {
+//				// 判断是从本地创建还是离线推送的消息
+//				switch(msg.payload) {
+//					case "LocalMSG":
+//						outSet("点击本地创建消息启动：");
+//						break;
+//					default:
+//						outSet("点击离线推送消息启动：");
+//						break;
+//				}
+//				// 提示点击的内容
+//				plus.ui.alert(msg.content);
+//				// 处理其它数据
+//				logoutPushMsg(msg);
+//			}, false);
+//			// 监听在线消息事件
+//			plus.push.addEventListener("receive", function(msg) {
+//				if(msg.aps) { // Apple APNS message
+//					outSet("接收到在线APNS消息：");
+//				} else {
+//					outSet("接收到在线透传消息：");
+//				}
+//				logoutPushMsg(msg);
+//			}, false);
+//		}, false);
+		document.getElementById("login").addEventListener('tap', function(event) {
+			console.log("登录");
+			var tempName = document.getElementById("account").value;
+			var tempPW = document.getElementById("password").value;
+			console.log('tempName:' + tempName + ',tempPW' + tempPW);
+			//判断输入是否符合要求
+			if(checkInput(tempName)) {
+				if(checkInput(tempPW)) {
+					//login登录
+					loginPro(tempName, tempPW);
 				} else {
-					outSet("接收到在线透传消息：");
+
 				}
-				logoutPushMsg(msg);
-			}, false);
-		}, false);
+			} else {
+
+			}
+		});
+
+		window.addEventListener('quit', function(data) {
+			console.log("data" + JSON.stringify(data.detail));
+			var tempData = data.detail;
+			loginFlag = 1;
+		});
 
 		/**
 		 * 获取本地推送标识信息
@@ -179,14 +220,37 @@
 									//											mui.toast(data.RspTxt);
 								}
 							});
-
-							utils.mOpenWithData("noPermissions.html", personal);
+							
+							
+							//判断权限  
+							var personal = store.get(window.storageKeyName.PERSONALINFO);
+							var permission =true; 
+							if(personal.utid=='0'){
+								permission=false;
+							}
+							if(permission){
+								plus.webview.open('../../index.html');
+							}else{
+//								var wvs = plus.webview.all();
+//								for (var i = 0, len = wvs.length; i < len; i++) {
+//						            //关闭除login页面外的其他页面
+//									if (wvs[i].getURL().indexOf('homeSchoolIndex.html')!=-1
+//									||wvs[i].getURL().indexOf('sciedu_home.html')!=-1
+//									||wvs[i].getURL().indexOf('courseIndex.html')!=-1){
+//										plus.webview.close(wvs[i]);
+//									}
+//								}
+								plus.webview.open('noPermissions.html');
+							}
+							
+							var curr = plus.webview.currentWebview();
+							curr.close();
+//							utils.mOpenWithData("../../index.html", personal);
 						} else {
 							mui.toast(data1.RspTxt);
 						}
 					});
 				} else {
-					setUUID();
 					mui.toast(data.RspTxt);
 				}
 			});
@@ -194,22 +258,60 @@
 		}
 
 		//从ios原生得到信息
-		var setUUID = function() {
+		var setUUID = function(tempStr) {
 			if(loginFlag == 0) {
+				//			var tempModel0 = $.parseJSON(tempStr);
 				store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
+				console.log('tempStr:' + tempStr);
 				//判断上次是否登录过，自动登录
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
+
+				//			console.log('personal:' + JSON.parse(personal));
 				if(personal) {
 					if(personal.utid == 'undefined' || personal.utid == null || personal.userName0 == null) {
 						//login登录
 						loginPro('00000000000', '123');
 					} else {
-						if (personal.userName0.length>0) {
-							//login登录
+						document.getElementById("account").value = personal.userName0;
+						document.getElementById("password").value = personal.password0;
+						//login登录
 						loginPro(personal.userName0, personal.password0);
-						}else{
-							loginPro('00000000000', '000000');
-						}
+						//需要参数
+						//					var comData = {
+						//						uuid: tempModel.uuid,
+						//						utid: personal.utid,
+						//						utoken: personal.utoken,
+						//						appid: tempModel.appid,
+						//						schid: personal.schid,
+						//						utname: personal.utname
+						//					};
+						//					events.showWaiting();
+						//					//令牌续订
+						//					postDataEncry('TokenReset', {}, comData, 0, function(data) {
+						//						events.closeWaiting();
+						//						if(data.RspCode == 0) {
+						//							var tempInfo00 = store.get(window.storageKeyName.PERSONALINFO);
+						//							tempInfo00.utoken = data.RspData;
+						//							store.set(window.storageKeyName.PERSONALINFO, tempInfo00);
+						//							var info = plus.push.getClientInfo();
+						//							var tempBindData = {
+						//								appId: info.appid,
+						//								alias: tempInfo00.utid,
+						//								cid: info.clientid
+						//							}
+						//							bindPro(tempBindData, function function_name(data) {
+						//								//									events.closeWaiting();
+						//								if(data.RspCode == 0) {
+						//									//										utils.mOpenWithData("../../index.html", {});
+						//								} else {
+						//									mui.toast(data.RspTxt);
+						//								}
+						//							});
+						//							//						utils.mOpenWithData("../../index.html", {});
+						//						} else {
+						//							mui.toast(data.RspTxt);
+						//						}
+						//					});
 					}
 				} else {
 					loginPro('00000000000', '000000');
@@ -217,6 +319,27 @@
 			} else {
 
 			}
+		}
+
+		//判断是否输入了值
+		var checkInput = function(text) {
+			if(text.trim().length == 0) {
+				mui.toast('请输入账号密码');
+				return false;
+			}
+			if(isNull(text)) {
+				mui.toast('请输入账号密码');
+				return false;
+			}
+			return true;
+		}
+
+		//判断输入字符串是否为空或者全部都是空格
+		function isNull(str) {
+			if(str == "") return true;
+			var regu = "^[ ]+$";
+			var re = new RegExp(regu);
+			return re.test(str);
 		}
 	</script>
 

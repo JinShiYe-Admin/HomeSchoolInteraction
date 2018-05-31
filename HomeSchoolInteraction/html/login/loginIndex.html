@@ -63,14 +63,6 @@
 	<script type="text/javascript">
 		
 		
-		var personal = store.get(window.storageKeyName.PERSONALINFO);
-		var authority =true; 
-		if(personal==null||personal==undefined){
-			authority=true;
-		}else if(personal.utid=='0'){
-			authority=false;
-		}
-		
 		//		$(function() {
 		//			
 		//		});
@@ -83,7 +75,6 @@
 			}
 			
 			var backButtonPress = 0;
-			if(authority==true){//如果是正式身份退出的,增加返回键监听,游客身份登录的，取消监听，点击返回键，可以返回游客界面
 				mui.back = function(event) {
 						backButtonPress++;
 						if(backButtonPress > 1) {
@@ -96,7 +87,6 @@
 						}, 1000);
 						return false;
 				};
-			}
 //			setUUID();
 		});
 //		document.addEventListener("plusready", function() {
@@ -244,16 +234,19 @@
 								}
 							});
 							
-							var wvs = plus.webview.all();
-							for (var i = 0, len = wvs.length; i < len; i++) {
-					            //关闭除login页面外的其他页面
-								if (wvs[i].getURL().indexOf('homeSchoolIndex.html')!=-1
-								||wvs[i].getURL().indexOf('sciedu_home.html')!=-1
-								||wvs[i].getURL().indexOf('courseIndex.html')!=-1){
-									plus.webview.close(wvs[i]);
-								}
+							
+							//判断权限  
+							var personal = store.get(window.storageKeyName.PERSONALINFO);
+							var permission =true; 
+							if(personal.utid=='0'){
+								permission=false;
 							}
-							plus.webview.open('../../index.html');
+							if(permission){
+								plus.webview.open('../../index.html');
+							}else{//游客身份
+								plus.webview.open('noPermissions.html');
+							}
+							
 							var curr = plus.webview.currentWebview();
 							curr.close();
 //							utils.mOpenWithData("../../index.html", personal);
