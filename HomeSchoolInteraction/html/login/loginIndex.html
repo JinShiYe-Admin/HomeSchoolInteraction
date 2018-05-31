@@ -243,10 +243,19 @@
 							}
 							if(permission){
 								plus.webview.open('../../index.html');
-							}else{//游客身份
-								plus.webview.open('../../index2.html');
 							}
-							
+//							else{//游客身份
+//								plus.webview.open('../../index2.html');
+//							}
+							var wvs = plus.webview.all();
+							for (var i = 0, len = wvs.length; i < len; i++) {
+								if (wvs[i].getURL().indexOf('homeSchoolIndex.html')!=-1
+								||wvs[i].getURL().indexOf('sciedu_home.html')!=-1
+								||wvs[i].getURL().indexOf('courseIndex.html')!=-1){
+											continue;
+								}
+								plus.webview.close(wvs[i]);
+							}
 							var curr = plus.webview.currentWebview();
 							curr.close();
 //							utils.mOpenWithData("../../index.html", personal);
