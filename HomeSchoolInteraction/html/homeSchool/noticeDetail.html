@@ -161,7 +161,6 @@
 			</div>
 		</nav>
 				
-				
 		<div class="mui-content" id="noticeDetailData" v-if="flag>0" style="background: white;">
 			<p style="color: black;padding: 10px;font-size: 14px;color: #333333;word-break: break-all;">{{noticesDetail.NoticeContent}}</p>
 			<!--<p class="" style="height: 10px;background-color: #f2f2f2;"></p>-->
@@ -183,8 +182,8 @@
 					<ul class="mui-table-view mui-grid-view">
 						<li class="mui-table-view-cell mui-media" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
 							<a href="#" >
-								<div class="notice-more-img" style=" overflow: hidden;">
-									<img data-preview-src="" :src=picModel width="100px;" style="vertical-align: middle;" onload="this.style.marginTop = (parseInt(this.parentNode.style.height) - this.height)/2 + 'px';this.style.marginLeft = (parseInt(this.parentNode.style.width) - this.width) /2 + 'px'" />
+								<div class="notice-one-img" style=" overflow: hidden;">
+									<img data-preview-src="" :src=picModel width="100%" style="vertical-align: middle;" onload="this.style.marginTop = (parseInt(this.parentNode.style.height) - this.height)/2 + 'px';this.style.marginLeft = (parseInt(this.parentNode.style.width) - this.width) /2 + 'px'" />
 								</div>
 							</a>
 						</li>
@@ -194,8 +193,8 @@
 					<ul class="mui-table-view mui-grid-view">
 						<li class="mui-table-view-cell mui-media mui-col-xs-5 mui-col-sm-5" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
 							<a href="#" >
-								<div class="notice-more-img" style=" overflow: hidden;">
-									<img data-preview-src="" :src=picModel width="100px;" style="vertical-align: middle;" onload="this.style.marginTop = (parseInt(this.parentNode.style.height) - this.height)/2 + 'px';this.style.marginLeft = (parseInt(this.parentNode.style.width) - this.width) /2 + 'px'" />
+								<div class="notice-two-img" style=" overflow: hidden;">
+									<img data-preview-src="" :src=picModel width="100%" style="vertical-align: middle;" onload="this.style.marginTop = (parseInt(this.parentNode.style.height) - this.height)/2 + 'px';this.style.marginLeft = (parseInt(this.parentNode.style.width) - this.width) /2 + 'px'" />
 								</div>
 							</a>
 						</li>
@@ -207,7 +206,7 @@
 							<a href="#" style="margin: -10px 0 0 -20px;">
 								<!--<img class="notice-more-img" data-preview-src="" :src=picModel>-->
 								<div class="notice-more-img" style=" overflow: hidden;">
-									<img data-preview-src="" :src=picModel width="100px;" style="vertical-align: middle;" onload="this.style.marginTop = (parseInt(this.parentNode.style.height) - this.height)/2 + 'px';this.style.marginLeft = (parseInt(this.parentNode.style.width) - this.width) /2 + 'px'" />
+									<img data-preview-src="" :src=picModel width="100%" style="vertical-align: middle;" onload="this.style.marginTop = (parseInt(this.parentNode.style.height) - this.height)/2 + 'px';this.style.marginLeft = (parseInt(this.parentNode.style.width) - this.width) /2 + 'px'" />
 								</div>
 							</a>
 						</li>
