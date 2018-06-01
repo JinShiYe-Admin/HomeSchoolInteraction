@@ -160,15 +160,17 @@
 				<button v-on:click.stop="replyContent()" type="button" maxlength="200" class="" style="width: 20%;margin-top: 2px;border: 0px;font-size: 18px;color: #00cfbd;">回复</button>
 			</div>
 		</nav>
-		
+				
+				
 		<div class="mui-content" id="noticeDetailData" v-if="flag>0" style="background: white;">
 			<p style="color: black;padding: 10px;font-size: 14px;color: #333333;word-break: break-all;">{{noticesDetail.NoticeContent}}</p>
 			<!--<p class="" style="height: 10px;background-color: #f2f2f2;"></p>-->
 			<div id="" v-show="noticesDetail.NoticeEncAddr.length>0">
+
 				<div class="" v-if="noticesDetail.NoticeEncAddr.length==1&&noticesDetail.encFlag==2">
 					<ul class="mui-table-view mui-grid-view">
 						<li class="mui-table-view-cell mui-media" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
-							<a href="#" class="img-box">
+							<a href="#" >
 								<img @click="playVideo" class="notice-one-img mui-media-object" src="../../img/utils/playvideo2.png" style="height: 80px;width: 80px;"></a>
 						</li>
 						<!--<li class="mui-table-view-cell mui-media mui-col-xs-12" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
@@ -180,24 +182,34 @@
 				<div class="" v-else-if="noticesDetail.NoticeEncAddr.length==1&&noticesDetail.encFlag==1">
 					<ul class="mui-table-view mui-grid-view">
 						<li class="mui-table-view-cell mui-media" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
-							<a href="#" class="img-box">
-								<img class="notice-one-img" data-preview-src="" :src=picModel ></a>
+							<a href="#" >
+								<div class="notice-more-img" style=" overflow: hidden;">
+									<img data-preview-src="" :src=picModel width="100px;" style="vertical-align: middle;" onload="this.style.marginTop = (parseInt(this.parentNode.style.height) - this.height)/2 + 'px';this.style.marginLeft = (parseInt(this.parentNode.style.width) - this.width) /2 + 'px'" />
+								</div>
+							</a>
 						</li>
 					</ul>
 				</div>
 				<div class="" v-else-if="noticesDetail.NoticeEncAddr.length==2">
 					<ul class="mui-table-view mui-grid-view">
 						<li class="mui-table-view-cell mui-media mui-col-xs-5 mui-col-sm-5" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
-							<a href="#" class="img-box">
-								<img class="notice-two-img" data-preview-src="" :src=picModel ></a>
+							<a href="#" >
+								<div class="notice-more-img" style=" overflow: hidden;">
+									<img data-preview-src="" :src=picModel width="100px;" style="vertical-align: middle;" onload="this.style.marginTop = (parseInt(this.parentNode.style.height) - this.height)/2 + 'px';this.style.marginLeft = (parseInt(this.parentNode.style.width) - this.width) /2 + 'px'" />
+								</div>
+							</a>
 						</li>
 					</ul>
 				</div>
 				<div class="" v-else-if="noticesDetail.NoticeEncAddr.length>=3">
 					<ul class="mui-table-view mui-grid-view">
 						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
-							<a href="#" class="img-box" style="margin: -10px 0 0 -20px;">
-								<img class="notice-more-img" data-preview-src="" :src=picModel></a>
+							<a href="#" style="margin: -10px 0 0 -20px;">
+								<!--<img class="notice-more-img" data-preview-src="" :src=picModel>-->
+								<div class="notice-more-img" style=" overflow: hidden;">
+									<img data-preview-src="" :src=picModel width="100px;" style="vertical-align: middle;" onload="this.style.marginTop = (parseInt(this.parentNode.style.height) - this.height)/2 + 'px';this.style.marginLeft = (parseInt(this.parentNode.style.width) - this.width) /2 + 'px'" />
+								</div>
+							</a>
 						</li>
 					</ul>
 				</div>
