@@ -46,7 +46,7 @@
 			<a v-if="personal.appxxtservstat>0" @click="revoke()" class="mui-pull-right" style="color: white;font-size: 25px;margin-top: 10px;">+</a>
 		</header>
 		<div class="mui-content" id="noticelistData" style="margin-top: -40px;">
-			<ul class="mui-table-view" v-for="(noticeModel,index) in noticeArray">
+			<ul class="mui-table-view" v-for="(noticeModel,index) in noticeArray" v-if="noticeArray.length>0">
 				<li class="mui-table-view-cell" @click="clickNoticeList(noticeModel)">
 					<div class="mui-navigate-right">
 						<div id="" v-if="noticeModel.IsRead==0&&noticeModel.NoticeType==1">

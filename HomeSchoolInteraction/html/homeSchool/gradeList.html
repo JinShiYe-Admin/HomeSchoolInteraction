@@ -364,7 +364,7 @@
 								} else if(personalFlag == 3) { //3班主任
 									for(var a = 0; a < personal.clss.length; a++) {
 										var grdModel = personal.clss[a];
-										if(model.grdid == grdModel.grdid) { //获取到的年级id，和个人所在年级列表id一样
+										if(model.grdid == grdModel.grdid&&grdModel.isms == 1) { //获取到的年级id，和个人所在年级列表id一样
 											gradeStr = gradeStr + ',' + model.grdid;
 											gradeListData.gradeListArray.push(model);
 											break;
