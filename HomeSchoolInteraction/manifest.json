@@ -194,7 +194,8 @@
 			"html/homeSchool/mine.html": {
 				"resources": [],
 				"refer": [
-					"html/login/loginIndex.html"
+					"html/login/loginIndex.html",
+					"html/login/firstPage.html"
 				],
 				"priority": 0
 			},
