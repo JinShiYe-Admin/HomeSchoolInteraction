@@ -404,6 +404,7 @@
 					manId: personal.utid, //登录人ID
 					schoolId: personal.schid, //学校ID,统一部署的时候，学校ID传000000
 				}
+				plus.device.vibrate(500);
 				events.showWaiting();
 				getNoReadNoticeCntByManPro(tempData, function function_name(data) {
 					events.closeWaiting();

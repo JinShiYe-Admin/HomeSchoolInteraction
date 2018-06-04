@@ -76,7 +76,13 @@
 	},
 	"html/homeSchool/noticeList.html": {
 		"refer": [
-			"html/homeSchool/noticeDetail.html"
+			"html/homeSchool/noticeDetail.html",
+			"html/homeSchool/notice_add.html"
+		]
+	},
+	"html/homeSchool/notice_add.html": {
+		"refer": [
+			"html/homeSchool/gradeList.html"
 		]
 	}
 }

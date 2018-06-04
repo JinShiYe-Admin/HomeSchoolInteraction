@@ -45,8 +45,8 @@
 			<h1 class="mui-title" style="color: white;">学校通知</h1>
 			<a v-if="personal.appxxtservstat>0" @click="revoke()" class="mui-pull-right" style="color: white;font-size: 25px;margin-top: 10px;">+</a>
 		</header>
-		<div class="mui-content" id="noticelistData" style="margin-top: -40px;">
-			<ul class="mui-table-view" v-for="(noticeModel,index) in noticeArray" v-if="noticeArray.length>0">
+		<div v-show="showFlag>0" class="mui-content" id="noticelistData" style="margin-top: -40px;">
+			<ul class="mui-table-view" v-for="(noticeModel,index) in noticeArray">
 				<li class="mui-table-view-cell" @click="clickNoticeList(noticeModel)">
 					<div class="mui-navigate-right">
 						<div id="" v-if="noticeModel.IsRead==0&&noticeModel.NoticeType==1">
@@ -160,6 +160,7 @@
 			var noticelistData = new Vue({
 				el: "#noticelistData",
 				data: {
+					showFlag:0,//1有数据，0无数据
 					flag: 0, //0刷新，1加载更多
 					noticeArray: [], //通知列表数组
 					pageIndex: 1 //第几页
@@ -233,20 +234,25 @@
 					mui('#noticelistData').pullRefresh().endPullupToRefresh(); //参数为true代表没有更多数据了。
 					mui('#noticelistData').pullRefresh().endPulldownToRefresh();
 					console.log('data:' + JSON.stringify(data));
-
 					if(data.RspCode == 0) {
+						
 						noticelistData.pageIndex++;
 						for(var i = 0; i < data.RspData.Data.length; i++) {
 							var model = data.RspData.Data[i];
 							model.SendTime = modifyTimeFormat(model.SendTime);
 						}
 						if(noticelistData.flag == 0) { //刷新
-
 							noticelistData.noticeArray = data.RspData.Data;
+							if (data.RspData.Data.length==0) {
+								mui.toast('数据为空');
+							}
 						} else { //加载更多
 							noticelistData.noticeArray = noticelistData.noticeArray.concat(data.RspData.Data);
-
+							if (data.RspData.Data.length==0) {
+								mui.toast('已加载全部');
+							}
 						}
+						noticelistData.showFlag = 1;
 					} else {
 						mui.toast(data.RspTxt);
 					}
