@@ -56,7 +56,8 @@
 	},
 	"html/homeSchool/mine.html": {
 		"refer": [
-			"html/login/loginIndex.html"
+			"html/login/loginIndex.html",
+			"html/login/firstPage.html"
 		],
 		"resources": []
 	},
