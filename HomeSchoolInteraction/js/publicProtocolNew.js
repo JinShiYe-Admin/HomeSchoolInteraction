@@ -137,7 +137,7 @@ var xhrPost = function(url, commonData, callback,flag) {
 
 		var xhr = new XMLHttpRequest();
 		xhr.open("post", url, true);
-		xhr.timeout = 30000; //10秒超时
+		xhr.timeout = 10000; //10秒超时
 		xhr.contentType = 'application/json;';
 		xhr.onload = function(e) {
 			console.log("XHRP:onload:", JSON.stringify(e));
@@ -191,7 +191,7 @@ var jQAjaxPost = function(url, data, callback) {
 		url: url,
 		type: "POST",
 		data: data,
-		timeout: 30000,
+		timeout: 10000,
 		dataType: "json",
 		contentType: "application/json",
 		async: true,
@@ -247,7 +247,7 @@ var tempPro = function(url,data0, callback) {
 	console.log('data0:' + JSON.stringify(data0));
 	var xhr = new XMLHttpRequest();
 		xhr.open("post", url, true);
-		xhr.timeout = 30000; //10秒超时
+		xhr.timeout = 10000; //10秒超时
 		xhr.contentType = 'application/json;';
 		xhr.onload = function(e) {
 			console.log("XHRP:onload:", JSON.stringify(e));

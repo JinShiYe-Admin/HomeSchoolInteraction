@@ -81,9 +81,9 @@
 								<p class="item-info">{{item.tips}}</p>
 							</div>
 							<template v-if="item.imgs.length>0">
-								<div class="item-img back-img" v-if="item.imgs.length===1" v-bind:data-original="item.imgs[0]" v-bind:style="{'background-image':'url('+'../../image/utils/default_load_2_1.gif'+')'}"></div>
+								<div class="item-img back-img" v-if="item.imgs.length===1" v-bind:data-original="item.imgs[0]" v-bind:style="{'background-image':'url('+'../../img/utils/default_load_2_1.gif'+')'}"></div>
 								<div v-else class="imgs-container">
-									<div class="item-imgs back-img" v-for="img of item.imgs" v-bind:data-original="img" v-bind:style="{'background-image':'url('+'../../image/utils/default_load_2_1.gif'+')',height:imgsStyle.height+'px',width:imgsStyle.width+'px'}"></div>
+									<div class="item-imgs back-img" v-for="img of item.imgs" v-bind:data-original="img" v-bind:style="{'background-image':'url('+'../../img/utils/default_load_2_1.gif'+')',height:imgsStyle.height+'px',width:imgsStyle.width+'px'}"></div>
 								</div>
 							</template>
 						</li>

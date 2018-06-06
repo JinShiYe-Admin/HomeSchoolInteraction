@@ -57,7 +57,8 @@
 	"html/homeSchool/mine.html": {
 		"refer": [
 			"html/login/loginIndex.html",
-			"html/login/firstPage.html"
+			"html/login/firstPage.html",
+			"html/login/firstPage1.html"
 		],
 		"resources": []
 	},
@@ -83,6 +84,11 @@
 	"html/homeSchool/notice_add.html": {
 		"refer": [
 			"html/homeSchool/gradeList.html"
+		]
+	},
+	"html/login/firstPage1.html": {
+		"refer": [
+			"index2.html"
 		]
 	}
 }

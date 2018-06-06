@@ -199,9 +199,9 @@ var storageKeyName = (function(mod) {
 	//---七牛---end---
 
 	//---默认图片---start---
-	mod.DEFAULTPERSONALHEADIMAGE = '../../image/utils/default_personalimage.png'; //默认的个人头像
-	mod.DEFAULTSCIEDUIMAGELOAD = '/image/utils/default_load_2.gif'; //科教首页，懒加载显示加载中的图片
-	mod.DEFAULTIMAGELOAD = '/image/utils/default_load_2_1.gif';
+	mod.DEFAULTPERSONALHEADIMAGE = '../../img/utils/default_personalimage.png'; //默认的个人头像
+	mod.DEFAULTSCIEDUIMAGELOAD = '/img/utils/default_load_2.gif'; //科教首页，懒加载显示加载中的图片
+	mod.DEFAULTIMAGELOAD = '/img/utils/default_load_2_1.gif';
 	//---默认图片---end---
 
 	//---Activity的code---start---

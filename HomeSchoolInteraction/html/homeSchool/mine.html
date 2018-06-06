@@ -93,12 +93,12 @@
 				//获取所有已打开的webview 实例————重新打开login.html————循环关闭页面
 				store.remove(window.storageKeyName.PERSONALINFO);
 //				plus.webview.open('../../html/login/loginIndex.html');
-				plus.webview.open('../../html/login/firstPage.html');
+				plus.webview.open('../../html/login/firstPage1.html');
 				var curr = plus.webview.currentWebview();
 				var wvs = plus.webview.all();
 				for(var i = 0, len = wvs.length; i < len; i++) {
 					//关闭除login页面外的其他页面
-					if(wvs[i].getURL().indexOf('firstPage.html') != -1) {
+					if(wvs[i].getURL().indexOf('firstPage1.html') != -1) {
 //					if(wvs[i].getURL().indexOf('loginIndex.html') != -1) {
 						continue;
 					}

@@ -82,7 +82,7 @@
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;">
 						<a href="#" @click="clickFunction(0)">
 							<img class="circular-square" src="../../img/homeSchool/schoolPage0.png" />
-							<span v-if="NoReadCnt>0" class="mui-badge mui-btn-red">{{NoReadCnt}}</span>
+							<span id="NoReadCnt" v-if="NoReadCnt>0" class="mui-badge mui-btn-red" style="display: none;">{{NoReadCnt}}</span>
 							<div class="mui-media-body divNameCss" style="font-size: 14px;">学校通知</div>
 						</a>
 					</li>
@@ -404,7 +404,7 @@
 					manId: personal.utid, //登录人ID
 					schoolId: personal.schid, //学校ID,统一部署的时候，学校ID传000000
 				}
-				plus.device.vibrate(500);
+//				plus.device.vibrate(500);
 				events.showWaiting();
 				getNoReadNoticeCntByManPro(tempData, function function_name(data) {
 					events.closeWaiting();
@@ -413,6 +413,7 @@
 						contentData.NoReadCnt = data.RspData.NoReadCnt;
 						//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
 						utils.setBadgeNumber(0,contentData.NoReadCnt);
+						$("#NoReadCnt").show();
 					} else {
 						mui.toast(data.RspTxt);
 					}

@@ -195,7 +195,8 @@
 				"resources": [],
 				"refer": [
 					"html/login/loginIndex.html",
-					"html/login/firstPage.html"
+					"html/login/firstPage.html",
+					"html/login/firstPage1.html"
 				],
 				"priority": 0
 			},
@@ -225,6 +226,13 @@
 				"resources": [],
 				"refer": [
 					"index.html"
+				],
+				"priority": 0
+			},
+			"html/login/firstPage1.html": {
+				"resources": [],
+				"refer": [
+					"index2.html"
 				],
 				"priority": 0
 			}

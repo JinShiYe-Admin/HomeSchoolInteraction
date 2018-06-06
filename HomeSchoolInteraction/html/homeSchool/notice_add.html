@@ -593,7 +593,8 @@
 									var filePath = QNUptoken.Data[i].P_Key.split("/");
 									var fileName = filePath[filePath.length - 1];
 									if(videoName == fileName) {
-										multiMedia.data.VideoArray[j].domain = QNUptoken.Data[i].Domain + QNUptoken.Data[i].Key;
+//										multiMedia.data.VideoArray[j].domain = QNUptoken.Data[i].Domain + QNUptoken.Data[i].Key;
+										multiMedia.data.VideoArray[j].domain = window.storageKeyName.QNPB + QNUptoken.Data[i].Key;
 										multiMedia.data.VideoArray[j].thumb = QNUptoken.Data[i].OtherKey[data.configure.thumbKey[i]];
 									}
 								}
