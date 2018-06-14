@@ -48,13 +48,27 @@
 		//			
 		//		});
 		var tempModel = {};
-		var loginFlag = 0; //0自动登录，1不自动登录
+		var loginFlag = 0; //0自动登录，1不自动登录//判断上次有没有登录，如果登录，就不执行登录协议
 		mui.plusReady(function() {
 			tempModel = {
 				uuid: plus.device.uuid,
 				appid: plus.runtime.appid
 			}
 			setUUID();
+			document.addEventListener("netchange", wainshow, false);
+
+			function wainshow() {
+				if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+					mui.toast("网络异常，请检查网络设置！");
+				} else {
+					mui.toast("已接入网络");
+					//判断上次有没有登录，如果登录，就不执行登录协议
+					if(loginFlag == 0) {
+						loginFlag = 1;
+						setUUID();
+					}
+				}
+			}
 		});
 		document.addEventListener("plusready", function() {
 			message = document.getElementById("message");
@@ -133,6 +147,7 @@
 					postDataEncry('Login', enData1, comData1, 0, function(data1) {
 						events.closeWaiting();
 						if(data1.RspCode == 0) {
+							loginFlag = 1;
 							if(data1.RspData.dpts == null) {
 								data1.RspData.dpts = [];
 							}
@@ -189,7 +204,7 @@
 						}
 					});
 				} else {
-					setUUID();
+//					setUUID();
 					mui.toast(data.RspTxt);
 				}
 			});
@@ -198,18 +213,18 @@
 
 		//从ios原生得到信息
 		var setUUID = function() {
-			if(loginFlag == 0) {
+//			if(loginFlag == 0) {
 				store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
 				//判断上次是否登录过，自动登录
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				if(personal) {
 					if(personal.utid == 'undefined' || personal.utid == null || personal.userName0 == null) {
 						//login登录
-						loginPro('00000000000', '123');
+						loginPro('00000000000', '000000');
 					} else {
-						if (personal.userName0.length>0) {
+						if (personal.userName00) {
 							//login登录
-						loginPro(personal.userName0, personal.password0);
+							loginPro(personal.userName0, personal.password0);
 						}else{
 							loginPro('00000000000', '000000');
 						}
@@ -217,9 +232,9 @@
 				} else {
 					loginPro('00000000000', '000000');
 				}
-			} else {
-
-			}
+//			} else {
+//
+//			}
 		}
 	</script>
 

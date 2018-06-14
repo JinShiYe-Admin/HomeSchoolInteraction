@@ -292,24 +292,34 @@
 				addNoticeContent.classIDsArray = [].concat(tempData.classIDsArray);
 				addNoticeContent.gradeIDsArray = [].concat(tempData.gradeIDsArray);
 				addNoticeContent.classIDs = tempData.classIDs;
-				//6.学校班级学生,获取选择班级中对应的人
-				getClassParents(tempData.classIDs);
-				addNoticeContent.parentsStr = tempData.classShow.replace(/;/g, '全部家长;');
-				addNoticeContent.parentsStr = addNoticeContent.parentsStr.replace(/全部班级/g, '');
-				addNoticeContent.parentsStr = addNoticeContent.parentsStr + '全部家长';
-				addNoticeContent.flag = 0;
-				//判断选择的班级，是否有当前身份是班主任的
-				if(addNoticeContent.teacherFlag > 0) {
-					for(var i = 0; i < addNoticeContent.classIDsArray.length; i++) {
-						var temp = addNoticeContent.classIDsArray[i];
-						//判断是否是班主任
-						for(var a = 0; a < personal.clss.length; a++) {
-							var classModel = personal.clss[a];
-							if(classModel.isms == 1&&temp==classModel.clsid) {
-								addNoticeContent.flag = 1;
+				if(tempData.classIDs.length > 0) {
+					//6.学校班级学生,获取选择班级中对应的人
+					getClassParents(tempData.classIDs);
+					addNoticeContent.parentsStr = tempData.classShow.replace(/;/g, '全部家长;');
+					addNoticeContent.parentsStr = addNoticeContent.parentsStr.replace(/全部班级/g, '');
+					addNoticeContent.parentsStr = addNoticeContent.parentsStr + '全部家长';
+					addNoticeContent.flag = 0;
+					//判断选择的班级，是否有当前身份是班主任的
+					if(addNoticeContent.teacherFlag > 0) {
+						for(var i = 0; i < addNoticeContent.classIDsArray.length; i++) {
+							var temp = addNoticeContent.classIDsArray[i];
+							//判断是否是班主任
+							for(var a = 0; a < personal.clss.length; a++) {
+								var classModel = personal.clss[a];
+								if(classModel.isms == 1 && temp == classModel.clsid) {
+									addNoticeContent.flag = 1;
+								}
 							}
 						}
 					}
+				} else {
+					addNoticeContent.classIDsArray = [];
+					addNoticeContent.gradeIDsArray = [];
+					addNoticeContent.gradeStr = '请选择';
+					addNoticeContent.classStr = '请选择';
+					addNoticeContent.parentsStr = '请选择';
+					addNoticeContent.flag = 0;
+					addNoticeContent.parentArray = [];
 				}
 			});
 
@@ -593,7 +603,7 @@
 									var filePath = QNUptoken.Data[i].P_Key.split("/");
 									var fileName = filePath[filePath.length - 1];
 									if(videoName == fileName) {
-//										multiMedia.data.VideoArray[j].domain = QNUptoken.Data[i].Domain + QNUptoken.Data[i].Key;
+										//										multiMedia.data.VideoArray[j].domain = QNUptoken.Data[i].Domain + QNUptoken.Data[i].Key;
 										multiMedia.data.VideoArray[j].domain = window.storageKeyName.QNPB + QNUptoken.Data[i].Key;
 										multiMedia.data.VideoArray[j].thumb = QNUptoken.Data[i].OtherKey[data.configure.thumbKey[i]];
 									}

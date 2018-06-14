@@ -40,6 +40,7 @@ var modifyTimeFormat = function(str) {
 //flag,0表示不需要合并共用数据，1为添加uuid、utid、token、appid普通参数，2为uuid、appid、token
 //callback,返回值
 var postDataEncry = function(url, encryData, commonData, flag, callback) {
+	checkNewWork(callback);
 	var tempUrl = window.storageKeyName.INTERFACEGU;
 	url = tempUrl + url;
 	console.log('url:', url);
@@ -119,6 +120,7 @@ var arrayToStr = function(array) {
  * @param {Object} callback 回调
  */
 var xhrPost = function(url, commonData, callback,flag) {
+	checkNewWork(callback);
 	console.log('XHRP-Url:', url);
 //	console.log('XHRP-Data:', commonData);
 	//拼接登录需要的签名
@@ -184,7 +186,22 @@ var xhrPost = function(url, commonData, callback,flag) {
 	});
 }
 
+var checkNewWork = function(callback){
+	if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+		//console.log('没有网络');
+		var data = {
+				RspCode: '404',
+				RspData: '',
+				RspTxt: '网络异常，请检查网络设置！'
+			}
+
+			callback(data);
+		return;
+	}
+}
+
 var jQAjaxPost = function(url, data, callback) {
+	checkNewWork(callback);
 	console.log('jQAP-Url:', url);
 	console.log('jQAP-Data:', data);
 	jQuery.ajax({
@@ -244,6 +261,7 @@ var jQAjaxPost = function(url, data, callback) {
 }
 
 var tempPro = function(url,data0, callback) {
+	checkNewWork(callback);
 	console.log('data0:' + JSON.stringify(data0));
 	var xhr = new XMLHttpRequest();
 		xhr.open("post", url, true);

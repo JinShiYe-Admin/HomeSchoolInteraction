@@ -156,8 +156,8 @@
 		</header>
 		<nav class="mui-bar mui-bar-tab" id="noticeReplyContent" style="background: white;">
 			<div style="padding-top: 5px;">
-				<input v-model="content" type="text" style="border: 0px;margin-bottom: 0px;margin-left: 5px;width: 75%;font-size: 16px;color: #999999;" placeholder="请输入要回复的内容" />
-				<button v-on:click.stop="replyContent()" type="button" maxlength="200" class="" style="width: 20%;margin-top: 2px;border: 0px;font-size: 18px;color: #00cfbd;">回复</button>
+				<input v-model="content" maxlength="200" type="text" style="border: 0px;margin-bottom: 0px;margin-left: 5px;width: 75%;font-size: 16px;color: #999999;" placeholder="请输入要回复的内容" />
+				<button v-on:click.stop="replyContent()" type="button" class="" style="width: 20%;margin-top: 2px;border: 0px;font-size: 18px;color: #00cfbd;">回复</button>
 			</div>
 		</nav>
 				
@@ -170,7 +170,7 @@
 					<ul class="mui-table-view mui-grid-view">
 						<li class="mui-table-view-cell mui-media" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
 							<a href="#" >
-								<img @click="playVideo" class="notice-one-img mui-media-object" src="../../img/utils/playvideo2.png" style="height: 80px;width: 80px;"></a>
+								<img @click="playVideo" class="notice-one-img mui-media-object" src="../../img/utils/playvideo2.png" style="height: 180px;width: 180px;"></a>
 						</li>
 						<!--<li class="mui-table-view-cell mui-media mui-col-xs-12" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
 							<a href="#" style="">
@@ -235,7 +235,7 @@
 								<img v-if="model.ReplyManImg==null||model.ReplyManImg==''" class="mui-media-object mui-pull-left peopleImg" src='../../img/noImgPerson.jpg'> {{model.ReplyManName}}
 								<img v-else="" class="mui-media-object mui-pull-left peopleImg" :src=model.ReplyManImg> {{model.ReplyManName}}
 								<p class="mui-ellipsis replyTime">{{model.ReplyTime}}</p>
-								<p class="replyContent" style="padding-left: 52px;">{{model.ReplyContent}}</p>
+								<p class="replyContent" style="padding-left: 52px;word-break: break-all;">{{model.ReplyContent}}</p>
 							</div>
 						</li>
 					</ul>
@@ -393,7 +393,7 @@
 							} else {
 								data.RspData.encFlag = 0;
 							}
-
+							data.RspData.ReplyArray.reverse();
 							noticeDetailData.noticesDetail = data.RspData;
 						} else {
 							mui.toast(data.RspTxt);
@@ -413,7 +413,7 @@
 								mui.toast("请输入回复内容", "cancel");
 								return;
 							}
-							if(noticeReplyContent.content.length >= 200) {
+							if(noticeReplyContent.content.length > 200) {
 								mui.toast("回复内容不能超过200字", "cancel");
 								return;
 							}
