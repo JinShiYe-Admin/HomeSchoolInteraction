@@ -38,6 +38,7 @@
 
 			<div style="padding: 0px 20px;">
 				<button id='login' type="button" class="mui-btn mui-btn-block mui-btn-primary" style="background: #00cfba; border:none; margin-top: 30px;height: 40px;padding-top: 8px;">登录</button>
+				<button id='register' type="button" class="mui-btn mui-btn-block mui-btn-primary" style="background: #00cfba; border:none; margin-top: 30px;height: 40px;padding-top: 8px;">注册</button>
 			</div>
 		</div>
 	</body>
@@ -120,6 +121,11 @@
 			} else {
 
 			}
+		});
+	
+		document.getElementById("register").addEventListener('tap', function(event) {
+			console.log("注册");
+			plus.webview.open('../register/register.html');
 		});
 
 		window.addEventListener('quit', function(data) {

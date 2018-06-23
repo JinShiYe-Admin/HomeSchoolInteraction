@@ -58,13 +58,19 @@
 		"refer": [
 			"html/login/loginIndex.html",
 			"html/login/firstPage.html",
-			"html/login/firstPage1.html"
+			"html/login/firstPage1.html",
+			"html/mine/headImg.html",
+			"html/mine/modifyPassword.html",
+			"html/mine/myorder.html"
 		],
-		"resources": []
+		"resources": [
+			"css/icons-extra.css"
+		]
 	},
 	"html/login/loginFnoPermissions.html": {
 		"refer": [
-			"index.html"
+			"index.html",
+			"html/register/register.html"
 		],
 		"resources": []
 	},

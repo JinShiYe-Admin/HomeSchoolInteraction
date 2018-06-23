@@ -9,13 +9,14 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 
 		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/icons-extra.css">
 		<style>
 			body,
 			.mui-content {
-				background-color: #333;
-				color: #fff;
+				background: #fff;
+				color: #fff; 
 			}
-			
+			 
 			header.mui-bar {
 				display: none;
 			}
@@ -23,7 +24,7 @@
 			.mui-bar-nav~.mui-content {
 				padding: 0;
 			}
-			
+			 
 			.title {
 				margin: 35px 15px 10px;
 			}
@@ -36,27 +37,81 @@
 				line-height: 24px;
 			}
 			
-			.mui-table-view {
-				margin-bottom: 35px;
+			
+			.head-portrait {
+				width: 130px;
+				height: 130px;
+				border-radius: 50%;
+				margin-bottom: 10px;
+				
+			}
+			
+			.user-info {
+				padding: 30px 0 30px 0;
+				text-align: center;
+				background: #fff;
+			}
+			
+			.btns{
+				background: #fff;
+				height: 100%;
+			}
+			
+			.user-text {
+				font-size: 20px;
+				color: #333333;
+			}
+			
+			.weui-btn{
+			    position: absolute;
+			    bottom: 50px;
+			    margin:0 10%;
+			    width: 80%;
+			}
+			.mui-table-view-cell{
+				color: #333333;
+			}
+			
+			.mui-icon,.mui-icon-extra {
+				color: #00A5E0;
 			}
 		</style>
 	</head>
 
 	<body>
-		<div class="mui-content">
-			<div class="title">校讯通</div>
-			<div class="content">
-				<p style="margin: 10px 15px;">
-					<button id="close-btn" type="button" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px;">退出登录</button>
-				</p>
-
-			</div>
+		<div class="mui-content" id="mine">
+				<div class="mui-row">
+					<div class="user-info">
+						<img v-on:click="clickHeadImg()" class="head-portrait" :src=userImg />
+						<p class="user-text">{{userName}}</p>
+					</div>
+				</div> 
+				<div class="mui-row"style="background: #EEEEEE;height: 20px;"></div>
+				<div class="mui-row btns">
+					<ul class="mui-table-view">
+						<li v-for="setting in settings"  class="mui-table-view-cell" v-on:click="jumpToDetail(setting)">
+							<a class="mui-navigate-right">
+								<span :class="setting.cls"></span> {{setting.name}}
+							</a>
+						</li>
+					</ul>
+					<button id="close-btn" @click="quitLogin" type="button" class="mui-btn mui-btn-danger weui-btn" style="padding: 5px 20px;">退出登录</button>
+				</div>
 		</div>
 		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/utils/vconsole.min.js"></script>
+		<script src="../../js/utils/utils.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/publicProtocolNew.js"></script>
 		<script src="../../js/storageKeyName.js"></script>
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/utils.js"></script>
+		<script src='../../js/utils/sortSign.js'></script>
+		<script src="../../js/storageKeyName.js"></script>
+		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/publicProtocolNew.js"></script>
+		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			//关闭back、menu按键监听，这样侧滑主界面会自动获得back和memu的按键事件，仅在主界面处理按键逻辑即可；
 			mui.init({
@@ -65,16 +120,74 @@
 					menubutton: false
 				}
 			});
+			
+			
 			var main = null;
 			mui.plusReady(function() {
 				main = plus.webview.currentWebview().opener();
+				var personal = store.get(window.storageKeyName.PERSONALINFO);
+				console.log('personal:' + JSON.stringify(personal));
+				
+				var mine = new Vue({
+					el: "#mine", 
+					data: {
+						userName:personal.utname,
+						userImg:personal.imgurl,
+						settings: [
+										{
+											name: "密码修改",
+											icon: "",
+											href: "",
+											tempID:0,
+											cls:'mui-icon mui-icon-locked'
+										}, { 
+											name: "我的订购",
+											icon: "",
+											href: "",
+											tempID:1, 
+											cls:'mui-icon-extra mui-icon-extra-cart'
+										}
+						],
+						isMineShow: false //屏蔽或显示我的界面
+					}
+					,methods:{
+						quitLogin: function() { //退出登录
+							closeMenu();
+							hideMenu();
+						},
+						jumpToDetail: function(setting) {
+							hideMenu();
+							this.isMineShow = false;
+							if (setting.tempID ==0) {
+								utils.mOpenWithData("../../html/mine/modifyPassword.html", setting);
+							} else if (setting.tempID ==1) {
+								utils.mOpenWithData("../../html/mine/myorder.html", setting);
+							}
+						},
+						clickHeadImg:function(){
+							this.isMineShow = false;
+							hideMenu();
+							utils.mOpenWithData("../../html/mine/headImg.html", {});
+						}
+					}
+				});
+				
+				window.addEventListener('mine_setHeadImg', function(data) {
+					 mine.userImg=data.detail.imgurl;
+					 mui.fire(plus.webview.currentWebview().opener(), 'home_setHeadImg', {
+						imgurl: data.detail.imgurl
+					 });
+				});
+				
 			})
 
-			function closeMenu() {
-				//				mui.fire(plus.webview.currentWebview().opener(), 'closeMinePage', {});
-				//				store.remove(window.storageKeyName.PERSONALINFO);
-				//				utils.mOpenWithData("../../html/login/loginIndex.html", {});
+			function hideMenu(){
+				mui.fire(plus.webview.currentWebview().opener(), 'hideMenu', {
+					hide: true
+				});
+			}
 
+			function closeMenu() {
 				//获取个人信息
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				//解绑个推

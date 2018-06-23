@@ -192,11 +192,16 @@
 				"priority": 0
 			},
 			"html/homeSchool/mine.html": {
-				"resources": [],
+				"resources": [
+					"css/icons-extra.css"
+				],
 				"refer": [
 					"html/login/loginIndex.html",
 					"html/login/firstPage.html",
-					"html/login/firstPage1.html"
+					"html/login/firstPage1.html",
+					"html/mine/headImg.html",
+					"html/mine/modifyPassword.html",
+					"html/mine/myorder.html"
 				],
 				"priority": 0
 			},
@@ -225,7 +230,8 @@
 			"html/login/loginFnoPermissions.html": {
 				"resources": [],
 				"refer": [
-					"index.html"
+					"index.html",
+					"html/register/register.html"
 				],
 				"priority": 0
 			},
