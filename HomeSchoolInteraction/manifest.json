@@ -155,7 +155,8 @@
 				"resources": [],
 				"refer": [
 					"html/homeSchool/noticeList.html",
-					"html/homeSchool/mine.html"
+					"html/homeSchool/mine.html",
+					"html/mine/mine.html"
 				],
 				"priority": 0
 			},
@@ -192,11 +193,17 @@
 				"priority": 0
 			},
 			"html/homeSchool/mine.html": {
-				"resources": [],
+				"resources": [
+					"css/icons-extra.css"
+				],
 				"refer": [
 					"html/login/loginIndex.html",
 					"html/login/firstPage.html",
-					"html/login/firstPage1.html"
+					"html/login/firstPage1.html",
+					"html/mine/headImg.html",
+					"html/mine/modifyPassword.html",
+					"html/mine/myorder.html",
+					"html/order/myorder.html"
 				],
 				"priority": 0
 			},
@@ -225,7 +232,8 @@
 			"html/login/loginFnoPermissions.html": {
 				"resources": [],
 				"refer": [
-					"index.html"
+					"index.html",
+					"html/register/register.html"
 				],
 				"priority": 0
 			},
@@ -233,6 +241,38 @@
 				"resources": [],
 				"refer": [
 					"index2.html"
+				],
+				"priority": 0
+			},
+			"html/mine/myorder.html": {
+				"resources": [],
+				"refer": [
+					"html/mine/mealDetails.html",
+					"html/mine/mealDetails_order.html"
+				],
+				"priority": 0
+			},
+			"html/order/myorder.html": {
+				"resources": [],
+				"refer": [
+					"html/order/mealDetails_order.html",
+					"html/order/mealDetails_renew.html"
+				],
+				"priority": 0
+			},
+			"html/mine/mine.html": {
+				"resources": [],
+				"refer": [
+					"html/order/myorder.html",
+					"html/order/myOrderList.html"
+				],
+				"priority": 0
+			},
+			"html/order/myOrderList.html": {
+				"resources": [],
+				"refer": [
+					"html/order/mealDetails_order.html",
+					"html/order/mealDetails_renew.html"
 				],
 				"priority": 0
 			}
