@@ -78,11 +78,13 @@
 				</div>
 			</div>
 			<div id="contentData">
+				<template>
 				<ul class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;">
 					<li class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;">
 						<a href="#" @click="clickFunction(0)">
 							<img class="circular-square" src="../../img/homeSchool/schoolPage0.png" />
-							<span id="NoReadCnt" v-if="NoReadCnt>0" class="mui-badge mui-btn-red" style="display: none;">{{NoReadCnt}}</span>
+							<span v-if="NoReadCnt>0" class="mui-badge mui-btn-red">{{NoReadCnt}}</span>
+							<span v-else="" class="mui-badge mui-btn-red" style="display: none;">{</span>
 							<div class="mui-media-body divNameCss" style="font-size: 14px;">学校通知</div>
 						</a>
 					</li>
@@ -137,6 +139,7 @@
 					</li>
 				</ul>
 			</div>
+			</template>
 		</div>
 
 		<!--<div id="contentData">
@@ -413,7 +416,7 @@
 						contentData.NoReadCnt = data.RspData.NoReadCnt;
 						//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
 						utils.setBadgeNumber(0,contentData.NoReadCnt);
-						$("#NoReadCnt").show();
+//						$("#NoReadCnt").show();
 					} else {
 						mui.toast(data.RspTxt);
 					}

@@ -149,7 +149,7 @@
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/vue.min.js"></script>
 		<script src="../../js/utils/utils.js"></script>
-		<script src="../../js/utils/events.js"></script>
+		<!--<script src="../../js/utils/events.js"></script>-->
 		<script src="../../js/libs/jquery.js"></script>
 		<script src="../../js/publicProtocolNew.js"></script>
 		<script src="../../js/utils/vconsole.min.js"></script>
@@ -275,9 +275,18 @@
 								gradeIDsArray: [] //全选择班级的年级id数组
 							});
 						} else if(flag == 2) { //家长
+							var tempArray = [];
+							for (var i = 0; i < addNoticeContent.parentArray.length; i++) {
+								var tempModel = addNoticeContent.parentArray[i];
+								var tempModel1 = {
+									clsid:tempModel.clsid,
+									stuid:tempModel.stuid,
+								}
+								tempArray.push(tempModel1);
+							}
 							utils.mOpenWithData("../../html/homeSchool/notice_parentsList.html", {
 								classIDs: addNoticeContent.classIDs,
-								parentArray: addNoticeContent.parentArray
+								parentArray: tempArray
 							});
 						}
 					}
@@ -474,6 +483,7 @@
 			 * @param {Object} encImg 附件缩略图地址
 			 */
 			function addNote(wd, encType, encAddr, encImg, encLen) {
+				console.log('encImg:'+encImg);
 				var temp0 = [];
 				var temp1 = [];
 				var temp2 = [];
@@ -514,6 +524,7 @@
 					schoolId: personal.schid, //学校ID，统一部署的时候，学校ID传000000
 					noticeContent: addNoticeContent.content, //内容
 					noticEncName: encName, //附件名称，竖杠隔开
+					noticeEncImgAddr:encImg,//附件缩略图地址，竖杠隔开
 					noticeEncAddr: encAddr, //附件地址，竖杠隔开
 					smsSync: addNoticeContent.msgFlag, //是否短信同步，先填0
 					sendManId: personal.utid, //发布人ID
@@ -737,6 +748,7 @@
 									if(multiMedia.data.PictureArray.length !== 0) { //图片
 										for(var j = 0; j < multiMedia.data.PictureArray.length; j++) {
 											encAddr.push(multiMedia.data.PictureArray[j].domain);
+											encImg.push(multiMedia.data.PictureArray[j].domain);
 										}
 										type = '1';
 									} else if(multiMedia.data.VideoArray.length !== 0) { //视频

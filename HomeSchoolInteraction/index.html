@@ -45,6 +45,7 @@
 		<script src="js/utils/store.js"></script>
 		<script src="js/utils/utils.js"></script>
 		<script src="js/libs/jquery.js"></script>
+		<script src="js/utils/app-update.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			//mui初始化
 			mui.init();
@@ -126,6 +127,8 @@
 					current.classList.remove('mui-active');
 					defaultTab.classList.add('mui-active');
 				}
+				//判断是否需要更新
+				setTimeout(appUpdate.updateApp, 5000);
 			});
 		</script>
 	</body>
