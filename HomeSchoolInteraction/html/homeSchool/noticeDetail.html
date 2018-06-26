@@ -143,8 +143,8 @@
 			}
 			
 			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
-			    color: #00CFBD;
-			    border-bottom: 2px solid #00CFBD;
+				color: #00CFBD;
+				border-bottom: 2px solid #00CFBD;
 			}
 		</style>
 	</head>
@@ -160,17 +160,23 @@
 				<button v-on:click.stop="replyContent()" type="button" class="" style="width: 20%;margin-top: 2px;border: 0px;font-size: 18px;color: #00cfbd;">回复</button>
 			</div>
 		</nav>
-				
+
 		<div class="mui-content" id="noticeDetailData" v-if="flag>0" style="background: white;">
 			<p style="color: black;padding: 10px;font-size: 14px;color: #333333;word-break: break-all;">{{noticesDetail.NoticeContent}}</p>
 			<!--<p class="" style="height: 10px;background-color: #f2f2f2;"></p>-->
 			<div id="" v-show="noticesDetail.NoticeEncAddr.length>0">
 				<div class="" v-if="noticesDetail.NoticeEncAddr.length==1&&noticesDetail.encFlag==2">
 					<ul class="mui-table-view mui-grid-view">
-						<li class="mui-table-view-cell mui-media" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
-							<a href="#" >
+						<li class="mui-table-view-cell mui-media" v-for="(picModel,index) in noticesDetail.NoticeEncAddr" @tap="playVideo">
+							<video v-if="noticesDetail.NoticeEncImgAddr&&noticesDetail.NoticeEncImgAddr.length>0" controls :poster='noticesDetail.NoticeEncImgAddr' style="height: 180px;width: 180px;">
+								<source :src=noticesDetail.NoticeEncAddr type="video/mp4">
+							</video>
+							<video v-else="" poster="../../img/utils/playvideo2.png" controls style="height: 180px;width: 180px;">
+								<source :src=noticesDetail.NoticeEncAddr type="video/mp4">
+							</video>
+							<!--<a href="#">
 								<img v-if="noticesDetail.NoticeEncImgAddr&&noticesDetail.NoticeEncImgAddr.length>0" @click="playVideo" class="notice-one-img mui-media-object" :src=noticesDetail.NoticeEncImgAddr style="height: 180px;width: 180px;">
-								<img v-else="" @click="playVideo" class="notice-one-img mui-media-object" src="../../img/utils/playvideo2.png" style="height: 180px;width: 180px;"></a>
+								<img v-else="" @click="playVideo" class="notice-one-img mui-media-object" src="../../img/utils/playvideo2.png" style="height: 180px;width: 180px;"></a>-->
 						</li>
 						<!--<li class="mui-table-view-cell mui-media mui-col-xs-12" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
 							<a href="#" style="">
@@ -181,7 +187,7 @@
 				<div class="" v-else-if="noticesDetail.NoticeEncAddr.length==1&&noticesDetail.encFlag==1">
 					<ul class="mui-table-view mui-grid-view">
 						<li class="mui-table-view-cell mui-media" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
-							<a href="#" >
+							<a href="#">
 								<div class="notice-one-img" style=" overflow: hidden;">
 									<img data-preview-src="" :src=picModel width="100%" style="vertical-align: middle;" onload="this.style.marginTop = (parseInt(this.parentNode.style.height) - this.height)/2 + 'px';this.style.marginLeft = (parseInt(this.parentNode.style.width) - this.width) /2 + 'px'" />
 								</div>
@@ -192,7 +198,7 @@
 				<div class="" v-else-if="noticesDetail.NoticeEncAddr.length==2">
 					<ul class="mui-table-view mui-grid-view">
 						<li class="mui-table-view-cell mui-media mui-col-xs-5 mui-col-sm-5" v-for="(picModel,index) in noticesDetail.NoticeEncAddr">
-							<a href="#" >
+							<a href="#">
 								<div class="notice-two-img" style=" overflow: hidden;">
 									<img data-preview-src="" :src=picModel width="100%" style="vertical-align: middle;" onload="this.style.marginTop = (parseInt(this.parentNode.style.height) - this.height)/2 + 'px';this.style.marginLeft = (parseInt(this.parentNode.style.width) - this.width) /2 + 'px'" />
 								</div>
@@ -351,7 +357,8 @@
 					},
 					methods: {
 						playVideo: function() {
-							ShowVideoUtil.showVideo(document.getElementById("video"), 'videoPopover', noticeDetailData.noticesDetail.NoticeEncAddr[0], '../../img/utils/playvideo.png');
+							console.log('playVideo:'+noticeDetailData.noticesDetail.NoticeEncAddr[0]);
+							ShowVideoUtil.showVideo(document.getElementById("video"), 'videoPopover', noticeDetailData.noticesDetail.NoticeEncAddr[0], noticeDetailData.noticesDetail.NoticeEncImgAddr);
 						}
 					}
 				});
@@ -381,6 +388,7 @@
 								if(data.RspData.NoticeEncAddr.length == 1) {
 									var urlArr = data.RspData.NoticeEncAddr[0].split('.');
 									var urlLast = urlArr[urlArr.length - 1];
+									urlLast=urlLast.toLowerCase();
 									console.log('urlLast:' + urlLast);
 									if(urlLast == 'mp4' || urlLast == 'avi' || urlLast == 'mpg' || urlLast == 'vob' || urlLast == 'mov' || urlLast == 'flv' || urlLast == 'wmv') {
 										data.RspData.encFlag = 2;

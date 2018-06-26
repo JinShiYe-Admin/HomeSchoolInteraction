@@ -14,9 +14,9 @@
 			body,
 			.mui-content {
 				background: #fff;
-				color: #fff; 
+				color: #fff;
 			}
-			 
+			
 			header.mui-bar {
 				display: none;
 			}
@@ -24,7 +24,7 @@
 			.mui-bar-nav~.mui-content {
 				padding: 0;
 			}
-			 
+			
 			.title {
 				margin: 35px 15px 10px;
 			}
@@ -37,13 +37,11 @@
 				line-height: 24px;
 			}
 			
-			
 			.head-portrait {
 				width: 130px;
 				height: 130px;
 				border-radius: 50%;
 				margin-bottom: 10px;
-				
 			}
 			
 			.user-info {
@@ -52,7 +50,7 @@
 				background: #fff;
 			}
 			
-			.btns{
+			.btns {
 				background: #fff;
 				height: 100%;
 			}
@@ -62,17 +60,20 @@
 				color: #333333;
 			}
 			
-			.weui-btn{
-			    position: absolute;
-			    bottom: 50px;
-			    margin:0 10%;
-			    width: 80%;
+			.weui-btn {
+				position: absolute;
+				bottom: 50px;
+				margin: 0 10%;
+				width: 80%;
+				height: 40px;
 			}
-			.mui-table-view-cell{
+			
+			.mui-table-view-cell {
 				color: #333333;
 			}
 			
-			.mui-icon,.mui-icon-extra {
+			.mui-icon,
+			.mui-icon-extra {
 				color: #00A5E0;
 			}
 		</style>
@@ -80,23 +81,23 @@
 
 	<body>
 		<div class="mui-content" id="mine">
-				<div class="mui-row">
-					<div class="user-info">
-						<img v-on:click="clickHeadImg()" class="head-portrait" :src=userImg />
-						<p class="user-text">{{userName}}</p>
-					</div>
-				</div> 
-				<div class="mui-row"style="background: #EEEEEE;height: 20px;"></div>
-				<div class="mui-row btns">
-					<ul class="mui-table-view">
-						<li v-for="setting in settings"  class="mui-table-view-cell" v-on:click="jumpToDetail(setting)">
-							<a class="mui-navigate-right">
-								<span :class="setting.cls"></span> {{setting.name}}
-							</a>
-						</li>
-					</ul>
-					<button id="close-btn" @click="quitLogin" type="button" class="mui-btn mui-btn-danger weui-btn" style="padding: 5px 20px;">退出登录</button>
+			<div class="mui-row">
+				<div class="user-info">
+					<img v-on:click="clickHeadImg()" class="head-portrait" :src=userImg />
+					<p class="user-text">{{userName}}</p>
 				</div>
+			</div>
+			<div class="mui-row" style="background: #EEEEEE;height: 20px;"></div>
+			<div class="mui-row btns">
+				<ul class="mui-table-view">
+					<li v-for="setting in settings" class="mui-table-view-cell" v-on:click="jumpToDetail(setting)">
+						<a class="mui-navigate-right">
+							<span :class="setting.cls"></span> {{setting.name}}
+						</a>
+					</li>
+				</ul>
+				<button id="close-btn" @click="quitLogin" type="button" class="mui-btn mui-btn-danger weui-btn" style="padding: 5px 20px;">退出登录</button>
+			</div>
 		</div>
 		<script src="../../js/mui.min.js"></script>
 		<script type="text/javascript" src="../../js/utils/vconsole.min.js"></script>
@@ -120,37 +121,34 @@
 					menubutton: false
 				}
 			});
-			
-			
+
 			var main = null;
 			mui.plusReady(function() {
 				main = plus.webview.currentWebview().opener();
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				console.log('personal:' + JSON.stringify(personal));
-				
+
 				var mine = new Vue({
-					el: "#mine", 
+					el: "#mine",
 					data: {
-						userName:personal.utname,
-						userImg:personal.imgurl,
-						settings: [
-										{
-											name: "密码修改",
-											icon: "",
-											href: "",
-											tempID:0,
-											cls:'mui-icon mui-icon-locked'
-										}, { 
-											name: "我的订购",
-											icon: "",
-											href: "",
-											tempID:1, 
-											cls:'mui-icon-extra mui-icon-extra-cart'
-										}
-						],
+						userName: personal.utname,
+						userImg: setImg(personal.imgurl),
+						settings: [{
+							name: "密码修改",
+							icon: "",
+							href: "",
+							tempID: 0,
+							cls: 'mui-icon mui-icon-locked'
+						}, {
+							name: "我的订购",
+							icon: "",
+							href: "",
+							tempID: 1,
+							cls: 'mui-icon-extra mui-icon-extra-cart'
+						}],
 						isMineShow: false //屏蔽或显示我的界面
-					}
-					,methods:{
+					},
+					methods: {
 						quitLogin: function() { //退出登录
 							closeMenu();
 							hideMenu();
@@ -158,30 +156,33 @@
 						jumpToDetail: function(setting) {
 							hideMenu();
 							this.isMineShow = false;
-							if (setting.tempID ==0) {
-								utils.mOpenWithData("../../html/mine/modifyPassword.html", setting);
-							} else if (setting.tempID ==1) {
+							if(setting.tempID == 0) {
+								var tempModel = {
+									flag: 0 //0是主动修改密码，1是判断是默认密码，自动让修改
+								}
+								utils.mOpenWithData("../../html/mine/modifyPassword.html", tempModel);
+							} else if(setting.tempID == 1) {
 								utils.mOpenWithData("../../html/order/orderList.html", setting);
 							}
 						},
-						clickHeadImg:function(){
+						clickHeadImg: function() {
 							this.isMineShow = false;
 							hideMenu();
 							utils.mOpenWithData("../../html/mine/headImg.html", {});
 						}
 					}
 				});
-				
+
 				window.addEventListener('mine_setHeadImg', function(data) {
-					 mine.userImg=data.detail.imgurl;
-					 mui.fire(plus.webview.currentWebview().opener(), 'home_setHeadImg', {
+					mine.userImg = data.detail.imgurl;
+					mui.fire(plus.webview.currentWebview().opener(), 'home_setHeadImg', {
 						imgurl: data.detail.imgurl
-					 });
+					});
 				});
-				
+
 			})
 
-			function hideMenu(){
+			function hideMenu() {
 				mui.fire(plus.webview.currentWebview().opener(), 'hideMenu', {
 					hide: true
 				});
@@ -201,18 +202,18 @@
 					if(data.RspCode == 0) {} else {}
 				});
 				//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
-				utils.setBadgeNumber(0,0);
+				utils.setBadgeNumber(0, 0);
 
 				//获取所有已打开的webview 实例————重新打开login.html————循环关闭页面
 				store.remove(window.storageKeyName.PERSONALINFO);
-//				plus.webview.open('../../html/login/loginIndex.html');
+				//				plus.webview.open('../../html/login/loginIndex.html');
 				plus.webview.open('../../html/login/firstPage1.html');
 				var curr = plus.webview.currentWebview();
 				var wvs = plus.webview.all();
 				for(var i = 0, len = wvs.length; i < len; i++) {
 					//关闭除login页面外的其他页面
 					if(wvs[i].getURL().indexOf('firstPage1.html') != -1) {
-//					if(wvs[i].getURL().indexOf('loginIndex.html') != -1) {
+						//					if(wvs[i].getURL().indexOf('loginIndex.html') != -1) {
 						continue;
 					}
 					plus.webview.close(wvs[i]);

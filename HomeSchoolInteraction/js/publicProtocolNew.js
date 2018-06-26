@@ -20,6 +20,19 @@ function generateUUID() {
 	return uuid;
 };
 
+//设置头像，如果有，用本身的，没有给默认值
+function setImg(imgURL) {
+	var tempUrl = '';
+	if (imgURL==null||imgURL.length==0) {
+		tempUrl = '../../img/login/headImg.png';
+	} else{
+		var myDate = new Date();
+		tempUrl = imgURL + '?' + myDate.getTime();
+	}
+//	console.log('tempUrl000:'+tempUrl);
+	return tempUrl;
+}
+
 //将时间转换为显示的格式
 var modifyTimeFormat = function(str) {
 	var tempStr = '';

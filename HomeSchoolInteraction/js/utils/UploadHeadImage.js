@@ -15,7 +15,7 @@ var UploadHeadImage = (function($, mod) {
 	//私有空间或公有空间
 	var mainSpace = window.storageKeyName.QNPUBSPACE;
 	//头像上传的空间
-	var uploadSpace = window.storageKeyName.HEADIMAGE;
+	var uploadSpace = window.storageKeyName.XXTNOTICE;
 	//成功的回调
 	var successCallBack;
 	//失败的回调
@@ -197,7 +197,7 @@ var UploadHeadImage = (function($, mod) {
 		var getToken = {
 			type: '0', //str 必填 获取上传token的类型。0上传需要生成缩略图的文件；1上传文件
 			QNFileName: fileName, //str 必填 存放到七牛的文件名
-			appId: 5, //int 必填 项目id
+			appId: 4, //int 必填 项目id
 			mainSpace: mainSpace, //str 必填 私有空间或公有空间
 			uploadSpace: uploadSpace, //str 必填  上传的空间
 		}
@@ -219,7 +219,7 @@ var UploadHeadImage = (function($, mod) {
 						var thumb = QNUptoken.Data.OtherKey[configure.thumbKey]; //缩略图地址
 						var domain = QNUptoken.Data.Domain + QNUptoken.Data.Key; //文件地址
 						////console.log(thumb);
-						//console.log(domain);
+						console.log('domain:'+domain);
 						setTimeout(function() {
 							switch(imageType) {
 								case 0: //个人头像
@@ -320,28 +320,40 @@ var UploadHeadImage = (function($, mod) {
 	}
 
 	/**
-	 * 修改个人头像
+	 * 修改个人头像,4.9:	更改注册用户对应资料
 	 * @param { Object } domain 头像在七牛上的文件地址
 	 * @param { Object } thumb 头像在七牛上的文件缩略图地址(无效)
 	 */
 	function changeHeadImge(wd, domain, thumb) {
+		var personal;
+		var publicParameter;
+		//获取个人信息
+		personal = store.get(window.storageKeyName.PERSONALINFO);
+		publicParameter = store.get(window.storageKeyName.PUBLICPARAMETER);
+
 		var myDate = new Date();
 		var imgeURL = thumb + '?' + myDate.getTime();
-		//6.用户修改各项用户信息
-		//调用方法
-		var comData = {
-			vtp: 'uimg', //uimg(头像),utxt(签名),unick(昵)称,usex(性别),uemail(邮件)
-			vvl: imgeURL //对应的值
+		var enData0 = {};
+		//不需要加密的数据
+		var comData0 = {
+			uuid: publicParameter.uuid, //用户设备号
+			utid: personal.utid, //用户ID
+			type: 'uico', //修改类型，upw:密码, uico:头像
+			val: domain, //对应类型的值
+			utoken: personal.utoken, //用户令牌
+			appid: publicParameter.appid //系统所分配的应用ID
 		};
-		postDataPro_PostReUinf(comData, wd, function(data) {
-			//console.log('6_PostReUinf:RspCode:' + data.RspCode + ',RspData:' + JSON.stringify(data.RspData) + ',RspTxt:' + data.RspTxt);
+		events.showWaiting();
+		//发送网络请求，data为网络返回值
+		postDataEncry('UpUserInfo', enData0, comData0, 0, function(data) {
+			console.log('UpUserInfo:' + JSON.stringify(data));
+			events.closeWaiting();
 			if(data.RspCode == 0) {
 				//成功的回调
 				successCallBack(imgeURL);
 			} else {
 				errorCallBack(data);
 			}
-			wd.close();
 		});
 	}
 
