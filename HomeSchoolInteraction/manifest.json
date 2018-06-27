@@ -160,7 +160,13 @@
 				"priority": 0
 			},
 			"html/homeSchool/noticeList.html": {
-				"resources": [],
+				"resources": [
+					"js/utils/vue.min.js",
+					"img/noImgPerson.jpg",
+					"img/homeSchool/redColor.png",
+					"img/homeSchool/lookCount.png",
+					"img/homeSchool/contentCount.png"
+				],
 				"refer": [
 					"html/homeSchool/noticeDetail.html",
 					"html/homeSchool/notice_add.html"
@@ -255,7 +261,8 @@
 				"resources": [],
 				"refer": [
 					"index.html",
-					"html/register/register.html"
+					"html/register/register.html",
+					"html/mine/modifyPassword.html"
 				],
 				"priority": 0
 			},
@@ -300,6 +307,13 @@
 					"html/order/mealDetails_renew.html"
 				],
 				"priority": 0
+			},
+			"html/homeSchool/noticeDetail.html": {
+				"resources": [
+					"js/ckplayer.js"
+				],
+				"refer": [],
+				"priority": 0
 			}
 		},
 		"idle": {
@@ -334,7 +348,6 @@
 				"js/mui.lazyload.js",
 				"js/libs/crypto-js/bower.json",
 				"img/homeSchool/u296.png",
-				"js/utils/vue.min.js",
 				"js/libs/CryptoJS/components/sha1-min.js",
 				"css/utils/custom-textarea.css",
 				"img/homeSchool/schoolPage2.png",
@@ -370,7 +383,6 @@
 				"js/libs/CryptoJS/components/pad-iso10126.js",
 				"js/libs/CryptoJS/rollups/rc4.js",
 				"js/libs/CryptoJS/components/sha384.js",
-				"img/homeSchool/redColor.png",
 				"js/libs/CryptoJS/components/sha1.js",
 				"css/utils/audiopopover.css",
 				"js/libs/RSA/MD5.js",

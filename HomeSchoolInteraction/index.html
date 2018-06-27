@@ -129,12 +129,7 @@
 					defaultTab.classList.add('mui-active');
 				}
 				//判断是否需要更新
-//				var personal = store.get(window.storageKeyName.PERSONALINFO);
-//				if(personal==''||personal==null||personal==undefined){
-//					console.log("无法获得用户学校ID，无法检测更新")
-//				}else{
-					appUpdate.updateApp(window.storageKeyName.SCHOOLID);
-//				}
+				appUpdate.updateApp(window.storageKeyName.SCHOOLID);
 			});
 		</script>
 	</body>
