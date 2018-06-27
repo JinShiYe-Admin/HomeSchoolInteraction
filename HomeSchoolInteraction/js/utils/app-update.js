@@ -3,7 +3,7 @@
  */
 var appUpdate = (function(mod) {
 	
-	mod.androidUpdateUrl='http://192.168.20.139:8080/app/versionCode.xml';
+	mod.androidUpdateUrl='http://192.168.1.182:8071/app/versionCode.xml';
 	mod.iosUpdateUrl='http://itunes.apple.com/lookup?id=1281905607';
 	
 	mod.fileSize;
@@ -179,7 +179,7 @@ var appUpdate = (function(mod) {
 					return parseInt(verNo) > parseInt(appVersions[index]);
 				})
 				if(hasNewerVersion && mod.updateFlag == 0) { //如果有新版本
-					setDialog('智慧校园有新版本，是否下载？', "您已取消下载", function() {
+					setDialog('校讯通有新版本，是否下载？', "您已取消下载", function() {
 						mod.updateFlag = 1;
 						console.log("下载APK路径：")
 						plus.runtime.openURL('https://itunes.apple.com/us/app/%E6%95%99%E5%AE%9D%E4%BA%91/id1281905607?l=zh&ls=1&mt=8');
@@ -220,7 +220,7 @@ var appUpdate = (function(mod) {
 	 */
 	var setDialog = function(hint, cancelToast, callback, cancelCallback) {
 		var btnArray = ['是', '否'];
-		mui.confirm(hint, '教宝云', btnArray, function(e) {
+		mui.confirm(hint, '校讯通', btnArray, function(e) {
 			//console.log("当前点击的东东：" + JSON.stringify(e));
 			if(e.index == 0) {
 				callback();
@@ -312,8 +312,8 @@ var appUpdate = (function(mod) {
 	var onStateChanged = function(download, status) {
 		//		//console.log("当前下载状态：" + download.state + ":" + status + ":" + download.totalSize)
 		if(download.state == 3) {
-			if(!myStorage.getItem("loadFileSize") || myStorage.getItem("loadFileSize") != download.totalSize) {
-				myStorage.setItem("loadFileSize", download.totalSize);
+			if(!store.get("loadFileSize") || store.get("loadFileSize") != download.totalSize) {
+				store.set("loadFileSize", download.totalSize);
 			}
 		}
 	}
@@ -356,8 +356,8 @@ var appUpdate = (function(mod) {
 			// 可通过entry对象操作test.html文件 
 			console.log('存在文件！' + entry.isFile);
 			entry.getMetadata(function(metadata) {
-				if(myStorage.getItem("loadFileSize") == metadata.size) {
-					//console.log("Remove succeeded:" + myStorage.getItem("loadFileSize"));
+				if(store.get("loadFileSize") == metadata.size) {
+					//console.log("Remove succeeded:" + store.get("loadFileSize"));
 					if(type) {
 						if(mod.installFlag == 0) {
 							setDialog("新版app文件已下载，是否安装？", "您已取消安装app", function() {

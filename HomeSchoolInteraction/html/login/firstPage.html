@@ -54,6 +54,14 @@
 				uuid: plus.device.uuid,
 				appid: plus.runtime.appid
 			}
+			if (tempModel.uuid=='') {
+				var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
+				tempModel.uuid = publicPar.uuid;
+				tempModel.appid = publicPar.appid;
+			}
+			console.log('plus.device.uuid:'+tempModel.uuid);
+			console.log('plus.runtime.appid:'+tempModel.appid);
+			store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
 			setUUID();
 			document.addEventListener("netchange", wainshow, false);
 
@@ -116,13 +124,15 @@
 
 		//login登录
 		var loginPro = function(tempName, tempPW) {
+			var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
+			console.log('tempName000:'+tempName+',tempPW:'+tempPW+',publicPar:'+publicPar.uuid+',publicPar:'+publicPar.appid);
 			//握手
 			var enData0 = {};
 			//不需要加密的数据
 			var comData0 = {
-				uuid: tempModel.uuid, //用户设备号
+				uuid: publicPar.uuid, //用户设备号
 				shaketype: 'login', //注册(reg),登录(login),修改密码(repw)
-				appid: tempModel.appid //系统所分配的应用ID
+				appid: publicPar.appid //系统所分配的应用ID
 			};
 			events.showWaiting();
 			//发送网络请求，data为网络返回值
@@ -137,9 +147,9 @@
 					};
 					//不需要加密的数据
 					var comData1 = {
-						uuid: tempModel.uuid, //用户设备号
+						uuid: publicPar.uuid, //用户设备号
 						shaketype: 'login', //注册(reg),登录(login),修改密码(repw)
-						appid: tempModel.appid, //系统所分配的应用ID
+						appid: publicPar.appid, //系统所分配的应用ID
 						schid: storageKeyName.SCHOOLID, //学校ID
 						utp: storageKeyName.USERTYPE //用户类型，0老师,1家长,2学生
 					};
@@ -179,9 +189,10 @@
 								atype: '' //节点类型,0省1城市2区县
 							}
 							data1.RspData.uarea = model_area; //用户区域,省代码 市代码|省名称 市名称
+							console.log('data1.RspData:' + JSON.stringify(data1.RspData));
 							store.set(window.storageKeyName.PERSONALINFO, data1.RspData);
 							var personal = store.get(window.storageKeyName.PERSONALINFO);
-							console.log('personal000:' + JSON.stringify(personal));
+							console.log('personal0001:' + JSON.stringify(personal));
 
 							var info = plus.push.getClientInfo();
 							var tempBindData = {
@@ -220,9 +231,10 @@
 		//从ios原生得到信息
 		var setUUID = function() {
 			//			if(loginFlag == 0) {
-			store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
+			
 			//判断上次是否登录过，自动登录
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('setUUIDpersonal000:' + JSON.stringify(personal));
 			if(personal) {
 				if(personal.utid == 'undefined' || personal.utid == null || personal.userName0 == null) {
 					//login登录
