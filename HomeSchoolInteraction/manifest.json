@@ -201,7 +201,8 @@
 					"js/utils/sortSign.js",
 					"js/libs/RSA/RSA.js",
 					"js/utils/signHmacSHA1.js",
-					"js/utils/RSAEncrypt.js"
+					"js/utils/RSAEncrypt.js",
+					"js/libs/crypto-js/crypto-js.js"
 				],
 				"refer": [
 					"index.html",
@@ -212,7 +213,10 @@
 			},
 			"html/homeSchool/mine.html": {
 				"resources": [
-					"css/icons-extra.css"
+					"css/icons-extra.css",
+					"js/utils/vconsole.min.js",
+					"js/utils/vue.js",
+					"js/utils/sortSign.js"
 				],
 				"refer": [
 					"html/login/loginIndex.html",
@@ -368,7 +372,6 @@
 				"js/libs/CryptoJS/components/sha384.js",
 				"img/homeSchool/redColor.png",
 				"js/libs/CryptoJS/components/sha1.js",
-				"js/utils/vue.js",
 				"css/utils/audiopopover.css",
 				"js/libs/RSA/MD5.js",
 				"js/utils/TouchMove.js",
