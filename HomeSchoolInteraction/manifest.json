@@ -227,7 +227,8 @@
 					"html/mine/headImg.html",
 					"html/mine/modifyPassword.html",
 					"html/mine/myorder.html",
-					"html/order/myorder.html"
+					"html/order/myorder.html",
+					"html/order/orderList.html"
 				],
 				"priority": 0
 			},
@@ -309,6 +310,13 @@
 					"js/ckplayer.js"
 				],
 				"refer": [],
+				"priority": 0
+			},
+			"html/order/orderList.html": {
+				"resources": [],
+				"refer": [
+					"html/order/packageDetails_order.html"
+				],
 				"priority": 0
 			}
 		},

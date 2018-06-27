@@ -84,7 +84,8 @@
 			"html/mine/headImg.html",
 			"html/mine/modifyPassword.html",
 			"html/mine/myorder.html",
-			"html/order/myorder.html"
+			"html/order/myorder.html",
+			"html/order/orderList.html"
 		],
 		"resources": [
 			"css/icons-extra.css"
@@ -164,6 +165,11 @@
 	"html/homeSchool/noticeDetail.html": {
 		"resources": [
 			"js/ckplayer.js"
+		]
+	},
+	"html/order/orderList.html": {
+		"refer": [
+			"html/order/packageDetails_order.html"
 		]
 	}
 }
